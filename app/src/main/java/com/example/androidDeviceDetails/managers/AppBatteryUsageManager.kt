@@ -36,7 +36,6 @@ class AppBatteryUsageManager {
         return mergedList
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
     fun cookBatteryData(
         beginTime: Long,
         endTime: Long = System.currentTimeMillis()
@@ -61,7 +60,6 @@ class AppBatteryUsageManager {
                         previousData.batteryLevel!!.minus(mergedEventData.batteryLevel!!)
                 previousData = mergedEventData
             }
-            Log.d("TAG", "cookBatteryData: ")
         }
     }
 }
