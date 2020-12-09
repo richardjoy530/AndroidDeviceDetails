@@ -6,7 +6,7 @@ import android.content.Intent
 import android.os.BatteryManager
 import android.util.Log
 import androidx.room.Room
-import com.example.androidDeviceDetails.models.BatteryRaw
+import com.example.androidDeviceDetails.models.BatteryRawModel
 import com.example.androidDeviceDetails.models.RoomDB
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -22,7 +22,7 @@ class BatteryBroadcastReceiver : BroadcastReceiver() {
             RoomDB::class.java, "room_db"
         ).build()
 
-        val batteryRaw = BatteryRaw(
+        val batteryRaw = BatteryRawModel(
             System.currentTimeMillis(),
             intent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0),
             intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, 0),

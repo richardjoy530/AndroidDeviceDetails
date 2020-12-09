@@ -6,10 +6,11 @@ import androidx.room.RoomDatabase
 import com.example.androidDeviceDetails.DeviceDetailsApplication
 
 
-@Database(entities = [AppUsageRaw::class, BatteryRaw::class], version = 1)
+@Database(entities = [AppUsageModel::class, BatteryRawModel::class], version = 1)
 abstract class RoomDB : RoomDatabase() {
     abstract fun batteryInfoDao(): BatteryInfoDao
     abstract fun appUsageInfoDao(): AppUsageInfoDao
+    abstract fun locationDao(): ILocationDao
 
     companion object {
         private var INSTANCE: RoomDB? = null

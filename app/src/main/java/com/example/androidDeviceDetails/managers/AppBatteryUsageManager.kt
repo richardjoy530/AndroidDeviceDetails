@@ -1,10 +1,7 @@
 package com.example.androidDeviceDetails.managers
 
-import android.os.Build
-import android.util.Log
-import androidx.annotation.RequiresApi
-import com.example.androidDeviceDetails.models.AppUsageRaw
-import com.example.androidDeviceDetails.models.BatteryRaw
+import com.example.androidDeviceDetails.models.AppUsageModel
+import com.example.androidDeviceDetails.models.BatteryRawModel
 import com.example.androidDeviceDetails.models.RoomDB
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -13,13 +10,13 @@ class AppBatteryUsageManager {
     private var db: RoomDB = RoomDB.getDatabase()!!
 
     private fun getCombinedList(
-        appEventList: List<AppUsageRaw>,
-        batteryList: List<BatteryRaw>
+        appEventList: List<AppUsageModel>,
+        batteryListModel: List<BatteryRawModel>
     ): MutableList<MergedEventData> {
 
         val mergedList = mutableListOf<MergedEventData>()
-        val batteryIterator = batteryList.iterator()
-        var preBattery = batteryList.first()
+        val batteryIterator = batteryListModel.iterator()
+        var preBattery = batteryListModel.first()
 
         for (it in appEventList) {
             while (it.timeStamp > preBattery.timeStamp && batteryIterator.hasNext())

@@ -5,7 +5,6 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
-import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -16,6 +15,9 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import com.example.androidDeviceDetails.models.CountModel
+import com.example.androidDeviceDetails.models.LocationModel
+import com.example.androidDeviceDetails.models.RoomDB
 import com.fonfon.kgeohash.GeoHash
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -40,7 +42,7 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener {
         Manifest.permission.ACCESS_FINE_LOCATION,
         Manifest.permission.ACCESS_COARSE_LOCATION
     )
-    private var locationDatabase: LocationDatabase? = null
+    private lateinit var locationDatabase: RoomDB
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_location)
@@ -50,7 +52,7 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener {
         btnGetLocation.setOnClickListener(this)
         countLocation.setOnClickListener(this)
         locationCounter = LocationCounter()
-        locationDatabase = LocationDatabase.getDatabase(this)
+        locationDatabase = RoomDB.getDatabase()!!
         disableView()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkPermission(permissions)) {
@@ -93,17 +95,17 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener {
             Calendar.getInstance().time.toString()
         )
         GlobalScope.launch {
-            locationDatabase!!.locationDao().insertLocation(locationObj)
+            locationDatabase.locationDao().insertLocation(locationObj)
         }
         Toast.makeText(applicationContext, "Added to Database", Toast.LENGTH_LONG).show()
     }
 
     private suspend fun getData(): List<LocationModel> = withContext(Dispatchers.IO) {
-        return@withContext locationDatabase!!.locationDao().readAll()
+        return@withContext locationDatabase.locationDao().readAll()
     }
 
     private suspend fun countLocation(): List<CountModel> = withContext(Dispatchers.IO) {
-        return@withContext locationDatabase!!.locationDao().countHash()
+        return@withContext locationDatabase.locationDao().countHash()
     }
 
     @SuppressLint("MissingPermission")
@@ -118,28 +120,24 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener {
                 locationManager.requestLocationUpdates(
                     LocationManager.GPS_PROVIDER,
                     5000,
-                    0F,
-                    object : LocationListener {
-                        override fun onLocationChanged(location: Location) {
-                            Log.d("CodeAndroidLocation", "gpslocation not null")
-                            locationGps = location
-                            insert(locationGps, "GPS")
-                        }
-                    })
+                    0F
+                ) { location ->
+                    Log.d("CodeAndroidLocation", "gpsLocation not null")
+                    locationGps = location
+                    insert(locationGps, "GPS")
+                }
             }
             if (hasNetwork) {
                 Log.d("CodeAndroidLocation", "hasNetworkGps")
                 locationManager.requestLocationUpdates(
                     LocationManager.NETWORK_PROVIDER,
                     5000,
-                    0F,
-                    object : LocationListener {
-                        override fun onLocationChanged(location: Location) {
-                            Log.d("CodeAndroidLocation", "networklocation not null")
-                            locationNetwork = location
-                            insert(locationNetwork, "Network")
-                        }
-                    })
+                    0F
+                ) { location ->
+                    Log.d("CodeAndroidLocation", "networkLocation not null")
+                    locationNetwork = location
+                    insert(locationNetwork, "Network")
+                }
             }
             if (locationGps != null && locationNetwork != null) {
                 Log.d("CodeAndroidLocation", "has both")

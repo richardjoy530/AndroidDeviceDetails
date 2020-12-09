@@ -3,7 +3,7 @@ package com.example.androidDeviceDetails.models
 import androidx.room.*
 
 @Entity
-data class BatteryRaw(
+data class BatteryRawModel(
     @PrimaryKey val timeStamp: Long,
     @ColumnInfo(name = "level") val level: Int?,
     @ColumnInfo(name = "plugged") val plugged: Int?,
@@ -15,18 +15,18 @@ data class BatteryRaw(
 
 @Dao
 interface BatteryInfoDao {
-    @Query("SELECT * FROM batteryRaw")
-    fun getAll(): List<BatteryRaw>
+    @Query("SELECT * FROM BatteryRawModel")
+    fun getAll(): List<BatteryRawModel>
 
-    @Query("SELECT * FROM batteryRaw WHERE timeStamp BETWEEN (:startTime) AND (:endTime)")
-    fun getAllBetween(startTime: Long, endTime: Long): List<BatteryRaw>
+    @Query("SELECT * FROM BatteryRawModel WHERE timeStamp BETWEEN (:startTime) AND (:endTime)")
+    fun getAllBetween(startTime: Long, endTime: Long): List<BatteryRawModel>
 
-    @Query("DELETE FROM batteryRaw")
+    @Query("DELETE FROM BatteryRawModel")
     fun deleteAll()
 
     @Insert
-    fun insertAll(vararg batteryRaw: BatteryRaw)
+    fun insertAll(vararg batteryRawModel: BatteryRawModel)
 
     @Delete
-    fun delete(batteryRaw: BatteryRaw)
+    fun delete(batteryRawModel: BatteryRawModel)
 }

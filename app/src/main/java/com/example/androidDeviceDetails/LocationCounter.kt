@@ -1,11 +1,13 @@
 package com.example.androidDeviceDetails
 
+import com.example.androidDeviceDetails.models.CountModel
+import com.example.androidDeviceDetails.models.RoomDB
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class LocationCounter {
     private val geoHashLength: Int = 6
-    private var locationDatabase: LocationDatabase? = null
+    private var locationDatabase = RoomDB.getDatabase()
 
     fun countLocation2(): List<CountModel> {
 //        val locationHashList= emptyList<String>().toMutableList()

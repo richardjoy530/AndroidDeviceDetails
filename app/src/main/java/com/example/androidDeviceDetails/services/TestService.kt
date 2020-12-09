@@ -14,7 +14,7 @@ import android.os.Build
 import android.os.IBinder
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
-import com.example.androidDeviceDetails.models.AppUsageRaw
+import com.example.androidDeviceDetails.models.AppUsageModel
 import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.receivers.BatteryBroadcastReceiver
 import kotlinx.coroutines.Dispatchers
@@ -93,7 +93,7 @@ class AppUsage(context: Context) {
             val evt = UsageEvents.Event()
             events.getNextEvent(evt)
             if (evt.eventType == 1) {
-                val appUsageData = AppUsageRaw(
+                val appUsageData = AppUsageModel(
                     timeStamp = evt.timeStamp,
                     packageName = evt.packageName
                 )

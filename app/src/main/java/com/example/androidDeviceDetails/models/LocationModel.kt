@@ -1,6 +1,15 @@
-package com.example.androidDeviceDetails
+package com.example.androidDeviceDetails.models
 
 import androidx.room.*
+
+@Entity(tableName = "Location_Data")
+data class LocationModel (
+    @PrimaryKey(autoGenerate = true) val id: Int,
+    val latitude: Double?,
+    val longitude: Double?,
+    val geoHash: String?,
+    val time : String?
+)
 
 @Dao
 interface ILocationDao {
