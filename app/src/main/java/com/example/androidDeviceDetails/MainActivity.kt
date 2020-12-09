@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         init()
     }
 
-    fun init() {
+    private fun init() {
         toLocationActivityButton = findViewById(R.id.toLocationActivity)
         toLocationActivityButton.setOnClickListener(this)
         appInfoButton = findViewById(R.id.appInfo)
