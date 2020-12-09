@@ -6,7 +6,7 @@ import androidx.room.*
 data class Apps(
     @PrimaryKey(autoGenerate = true) val uid: Int,
     @ColumnInfo(name = "package_name") val packageName: String?,
-    )
+)
 
 @Dao
 interface AppsDao {

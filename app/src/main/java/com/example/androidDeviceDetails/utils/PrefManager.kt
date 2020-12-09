@@ -1,8 +1,9 @@
+@file:Suppress("DEPRECATION")
+
 package com.example.androidDeviceDetails.utils
 
 import android.content.Context
 import android.preference.PreferenceManager
-import java.lang.*
 
 object PrefManager {
     fun initialLaunch(context: Context): Boolean {

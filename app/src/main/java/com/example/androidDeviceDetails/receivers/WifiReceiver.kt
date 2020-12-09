@@ -10,7 +10,7 @@ import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.models.WifiRaw
 
 internal class WifiReceiver(private val context: Context) : BroadcastReceiver() {
-    private var signalDB=RoomDB.getDatabase()!!
+    private var signalDB = RoomDB.getDatabase()!!
 
     override fun onReceive(context: Context, intent: Intent) {
         val wifiRaw: WifiRaw

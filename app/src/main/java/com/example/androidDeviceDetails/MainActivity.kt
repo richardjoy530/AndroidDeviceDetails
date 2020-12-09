@@ -3,7 +3,6 @@ package com.example.androidDeviceDetails
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -11,8 +10,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import com.example.androidDeviceDetails.models.EventType
 import com.example.androidDeviceDetails.models.RoomDB
+import com.example.androidDeviceDetails.utils.EventType
 import com.example.androidDeviceDetails.utils.PrefManager
 import com.example.androidDeviceDetails.utils.Utils
 import kotlinx.coroutines.Dispatchers
@@ -34,13 +33,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         requestPermissions()
         if (PrefManager.initialLaunch(this))
             Utils.addInitialData(this)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            this.startForegroundService(Intent(this, ForegroundService::class.java))
-            this.startForegroundService(Intent(this, SignalService::class.java))
-        } else {
-            this.startService(Intent(this, ForegroundService::class.java))
-            this.startService(Intent(this, SignalService::class.java))
-        }
         init()
     }
 
@@ -76,10 +68,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private fun toggleService() {
         val mainController = MainController()
         mainController.toggleService(this)
-        mainController.getAppBatteryUsage(
-            System.currentTimeMillis() - 48 * 60 * 60 * 1000,
-            System.currentTimeMillis()
-        )
     }
 
     @SuppressLint("SetTextI18n")

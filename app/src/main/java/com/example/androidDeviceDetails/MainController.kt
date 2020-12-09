@@ -14,7 +14,7 @@ class MainController {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
                 context.startForegroundService(Intent(context, CollectorService::class.java))
             else context.startService(Intent(context, CollectorService::class.java))
-         else
+        else
             context.stopService(Intent(context, CollectorService::class.java))
     }
 

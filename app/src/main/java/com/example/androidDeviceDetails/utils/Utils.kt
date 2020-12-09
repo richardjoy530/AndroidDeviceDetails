@@ -7,11 +7,11 @@ import android.content.pm.PackageManager
 import android.util.Log
 import com.example.androidDeviceDetails.models.AppDetails
 import com.example.androidDeviceDetails.models.RoomDB
-import java.io.File
 import com.example.androidDeviceDetails.services.CollectorService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -58,6 +58,7 @@ object Utils {
 
     fun isMyServiceRunning(serviceClass: Class<CollectorService>, context: Context): Boolean {
         val manager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        @Suppress("DEPRECATION")
         for (service in manager.getRunningServices(Int.MAX_VALUE))
             if (serviceClass.name == service.service.className)
                 return true

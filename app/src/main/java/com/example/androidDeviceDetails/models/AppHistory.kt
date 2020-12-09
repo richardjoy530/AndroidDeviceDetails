@@ -25,10 +25,10 @@ interface AppHistoryDao {
     fun getById(userIds: Int): AppHistory
 
     @Query("SELECT * FROM AppHistory WHERE appId == (:appId) ORDER BY rowId DESC LIMIT 1")
-    fun getLastRecord(appId : Int): AppHistory
+    fun getLastRecord(appId: Int): AppHistory
 
     @Query("SELECT * FROM AppHistory WHERE appId == (:appId) AND timestamp == -1")
-    fun getInitialData(appId : Int): AppHistory
+    fun getInitialData(appId: Int): AppHistory
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg users: AppHistory)

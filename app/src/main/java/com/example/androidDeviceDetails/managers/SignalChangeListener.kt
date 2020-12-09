@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 
 class SignalChangeListener(private val context: Context) : PhoneStateListener() {
 
-    private var signalDB=RoomDB.getDatabase()
+    private var signalDB = RoomDB.getDatabase()
 
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onSignalStrengthsChanged(signalStrength: SignalStrength) {

@@ -7,7 +7,6 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
@@ -15,6 +14,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.example.androidDeviceDetails.models.CountModel
 import com.example.androidDeviceDetails.models.LocationModel
 import com.example.androidDeviceDetails.models.RoomDB
@@ -26,6 +26,7 @@ import kotlinx.coroutines.withContext
 import java.util.*
 
 private const val PERMISSION_REQUEST = 10
+
 class LocationActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var locationManager: LocationManager
@@ -91,7 +92,7 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener {
         Log.d("CodeAndroidLocation", "Longitude : " + location.longitude)
         Log.d("CodeAndroidLocation", "GeoHash : $geoHash")
         val locationObj = LocationModel(
-            0, location.latitude, location.longitude,geoHash,
+            0, location.latitude, location.longitude, geoHash,
             Calendar.getInstance().time.toString()
         )
         GlobalScope.launch {

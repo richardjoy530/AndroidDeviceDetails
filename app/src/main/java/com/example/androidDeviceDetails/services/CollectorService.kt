@@ -14,11 +14,11 @@ import android.os.IBinder
 import android.telephony.PhoneStateListener
 import android.telephony.TelephonyManager
 import androidx.core.app.NotificationCompat
-import com.example.androidDeviceDetails.managers.SignalChangeListener
-import com.example.androidDeviceDetails.receivers.WifiReceiver
 import com.example.androidDeviceDetails.managers.AppUsage
+import com.example.androidDeviceDetails.managers.SignalChangeListener
 import com.example.androidDeviceDetails.receivers.AppStateReceiver
 import com.example.androidDeviceDetails.receivers.BatteryReceiver
+import com.example.androidDeviceDetails.receivers.WifiReceiver
 import java.util.*
 
 const val CHANNEL_ID = "androidDeviceDetails"
