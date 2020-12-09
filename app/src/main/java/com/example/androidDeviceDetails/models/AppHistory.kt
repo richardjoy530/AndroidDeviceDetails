@@ -11,7 +11,8 @@ data class AppHistory(
     @ColumnInfo(name = "event_type") var eventType: Int?,
     @ColumnInfo(name = "version_name") var versionName: String?,
     @ColumnInfo(name = "version_code") var versionCode: Int?,
-    @ColumnInfo(name = "apk_size") var appSize: Long?
+    @ColumnInfo(name = "apk_size") var appSize: Long?,
+    @ColumnInfo(name = "apk_title") var appTitle: String?
 )
 
 
@@ -25,6 +26,9 @@ interface AppHistoryDao {
 
     @Query("SELECT * FROM AppHistory WHERE appId == (:appId) ORDER BY rowId DESC LIMIT 1")
     fun getLastRecord(appId : Int): AppHistory
+
+    @Query("SELECT * FROM AppHistory WHERE appId == (:appId) AND timestamp == -1")
+    fun getInitialData(appId : Int): AppHistory
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg users: AppHistory)

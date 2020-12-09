@@ -1,6 +1,5 @@
 package com.example.androidDeviceDetails.models
 
-import android.content.Context
 import androidx.room.*
 
 @Entity
@@ -8,7 +7,7 @@ data class Apps(
     @PrimaryKey(autoGenerate = true) val uid: Int,
     @ColumnInfo(name = "package_name") val packageName: String?,
 
-)
+    )
 
 
 @Dao
