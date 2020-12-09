@@ -1,4 +1,4 @@
-package com.example.androidDeviceDetails
+package com.example.androidDeviceDetails.receivers
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -6,11 +6,11 @@ import android.content.Intent
 import android.net.wifi.WifiManager
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import com.example.androidDeviceDetails.SignalDatabase
-import com.example.androidDeviceDetails.WifiRaw
+import com.example.androidDeviceDetails.models.RoomDB
+import com.example.androidDeviceDetails.models.WifiRaw
 
 internal class WifiReceiver(private val context: Context) : BroadcastReceiver() {
-    private var signalDB: SignalDatabase = SignalDatabase.getDatabase(context)!!
+    private var signalDB=RoomDB.getDatabase()!!
 
     override fun onReceive(context: Context, intent: Intent) {
         val wifiRaw: WifiRaw
