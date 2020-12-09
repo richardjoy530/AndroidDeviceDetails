@@ -1,3 +1,11 @@
 <resources>
     <string name="start">Start</string>
+    <string name="app_name">AndroidDeviceDetails</string>
+    <string name="latitude">Latitude</string>
+    <string name="longitude">longitude</string>
+    <string name="save_to_database">Save to Database</string>
+    <string name="display">Display</string>
+    <string name="get_location">Get Location</string>
+    <string name="count_location">Count Location</string>
+    <string name="location">Location</string>
 </resources>
