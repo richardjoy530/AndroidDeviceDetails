@@ -25,6 +25,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         {
             Toast.makeText(this, "Helloo", Toast.LENGTH_SHORT).show()
         }
+        val toggleService = findViewById<Button>(R.id.toggleSwitch)
+        toggleService.setOnClickListener {
+            val mainController=MainController()
+            mainController.toggleService(this)
+            mainController.getAppBatteryUsage(System.currentTimeMillis()-48*60*60*1000,System.currentTimeMillis())
+        }
     }
 
     override fun onClick(v: View?) {

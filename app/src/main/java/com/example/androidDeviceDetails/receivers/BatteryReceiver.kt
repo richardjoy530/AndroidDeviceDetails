@@ -5,23 +5,17 @@ import android.content.Context
 import android.content.Intent
 import android.os.BatteryManager
 import android.util.Log
-import androidx.room.Room
 import com.example.androidDeviceDetails.models.BatteryRawModel
 import com.example.androidDeviceDetails.models.RoomDB
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class BatteryBroadcastReceiver : BroadcastReceiver() {
-
+class BatteryReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         val batteryManager: BatteryManager =
             context.getSystemService(Context.BATTERY_SERVICE) as BatteryManager
-        val db = Room.databaseBuilder(
-            context,
-            RoomDB::class.java, "room_db"
-        ).build()
-
+        val db = RoomDB.getDatabase(context)
         val batteryRaw = BatteryRawModel(
             System.currentTimeMillis(),
             intent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0),
@@ -31,8 +25,8 @@ class BatteryBroadcastReceiver : BroadcastReceiver() {
             batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CHARGE_COUNTER),
             intent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0),
         )
-        GlobalScope.launch { db.batteryInfoDao().insertAll(batteryRaw) }
-        Log.d("TAG", "onReceive: Triggered ")
+        GlobalScope.launch { db?.batteryInfoDao()?.insertAll(batteryRaw) }
+        Log.d("BatteryReceiver", "onReceive(): Triggered ")
 
     }
 }

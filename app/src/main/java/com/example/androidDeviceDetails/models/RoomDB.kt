@@ -1,5 +1,6 @@
 package com.example.androidDeviceDetails.models
 
+import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -16,11 +17,11 @@ abstract class RoomDB : RoomDatabase() {
 
     companion object {
         private var INSTANCE: RoomDB? = null
-        fun getDatabase(): RoomDB? {
+        fun getDatabase(context: Context = DeviceDetailsApplication.instance): RoomDB? {
             if (INSTANCE == null) {
                 synchronized(RoomDB::class) {
                     INSTANCE = Room.databaseBuilder(
-                        DeviceDetailsApplication.instance.applicationContext,
+                        context.applicationContext,
                         RoomDB::class.java, "room_db"
                     ).build()
                 }

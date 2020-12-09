@@ -1,5 +1,6 @@
 package com.example.androidDeviceDetails.managers
 
+import android.util.Log
 import com.example.androidDeviceDetails.models.AppUsageModel
 import com.example.androidDeviceDetails.models.BatteryRawModel
 import com.example.androidDeviceDetails.models.RoomDB
@@ -57,6 +58,7 @@ class AppBatteryUsageManager {
                         previousData.batteryLevel!!.minus(mergedEventData.batteryLevel!!)
                 previousData = mergedEventData
             }
+            Log.d("TAG", "cookBatteryData: ")
         }
     }
 }

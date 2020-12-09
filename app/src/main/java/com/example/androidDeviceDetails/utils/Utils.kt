@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import com.example.androidDeviceDetails.services.TestService
 import com.example.androidDeviceDetails.models.AppDetails
 import java.io.File
+import com.example.androidDeviceDetails.services.CollectorService
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -50,7 +51,7 @@ object Utils {
         return "UNDEFINED"
     }
 
-    fun isMyServiceRunning(serviceClass: Class<TestService>, context: Context): Boolean {
+    fun isMyServiceRunning(serviceClass: Class<CollectorService>, context: Context): Boolean {
         val manager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         for (service in manager.getRunningServices(Int.MAX_VALUE))
             if (serviceClass.name == service.service.className)
