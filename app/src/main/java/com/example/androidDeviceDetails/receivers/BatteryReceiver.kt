@@ -1,5 +1,6 @@
 package com.example.androidDeviceDetails.receivers
 
+import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -12,6 +13,7 @@ import kotlinx.coroutines.launch
 
 class BatteryReceiver : BroadcastReceiver() {
 
+    @SuppressLint("UnsafeProtectedBroadcastReceiver")
     override fun onReceive(context: Context, intent: Intent) {
         val batteryManager: BatteryManager =
             context.getSystemService(Context.BATTERY_SERVICE) as BatteryManager

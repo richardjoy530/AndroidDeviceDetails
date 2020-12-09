@@ -2,7 +2,6 @@ package com.example.androidDeviceDetails.utils
 
 import android.content.Context
 import com.example.androidDeviceDetails.models.AppDetails
-import com.example.androidDeviceDetails.models.EventType
 import com.example.androidDeviceDetails.models.RoomDB
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope

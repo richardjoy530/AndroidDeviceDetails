@@ -1,16 +1,18 @@
-package com.example.androidDeviceDetails
+package com.example.androidDeviceDetails.managers
 
 import android.content.Context
 import android.os.Build
 import android.telephony.*
 import android.util.Log
 import androidx.annotation.RequiresApi
+import com.example.androidDeviceDetails.models.CellularRaw
+import com.example.androidDeviceDetails.models.RoomDB
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class SignalChangeListener(private val context: Context) : PhoneStateListener() {
 
-    private var signalDB: SignalDatabase = SignalDatabase.getDatabase(context)!!
+    private var signalDB=RoomDB.getDatabase()
 
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onSignalStrengthsChanged(signalStrength: SignalStrength) {
@@ -98,7 +100,7 @@ class SignalChangeListener(private val context: Context) : PhoneStateListener() 
             System.currentTimeMillis(), type, strength, level, asuLevel
         )
         GlobalScope.launch {
-            signalDB.cellularDao().insertAll(cellularRaw)
+            signalDB?.cellularDao()?.insertAll(cellularRaw)
         }
     }
 }

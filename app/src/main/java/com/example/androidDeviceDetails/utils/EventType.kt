@@ -1,4 +1,4 @@
-package com.example.androidDeviceDetails.models
+package com.example.androidDeviceDetails.utils
 
 enum class EventType{
     APP_INSTALLED,
