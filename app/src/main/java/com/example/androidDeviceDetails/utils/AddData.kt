@@ -50,9 +50,11 @@ object AddData {
                 currentAppHistory.versionName?.let {
                     currentAppHistory.versionCode?.let { it1 ->
                         currentAppHistory.appSize?.let { it2 ->
-                            AppDetails(
-                                it1, it, it2
-                            )
+                            currentAppHistory.appTitle?.let { it3 ->
+                                AppDetails(
+                                    it1, it, it2, it3
+                                )
+                            }
                         }
                     }
                 }
@@ -68,13 +70,23 @@ object AddData {
             val newVersionDetails = Utils.getVersion(context, packageName)
             val id = db.appsDao().getIdByName(packageName)
             val currentAppHistory = db.appHistoryDao().getLastRecord(id)
-            if (currentAppHistory.versionCode!! < newVersionDetails.versionCode)
+            if (currentAppHistory.versionCode!! < newVersionDetails.versionCode) {
                 DbHelper.writeToAppHistoryDb(
                     id,
                     EventType.APP_UPDATED.ordinal,
                     newVersionDetails,
                     db
                 )
+            } else {
+                if (currentAppHistory.appTitle != newVersionDetails.appTitle) {
+                    DbHelper.writeToAppHistoryDb(
+                        id,
+                        EventType.APP_UPDATED.ordinal,
+                        newVersionDetails,
+                        db
+                    )
+                }
+            }
         }
     }
 

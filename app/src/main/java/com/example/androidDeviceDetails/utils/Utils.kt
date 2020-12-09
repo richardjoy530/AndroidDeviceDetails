@@ -1,11 +1,18 @@
 package com.example.androidDeviceDetails.utils
 
+import android.annotation.SuppressLint
 import android.app.ActivityManager
 import android.content.Context
 import android.content.pm.PackageManager
+import android.util.Log
 import com.example.androidDeviceDetails.models.AppDetails
+import com.example.androidDeviceDetails.models.EventType
+import com.example.androidDeviceDetails.models.RoomDB
 import java.io.File
 import com.example.androidDeviceDetails.services.CollectorService
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -59,7 +66,7 @@ object Utils {
     }
 
     fun getVersion(context: Context, packageName: String): AppDetails {
-        val appDetails = AppDetails(-1, "Null", -1)
+        val appDetails = AppDetails(-1, "Null", -1, "Not Found")
         try {
             val pInfo2 = context.packageManager.getApplicationInfo(packageName, 0)
             val pInfo = context.packageManager.getPackageInfo(packageName, 0)
@@ -68,11 +75,36 @@ object Utils {
             appDetails.versionName = pInfo.versionName
             val file = File(pInfo2.sourceDir)
             appDetails.appSize = file.length() / 1024
+            appDetails.appTitle = context.packageManager.getApplicationLabel(pInfo2).toString()
+            Log.d("AppName", "getVersion: " + appDetails.appTitle)
         } catch (e: PackageManager.NameNotFoundException) {
             e.printStackTrace()
         }
 
         return appDetails
+    }
+
+    @SuppressLint("QueryPermissionsNeeded")
+    fun addInitialData(context: Context) {
+        val db = RoomDB.getDatabase()!!
+        val packages = context.packageManager.getInstalledApplications(PackageManager.GET_META_DATA)
+        GlobalScope.launch(Dispatchers.IO) {
+            for (i in packages) {
+                val details = getVersion(context, i.packageName)
+                DbHelper.writeToAppsDb(0, i.packageName, db)
+                val id = db.appsDao().getIdByName(i.packageName)
+                DbHelper.writeToAppHistoryDb(
+                    id,
+                    EventType.APP_INSTALLED.ordinal,
+                    details,
+                    db,
+                    -1
+                )
+
+            }
+
+        }
+
     }
 
 }
