@@ -16,15 +16,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import com.example.androidDeviceDetails.models.AppUsageModel
 import com.example.androidDeviceDetails.models.RoomDB
-import com.example.androidDeviceDetails.receivers.BatteryBroadcastReceiver
+import com.example.androidDeviceDetails.receivers.BatteryReceiver
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
 
-const val CHANNEL_ID = "my_channel_01"
+const val CHANNEL_ID = "androidDeviceDetails"
 
-class TestService : Service() {
+class CollectorService : Service() {
 
     private lateinit var mReceiver: BroadcastReceiver
     private lateinit var timer: Timer
@@ -35,16 +35,15 @@ class TestService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        mReceiver = BatteryBroadcastReceiver()
+        mReceiver = BatteryReceiver()
         if (Build.VERSION.SDK_INT >= 26) {
             val channel = NotificationChannel(
                 CHANNEL_ID,
-                "Channel human readable title",
+                "Collecting Data",
                 NotificationManager.IMPORTANCE_DEFAULT
             )
-            (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).createNotificationChannel(
-                channel
-            )
+            (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager)
+                .createNotificationChannel(channel)
             val notification: Notification = NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle("")
                 .setContentText("").build()
@@ -83,7 +82,6 @@ class AppUsage(context: Context) {
         context.getSystemService(AppCompatActivity.USAGE_STATS_SERVICE) as UsageStatsManager
 
     fun updateAppUsageDB(minutesAgo: Long) {
-//        Log.d("UpdateAppUsage Called", "updateAppUsageDB: AppUsage Triggered")
         val db = RoomDB.getDatabase()!!
         val events = usageStatsManager.queryEvents(
             System.currentTimeMillis() - minutesAgo * 60 * 1000,

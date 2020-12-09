@@ -1,6 +1,7 @@
 package com.example.androidDeviceDetails
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -13,6 +14,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(R.layout.activity_main)
         toLocationActivityButton = findViewById(R.id.toLocationActivity)
         toLocationActivityButton.setOnClickListener(this)
+        val toggleService = findViewById<Button>(R.id.toggleSwitch)
+        toggleService.setOnClickListener {
+            val mainController=MainController()
+            mainController.toggleService(this)
+            mainController.getAppBatteryUsage(System.currentTimeMillis()-48*60*60*1000,System.currentTimeMillis())
+        }
     }
 
     override fun onClick(v: View?) {
