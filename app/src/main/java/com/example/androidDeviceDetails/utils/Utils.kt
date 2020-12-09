@@ -3,7 +3,6 @@ package com.example.androidDeviceDetails.utils
 import android.app.ActivityManager
 import android.content.Context
 import android.content.pm.PackageManager
-import com.example.androidDeviceDetails.services.TestService
 import com.example.androidDeviceDetails.models.AppDetails
 import java.io.File
 import com.example.androidDeviceDetails.services.CollectorService

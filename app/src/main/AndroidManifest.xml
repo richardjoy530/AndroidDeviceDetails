@@ -14,6 +14,16 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.BROADCAST_PACKAGE_REMOVED"
         tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+
 
     <application
         android:name=".DeviceDetailsApplication"
@@ -25,6 +35,10 @@
         android:theme="@style/Theme.AndroidDeviceDetails">
         <service
             android:name=".ForegroundService"
+            android:enabled="true"
+            android:exported="true" />
+        <service
+            android:name=".SignalService"
             android:enabled="true"
             android:exported="true" />
         <activity android:name="com.example.androidDeviceDetails.MainActivity">
@@ -57,7 +71,13 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-
+        <receiver
+            android:name=".StartReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

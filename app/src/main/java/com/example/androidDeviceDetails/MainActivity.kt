@@ -1,5 +1,6 @@
 package com.example.androidDeviceDetails
 
+import android.Manifest
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -7,7 +8,11 @@ import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 
+const val permissionCode = 200
+val permissions: Array<String> =
+    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_PHONE_STATE)
 class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var toLocationActivityButton: Button
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,8 +22,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         toLocationActivityButton.setOnClickListener(this)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             this.startForegroundService(Intent(this, ForegroundService::class.java))
+            this.startForegroundService(Intent(this, SignalService::class.java))
         } else {
             this.startService(Intent(this, ForegroundService::class.java))
+            this.startService(Intent(this, SignalService::class.java))
         }
         val button = findViewById<Button>(R.id.appInfo)
         button?.setOnClickListener()
@@ -40,5 +47,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 startActivity(intent)
             }
         }
+    }
+
+    private fun requestPermissions() {
+        ActivityCompat.requestPermissions(
+            this,
+            permissions,
+            permissionCode
+        )
     }
 }
