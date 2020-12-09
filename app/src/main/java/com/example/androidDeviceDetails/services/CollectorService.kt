@@ -17,6 +17,7 @@ import androidx.core.app.NotificationCompat
 import com.example.androidDeviceDetails.managers.SignalChangeListener
 import com.example.androidDeviceDetails.receivers.WifiReceiver
 import com.example.androidDeviceDetails.managers.AppUsage
+import com.example.androidDeviceDetails.receivers.AppStateReceiver
 import com.example.androidDeviceDetails.receivers.BatteryReceiver
 import java.util.*
 
@@ -26,6 +27,7 @@ class CollectorService : Service() {
 
     private lateinit var timer: Timer
     private lateinit var mBatteryReceiver: BroadcastReceiver
+    private lateinit var mAppStateReceiver: BroadcastReceiver
     private lateinit var mTelephonyManager: TelephonyManager
     private lateinit var mPhoneStateListener: SignalChangeListener
     private lateinit var mWifiReceiver: WifiReceiver
@@ -40,6 +42,14 @@ class CollectorService : Service() {
         mPhoneStateListener = SignalChangeListener(this)
         mWifiReceiver = WifiReceiver(this)
         mTelephonyManager = getSystemService(TELEPHONY_SERVICE) as TelephonyManager
+
+        mAppStateReceiver = AppStateReceiver()
+        val filter = IntentFilter()
+        filter.addAction(Intent.ACTION_PACKAGE_ADDED)
+        filter.addAction(Intent.ACTION_PACKAGE_REPLACED)
+        filter.addAction(Intent.ACTION_PACKAGE_FULLY_REMOVED)
+        filter.addDataScheme("package")
+        this.registerReceiver(mAppStateReceiver, filter)
 
         if (Build.VERSION.SDK_INT >= 26) {
             val channel = NotificationChannel(
@@ -84,6 +94,7 @@ class CollectorService : Service() {
         super.onDestroy()
         this.unregisterReceiver(mBatteryReceiver)
         this.unregisterReceiver(mWifiReceiver)
+        this.unregisterReceiver(mAppStateReceiver)
         timer.cancel()
         stopSelf()
     }

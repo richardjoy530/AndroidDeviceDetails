@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.util.Log
 import com.example.androidDeviceDetails.models.AppDetails
-import com.example.androidDeviceDetails.models.EventType
 import com.example.androidDeviceDetails.models.RoomDB
 import java.io.File
 import com.example.androidDeviceDetails.services.CollectorService

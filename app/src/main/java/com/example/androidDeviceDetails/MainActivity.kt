@@ -11,8 +11,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import com.example.androidDeviceDetails.models.EventType
+import com.example.androidDeviceDetails.utils.EventType
 import com.example.androidDeviceDetails.models.RoomDB
+import com.example.androidDeviceDetails.services.CollectorService
 import com.example.androidDeviceDetails.utils.PrefManager
 import com.example.androidDeviceDetails.utils.Utils
 import kotlinx.coroutines.Dispatchers
@@ -33,13 +34,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             Utils.addInitialData(this)
         toLocationActivityButton = findViewById(R.id.toLocationActivity)
         toLocationActivityButton.setOnClickListener(this)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            this.startForegroundService(Intent(this, ForegroundService::class.java))
-            this.startForegroundService(Intent(this, SignalService::class.java))
-        } else {
-            this.startService(Intent(this, ForegroundService::class.java))
-            this.startService(Intent(this, SignalService::class.java))
-        }
         val button = findViewById<Button>(R.id.appInfo)
         var text = findViewById<TextView>(R.id.textView)
         button?.setOnClickListener()
@@ -68,7 +62,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         toggleService.setOnClickListener {
             val mainController=MainController()
             mainController.toggleService(this)
-            mainController.getAppBatteryUsage(System.currentTimeMillis()-48*60*60*1000,System.currentTimeMillis())
         }
     }
 
