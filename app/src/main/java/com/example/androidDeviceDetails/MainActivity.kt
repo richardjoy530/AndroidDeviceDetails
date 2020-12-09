@@ -22,17 +22,18 @@ import kotlinx.coroutines.launch
 const val permissionCode = 200
 val permissions: Array<String> =
     arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_PHONE_STATE)
+
 class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var toLocationActivityButton: Button
-    @SuppressLint("SetTextI18n")
+    private lateinit var appInfoButton: Button
+    private lateinit var toggleServiceButton: Button
+    private lateinit var text: TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         requestPermissions()
-        if(PrefManager.initialLaunch(this))
+        if (PrefManager.initialLaunch(this))
             Utils.addInitialData(this)
-        toLocationActivityButton = findViewById(R.id.toLocationActivity)
-        toLocationActivityButton.setOnClickListener(this)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             this.startForegroundService(Intent(this, ForegroundService::class.java))
             this.startForegroundService(Intent(this, SignalService::class.java))
@@ -40,36 +41,17 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             this.startService(Intent(this, ForegroundService::class.java))
             this.startService(Intent(this, SignalService::class.java))
         }
-        val button = findViewById<Button>(R.id.appInfo)
-        var text = findViewById<TextView>(R.id.textView)
-        button?.setOnClickListener()
-        {
-            val db = RoomDB.getDatabase()!!
-            Toast.makeText(this, "Helloo", Toast.LENGTH_SHORT).show()
-            GlobalScope.launch(Dispatchers.IO) {
-                var apps = db.appsDao().getAll()
-                for(app in apps){
-                    val initalAppState = db.appHistoryDao().getInitialData(app.uid)
-                    val latestAppState = db.appHistoryDao().getLastRecord(app.uid)
-                    if(latestAppState.versionCode != null) {
-                        if (initalAppState.versionCode!! < latestAppState.versionCode!!) {
-                            text.text = latestAppState.appTitle + "\n"
-                        } else if (initalAppState.appTitle!! < latestAppState.appTitle!!) {
-                            text.text = latestAppState.appTitle + "\n"
-                        } else if (latestAppState.eventType == EventType.APP_UNINSTALLED.ordinal) {
-                            text.text = latestAppState.appTitle + "\n"
-                        }
-                    }
+        init()
+    }
 
-                }
-            }
-        }
-        val toggleService = findViewById<Button>(R.id.toggleSwitch)
-        toggleService.setOnClickListener {
-            val mainController=MainController()
-            mainController.toggleService(this)
-            mainController.getAppBatteryUsage(System.currentTimeMillis()-48*60*60*1000,System.currentTimeMillis())
-        }
+    fun init() {
+        toLocationActivityButton = findViewById(R.id.toLocationActivity)
+        toLocationActivityButton.setOnClickListener(this)
+        appInfoButton = findViewById(R.id.appInfo)
+        text = findViewById(R.id.textView)
+        appInfoButton.setOnClickListener(this)
+        toggleServiceButton = findViewById(R.id.toggleSwitch)
+        toggleServiceButton.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -78,6 +60,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 val intent = Intent(this, LocationActivity::class.java).apply {}
                 startActivity(intent)
             }
+            R.id.appInfo -> appInfoFunction()
+            R.id.toggleSwitch -> toggleService()
         }
     }
 
@@ -88,4 +72,38 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             permissionCode
         )
     }
+
+    private fun toggleService() {
+        val mainController = MainController()
+        mainController.toggleService(this)
+        mainController.getAppBatteryUsage(
+            System.currentTimeMillis() - 48 * 60 * 60 * 1000,
+            System.currentTimeMillis()
+        )
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun appInfoFunction() {
+        val db = RoomDB.getDatabase()!!
+        Toast.makeText(this, "Helloo", Toast.LENGTH_SHORT).show()
+        GlobalScope.launch(Dispatchers.IO) {
+            val apps = db.appsDao().getAll()
+            for (app in apps) {
+                val initialAppState = db.appHistoryDao().getInitialData(app.uid)
+                val latestAppState = db.appHistoryDao().getLastRecord(app.uid)
+                if (latestAppState.versionCode != null) {
+                    when {
+                        initialAppState.versionCode!! < latestAppState.versionCode!! ->
+                            text.text = latestAppState.appTitle + "\n"
+                        initialAppState.appTitle!! < latestAppState.appTitle!! ->
+                            text.text = latestAppState.appTitle + "\n"
+                        latestAppState.eventType == EventType.APP_UNINSTALLED.ordinal ->
+                            text.text = latestAppState.appTitle + "\n"
+                    }
+                }
+
+            }
+        }
+    }
+
 }
