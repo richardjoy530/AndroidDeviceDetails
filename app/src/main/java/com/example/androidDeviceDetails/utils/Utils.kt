@@ -2,7 +2,10 @@ package com.example.androidDeviceDetails.utils
 
 import android.app.ActivityManager
 import android.content.Context
+import android.content.pm.PackageManager
 import com.example.androidDeviceDetails.services.TestService
+import com.example.androidDeviceDetails.models.AppDetails
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -54,4 +57,22 @@ object Utils {
                 return true
         return false
     }
+
+    fun getVersion(context: Context, packageName: String): AppDetails {
+        val appDetails = AppDetails(-1, "Null", -1)
+        try {
+            val pInfo2 = context.packageManager.getApplicationInfo(packageName, 0)
+            val pInfo = context.packageManager.getPackageInfo(packageName, 0)
+            @Suppress("DEPRECATION")
+            appDetails.versionCode = pInfo?.versionCode!!
+            appDetails.versionName = pInfo.versionName
+            val file = File(pInfo2.sourceDir)
+            appDetails.appSize = file.length() / 1024
+        } catch (e: PackageManager.NameNotFoundException) {
+            e.printStackTrace()
+        }
+
+        return appDetails
+    }
+
 }
