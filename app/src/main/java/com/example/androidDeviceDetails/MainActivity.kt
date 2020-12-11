@@ -31,8 +31,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         requestPermissions()
-        if (PrefManager.initialLaunch(this))
+        if (!PrefManager.createInstance(this).getBoolean(PrefManager.INITIAL_LAUNCH, false)
+        ) {
             Utils.addInitialData(this)
+            PrefManager.createInstance(this)
+                .putBoolean(PrefManager.INITIAL_LAUNCH, true)
+        }
         init()
     }
 
@@ -52,7 +56,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 val intent = Intent(this, LocationActivity::class.java).apply {}
                 startActivity(intent)
             }
-            R.id.appInfo -> appInfoFunction()
+            R.id.appInfo ->{
+                val intent = Intent(this, AppInfoActivity::class.java).apply {}
+                startActivity(intent)
+            }
             R.id.toggleSwitch -> toggleService()
         }
     }
@@ -68,30 +75,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private fun toggleService() {
         val mainController = MainController()
         mainController.toggleService(this)
-    }
-
-    @SuppressLint("SetTextI18n")
-    private fun appInfoFunction() {
-        val db = RoomDB.getDatabase()!!
-        Toast.makeText(this, "Helloo", Toast.LENGTH_SHORT).show()
-        GlobalScope.launch(Dispatchers.IO) {
-            val apps = db.appsDao().getAll()
-            for (app in apps) {
-                val initialAppState = db.appHistoryDao().getInitialData(app.uid)
-                val latestAppState = db.appHistoryDao().getLastRecord(app.uid)
-                if (latestAppState.versionCode != null) {
-                    when {
-                        initialAppState.versionCode!! < latestAppState.versionCode!! ->
-                            text.text = latestAppState.appTitle + "\n"
-                        initialAppState.appTitle!! < latestAppState.appTitle!! ->
-                            text.text = latestAppState.appTitle + "\n"
-                        latestAppState.eventType == EventType.APP_UNINSTALLED.ordinal ->
-                            text.text = latestAppState.appTitle + "\n"
-                    }
-                }
-
-            }
-        }
     }
 
 }
