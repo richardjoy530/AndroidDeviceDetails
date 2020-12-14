@@ -13,4 +13,9 @@
     <string name="icon">Icon</string>
     <string name="battery_usage">Battery Usage</string>
     <string name="info">Info</string>
+    <string name="till_today">Till today</string>
+    <string name="no_usage_recorded">No usage recorded</string>
+    <string name="right">Right</string>
+    <string name="left">Left</string>
+    <string name="date">Mon, 14 Dec</string>
 </resources>
