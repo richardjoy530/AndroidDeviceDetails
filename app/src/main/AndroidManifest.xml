@@ -29,6 +29,11 @@
         android:theme="@style/Theme.AndroidDeviceDetails">
         <activity android:name=".AppInfoActivity"></activity>
         <activity android:name=".MainActivity">
+        <activity
+            android:name=".BatteryActivity"
+            android:label="Battery Usage"
+            android:parentActivityName=".MainActivity" />
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
