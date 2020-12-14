@@ -76,7 +76,7 @@ class AppInfoActivity : AppCompatActivity() {
                                         appList
                                     )
                                 val date = "$dayOfMonth / ${month+1} / $year"
-                                binding.dateView.text = date
+                                binding.startdateView.text = date
                             }
                         }
 
