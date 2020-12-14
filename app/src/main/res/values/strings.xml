@@ -12,4 +12,5 @@
     <string name="battery_info">Battery Info</string>
     <string name="icon">Icon</string>
     <string name="battery_usage">Battery Usage</string>
+    <string name="info">Info</string>
 </resources>
