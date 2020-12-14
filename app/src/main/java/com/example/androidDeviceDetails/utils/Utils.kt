@@ -81,13 +81,17 @@ object Utils {
         return false
     }
 
-    fun getVersion(context: Context, packageName: String): AppDetails {
+    fun getAppDetails(context: Context, packageName: String): AppDetails {
         val appDetails = AppDetails(-1, "Null", -1, "Not Found")
         try {
             val pInfo2 = context.packageManager.getApplicationInfo(packageName, 0)
             val pInfo = context.packageManager.getPackageInfo(packageName, 0)
-            @Suppress("DEPRECATION")
-            appDetails.versionCode = pInfo?.versionCode!!
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+                appDetails.versionCode = pInfo.longVersionCode
+            } else {
+                @Suppress("DEPRECATION")
+                appDetails.versionCode = pInfo.versionCode.toLong()
+            }
             appDetails.versionName = pInfo.versionName
             val file = File(pInfo2.sourceDir)
             appDetails.appSize = file.length() / 1024
@@ -96,31 +100,26 @@ object Utils {
         } catch (e: PackageManager.NameNotFoundException) {
             e.printStackTrace()
         }
-
         return appDetails
     }
 
     @SuppressLint("QueryPermissionsNeeded")
     fun addInitialData(context: Context) {
-        val db = RoomDB.getDatabase()!!
+        val db = RoomDB.getDatabase(context)!!
         val packages = context.packageManager.getInstalledApplications(PackageManager.GET_META_DATA)
         GlobalScope.launch(Dispatchers.IO) {
             for (i in packages) {
-                val details = getVersion(context, i.packageName)
-                DbHelper.writeToAppsDb(0, i.packageName, db)
+                val details = getAppDetails(context, i.packageName)
+                DbHelper.writeToAppsDb(0, i.packageName, details, db)
                 val id = db.appsDao().getIdByName(i.packageName)
                 DbHelper.writeToAppHistoryDb(
                     id,
-                    EventType.APP_INSTALLED.ordinal,
+                    EventType.APP_ENROLL.ordinal,
                     details,
-                    db,
-                    -1
+                    db
                 )
-
             }
-
         }
-
     }
 
 }
