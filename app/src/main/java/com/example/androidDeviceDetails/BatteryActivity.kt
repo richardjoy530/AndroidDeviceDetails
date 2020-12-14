@@ -28,7 +28,7 @@ class BatteryActivity : AppCompatActivity(), View.OnClickListener {
         batteryBinding.leftArrow.setOnClickListener(this)
         batteryBinding.rightArrow.setOnClickListener(this)
         batteryBinding.description.setOnClickListener(this)
-        setCalender(0, true)
+        setCalender(0, reset = true, tillToday = true)
         batteryBinding.batteryListView.setOnItemClickListener { parent, _, position, _ ->
             val adapter = parent.adapter as BatteryListAdapter
             val item = adapter.getItem(position)
@@ -49,17 +49,18 @@ class BatteryActivity : AppCompatActivity(), View.OnClickListener {
                 if (v.text == "Till today") {
                     v.text = "Day wise"
                     batteryBinding.batteryDatePicker.isVisible = true
+                    setCalender(0, true)
                 } else {
                     v.text = "Till today"
                     batteryBinding.batteryDatePicker.isVisible = false
+                    setCalender(0, reset = true, tillToday = true)
                 }
-                setCalender(0, true)
             }
         }
     }
 
     @SuppressLint("SetTextI18n")
-    private fun setCalender(offset: Int = 0, reset: Boolean = false) {
+    private fun setCalender(offset: Int = 0, reset: Boolean = false, tillToday: Boolean = false) {
         if (reset) calendar = Calendar.getInstance()
         calendar[Calendar.HOUR_OF_DAY] = 0
         calendar[Calendar.MINUTE] = 0
@@ -73,7 +74,7 @@ class BatteryActivity : AppCompatActivity(), View.OnClickListener {
             this,
             batteryBinding.batteryListView,
             batteryBinding.total,
-            calendar.timeInMillis,
+            if (tillToday) 0 else calendar.timeInMillis,
             calendar.timeInMillis + 24 * 60 * 60 * 1000
         )
     }
