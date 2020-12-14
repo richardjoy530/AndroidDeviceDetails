@@ -25,6 +25,37 @@ object Utils {
         return formatter.format(Date(timestamp))
     }
 
+    fun getWeek(day: Int): String {
+        when (day) {
+            Calendar.SUNDAY -> return "Sun"
+            Calendar.MONDAY -> return "Mon"
+            Calendar.TUESDAY -> return "Tue"
+            Calendar.WEDNESDAY -> return "Wed"
+            Calendar.THURSDAY -> return "Thu"
+            Calendar.FRIDAY -> return "Fri"
+            Calendar.SATURDAY -> return "Sat"
+        }
+        return "Day"
+    }
+
+    fun getMonth(month: Int): String {
+        when (month) {
+            Calendar.JANUARY -> return "Jan"
+            Calendar.FEBRUARY -> return "Feb"
+            Calendar.MARCH -> return "Mar"
+            Calendar.APRIL -> return "Apr"
+            Calendar.MAY -> return "May"
+            Calendar.JUNE -> return "Jun"
+            Calendar.JULY -> return "Jul"
+            Calendar.AUGUST -> return "Aug"
+            Calendar.SEPTEMBER -> return "Sep"
+            Calendar.OCTOBER -> return "Oct"
+            Calendar.NOVEMBER -> return "Nov"
+            Calendar.DECEMBER -> return "Dec"
+        }
+        return "Nil"
+    }
+
     fun getEventType(eventType: Int): String {
         when (eventType) {
             1 -> return "MOVE_TO_FOREGROUND"

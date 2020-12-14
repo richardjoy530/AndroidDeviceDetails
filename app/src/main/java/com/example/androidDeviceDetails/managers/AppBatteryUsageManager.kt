@@ -44,11 +44,14 @@ class AppBatteryUsageManager {
         context: Context,
         batteryListView: ListView,
         totalTextView: TextView,
+        beginTime: Long,
+        endTime: Long = System.currentTimeMillis()
     ) {
         val appEntryList = arrayListOf<AppEntry>()
         GlobalScope.launch {
-            val appEventList = db.appUsageInfoDao().getAll()
-            val batteryList = db.batteryInfoDao().getAll()
+            val appEventList = db.appUsageInfoDao().getAllBetween(beginTime, endTime)
+            val batteryList = db.batteryInfoDao().getAllBetween(beginTime, endTime)
+
             if (batteryList.isNotEmpty() && appEventList.isNotEmpty()) {
                 val mergedList = getCombinedList(appEventList, batteryList)
                 var previousData = mergedList.first()
@@ -71,7 +74,13 @@ class AppBatteryUsageManager {
                     batteryListView.adapter =
                         BatteryListAdapter(context, R.layout.battery_tile, appEntryList)
                 }
-                totalTextView.post { totalTextView.text = "Total drop is $totalDrop %" }
+                totalTextView.post { totalTextView.text = "Dropped $totalDrop %" }
+            } else {
+                batteryListView.post {
+                    batteryListView.adapter =
+                        BatteryListAdapter(context, R.layout.battery_tile, arrayListOf())
+                }
+                totalTextView.post { totalTextView.text = "No usage recorded" }
             }
         }
     }
