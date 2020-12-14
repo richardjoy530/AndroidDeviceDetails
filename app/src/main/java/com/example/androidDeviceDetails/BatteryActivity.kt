@@ -76,18 +76,22 @@ class BatteryActivity : AppCompatActivity(), View.OnClickListener {
             } else {
                 it.text = "Till today"
                 timePickerLayout.isVisible = false
-                calendar = Calendar.getInstance()
-                calendar[Calendar.HOUR_OF_DAY] = 0
-                calendar[Calendar.MINUTE] = 0
-                calendar[Calendar.SECOND] = 0
-                AppBatteryUsageManager().cookBatteryData(
-                    this,
-                    batteryListView,
-                    totalTextView,
-                    calendar.timeInMillis,
-                    calendar.timeInMillis + 24 * 60 * 60 * 1000
-                )
             }
+            calendar = Calendar.getInstance()
+            calendar[Calendar.HOUR_OF_DAY] = 0
+            calendar[Calendar.MINUTE] = 0
+            calendar[Calendar.SECOND] = 0
+            todayTextView.text =
+                "${Utils.getWeek(calendar.get(Calendar.DAY_OF_WEEK))}, ${calendar.get(Calendar.DAY_OF_MONTH)} ${
+                    Utils.getMonth(calendar.get(Calendar.MONTH))
+                }"
+            AppBatteryUsageManager().cookBatteryData(
+                this,
+                batteryListView,
+                totalTextView,
+                calendar.timeInMillis,
+                calendar.timeInMillis + 24 * 60 * 60 * 1000
+            )
         }
     }
 

@@ -74,7 +74,7 @@ class AppBatteryUsageManager {
                     batteryListView.adapter =
                         BatteryListAdapter(context, R.layout.battery_tile, appEntryList)
                 }
-                totalTextView.post { totalTextView.text = "Dropped $totalDrop %" }
+                totalTextView.post { totalTextView.text = "Total drop is $totalDrop %" }
             } else {
                 batteryListView.post {
                     batteryListView.adapter =
