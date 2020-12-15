@@ -2,42 +2,18 @@ package com.example.androidDeviceDetails.managers
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import android.widget.ListView
 import android.widget.TextView
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.adapters.BatteryListAdapter
-import com.example.androidDeviceDetails.models.AppUsageModel
-import com.example.androidDeviceDetails.models.BatteryRawModel
 import com.example.androidDeviceDetails.models.RoomDB
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlin.system.measureTimeMillis
 
 class AppBatteryUsageManager {
     private var db: RoomDB = RoomDB.getDatabase()!!
-
-    private fun getCombinedList(
-        appEventList: List<AppUsageModel>,
-        batteryListModel: List<BatteryRawModel>
-    ): MutableList<MergedEventData> {
-
-        val mergedList = mutableListOf<MergedEventData>()
-        val batteryIterator = batteryListModel.iterator()
-        var preBattery = batteryListModel.first()
-
-        for (it in appEventList) {
-            while ((it.timeStamp > preBattery.timeStamp || preBattery.health == 0) && batteryIterator.hasNext())
-                preBattery = batteryIterator.next()
-            mergedList.add(
-                MergedEventData(
-                    it.timeStamp,
-                    preBattery.level,
-                    preBattery.plugged,
-                    it.packageName,
-                )
-            )
-        }
-        return mergedList
-    }
 
     @SuppressLint("SetTextI18n")
     fun cookBatteryData(
@@ -53,23 +29,31 @@ class AppBatteryUsageManager {
             val batteryList = db.batteryInfoDao().getAllBetween(beginTime, endTime)
 
             if (batteryList.isNotEmpty() && appEventList.isNotEmpty()) {
-                val mergedList = getCombinedList(appEventList, batteryList)
-                var previousData = mergedList.first()
-                for (mergedEventData in mergedList) {
-                    if (mergedEventData.plugged == 0 && previousData.batteryLevel!! > mergedEventData.batteryLevel!!)
-                        if (appEntryList.none { it.packageId == previousData.packageName })
-                            appEntryList.add(
-                                AppEntry(
-                                    previousData.packageName,
-                                    previousData.batteryLevel!!.minus(mergedEventData.batteryLevel!!)
-                                )
-                            )
-                        else appEntryList.first { it.packageId == previousData.packageName }.drop +=
-                            previousData.batteryLevel!!.minus(mergedEventData.batteryLevel!!)
-                    previousData = mergedEventData
-                }
                 var totalDrop = 0
-                for (i in appEntryList) totalDrop += i.drop
+                val a = measureTimeMillis {
+                    val batteryIterator = batteryList.iterator()
+                    var batteryInfo = batteryList.first()
+                    var previousBattery = batteryList.first()
+                    var previousApp = appEventList.first()
+                    for (appEvent in appEventList) {
+                        while ((appEvent.timeStamp > batteryInfo.timeStamp || batteryInfo.health == 0) && batteryIterator.hasNext())
+                            batteryInfo = batteryIterator.next()
+                        if (batteryInfo.plugged == 0 && previousBattery.level!! > batteryInfo.level!!)
+                            if (appEntryList.none { it.packageId == previousApp.packageName })
+                                appEntryList.add(
+                                    AppEntry(
+                                        previousApp.packageName,
+                                        previousBattery.level!!.minus(batteryInfo.level!!)
+                                    )
+                                )
+                            else appEntryList.first { it.packageId == previousApp.packageName }.drop +=
+                                previousBattery.level!!.minus(batteryInfo.level!!)
+                        previousApp = appEvent
+                        previousBattery = batteryInfo
+                    }
+                    for (i in appEntryList) totalDrop += i.drop
+                }
+                Log.d("Speed", "cookBatteryData: $a")
                 batteryListView.post {
                     batteryListView.adapter =
                         BatteryListAdapter(context, R.layout.battery_tile, appEntryList)
@@ -85,12 +69,5 @@ class AppBatteryUsageManager {
         }
     }
 }
-
-data class MergedEventData(
-    var timestamp: Long,
-    var batteryLevel: Int?,
-    var plugged: Int?,
-    var packageName: String,
-)
 
 data class AppEntry(var packageId: String, var drop: Int = 0)

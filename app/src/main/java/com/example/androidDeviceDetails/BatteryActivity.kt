@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -29,7 +30,8 @@ class BatteryActivity : AppCompatActivity(), View.OnClickListener {
         batteryBinding.rightArrow.setOnClickListener(this)
         batteryBinding.description.setOnClickListener(this)
         setCalender(0, reset = true, tillToday = true)
-        batteryBinding.batteryListView.setOnItemClickListener { parent, _, position, _ ->
+        batteryBinding.batteryListView.setOnItemClickListener { parent, v, position, _ ->
+            Log.d("TAG", "${v.id}")
             val adapter = parent.adapter as BatteryListAdapter
             val item = adapter.getItem(position)
             val infoIntent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
