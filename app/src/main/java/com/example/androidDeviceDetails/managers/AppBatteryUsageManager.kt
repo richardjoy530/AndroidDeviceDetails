@@ -2,15 +2,12 @@ package com.example.androidDeviceDetails.managers
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
-import android.widget.ListView
-import android.widget.TextView
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.adapters.BatteryListAdapter
+import com.example.androidDeviceDetails.databinding.ActivityBatteryBinding
 import com.example.androidDeviceDetails.models.RoomDB
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlin.system.measureTimeMillis
 
 class AppBatteryUsageManager {
     private var db: RoomDB = RoomDB.getDatabase()!!
@@ -18,8 +15,7 @@ class AppBatteryUsageManager {
     @SuppressLint("SetTextI18n")
     fun cookBatteryData(
         context: Context,
-        batteryListView: ListView,
-        totalTextView: TextView,
+        batteryBinding: ActivityBatteryBinding,
         beginTime: Long,
         endTime: Long = System.currentTimeMillis()
     ) {
@@ -27,10 +23,7 @@ class AppBatteryUsageManager {
         GlobalScope.launch {
             val appEventList = db.appUsageInfoDao().getAllBetween(beginTime, endTime)
             val batteryList = db.batteryInfoDao().getAllBetween(beginTime, endTime)
-
             if (batteryList.isNotEmpty() && appEventList.isNotEmpty()) {
-                var totalDrop = 0
-                val a = measureTimeMillis {
                     val batteryIterator = batteryList.iterator()
                     var batteryInfo = batteryList.first()
                     var previousBattery = batteryList.first()
@@ -51,20 +44,21 @@ class AppBatteryUsageManager {
                         previousApp = appEvent
                         previousBattery = batteryInfo
                     }
-                    for (i in appEntryList) totalDrop += i.drop
-                }
-                Log.d("Speed", "cookBatteryData: $a")
-                batteryListView.post {
-                    batteryListView.adapter =
+                var totalDrop = 0
+                for (i in appEntryList) totalDrop += i.drop
+                batteryBinding.batteryListView.post {
+                    batteryBinding.batteryListView.adapter =
                         BatteryListAdapter(context, R.layout.battery_tile, appEntryList)
                 }
-                totalTextView.post { totalTextView.text = "Total drop is $totalDrop %" }
+                batteryBinding.total.post {
+                    batteryBinding.total.text = "Total drop is $totalDrop %"
+                }
             } else {
-                batteryListView.post {
-                    batteryListView.adapter =
+                batteryBinding.batteryListView.post {
+                    batteryBinding.batteryListView.adapter =
                         BatteryListAdapter(context, R.layout.battery_tile, arrayListOf())
                 }
-                totalTextView.post { totalTextView.text = "No usage recorded" }
+                batteryBinding.total.post { batteryBinding.total.text = "No usage recorded" }
             }
         }
     }

@@ -5,8 +5,8 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.View
+import android.widget.AdapterView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -17,7 +17,7 @@ import com.example.androidDeviceDetails.managers.AppBatteryUsageManager
 import com.example.androidDeviceDetails.utils.Utils
 import java.util.*
 
-
+@SuppressLint("SetTextI18n")
 class BatteryActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var calendar: Calendar
     private lateinit var batteryBinding: ActivityBatteryBinding
@@ -29,39 +29,31 @@ class BatteryActivity : AppCompatActivity(), View.OnClickListener {
         batteryBinding.leftArrow.setOnClickListener(this)
         batteryBinding.rightArrow.setOnClickListener(this)
         batteryBinding.description.setOnClickListener(this)
-        setCalender(0, reset = true, tillToday = true)
-        batteryBinding.batteryListView.setOnItemClickListener { parent, v, position, _ ->
-            Log.d("TAG", "${v.id}")
-            val adapter = parent.adapter as BatteryListAdapter
-            val item = adapter.getItem(position)
-            val infoIntent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-            infoIntent.addCategory(Intent.CATEGORY_DEFAULT)
-            infoIntent.data = Uri.parse("package:${item?.packageId}")
-            startActivity(infoIntent)
+        setCalender(offset = 0, reset = true, tillToday = true)
+        batteryBinding.batteryListView.setOnItemClickListener { parent, _, position, _ ->
+            redirectToAppInfo(parent, position)
         }
     }
 
-    @SuppressLint("SetTextI18n")
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.leftArrow -> setCalender(-1)
-            R.id.rightArrow -> setCalender(1)
+            R.id.leftArrow -> setCalender(offset = -1)
+            R.id.rightArrow -> setCalender(offset = 1)
             R.id.description -> {
                 v as TextView
                 if (v.text == "Till today") {
                     v.text = "Day wise"
                     batteryBinding.batteryDatePicker.isVisible = true
-                    setCalender(0, true)
+                    setCalender(offset = 0, reset = true)
                 } else {
                     v.text = "Till today"
                     batteryBinding.batteryDatePicker.isVisible = false
-                    setCalender(0, reset = true, tillToday = true)
+                    setCalender(offset = 0, reset = true, tillToday = true)
                 }
             }
         }
     }
 
-    @SuppressLint("SetTextI18n")
     private fun setCalender(offset: Int = 0, reset: Boolean = false, tillToday: Boolean = false) {
         if (reset) calendar = Calendar.getInstance()
         calendar[Calendar.HOUR_OF_DAY] = 0
@@ -73,12 +65,20 @@ class BatteryActivity : AppCompatActivity(), View.OnClickListener {
                 Utils.getMonth(calendar.get(Calendar.MONTH))
             }"
         AppBatteryUsageManager().cookBatteryData(
-            this,
-            batteryBinding.batteryListView,
-            batteryBinding.total,
+            context = this,
+            batteryBinding,
             if (tillToday) 0 else calendar.timeInMillis,
-            calendar.timeInMillis + 24 * 60 * 60 * 1000
+            endTime = calendar.timeInMillis + 24 * 60 * 60 * 1000
         )
+    }
+
+    private fun redirectToAppInfo(parent: AdapterView<*>, position: Int) {
+        val adapter = parent.adapter as BatteryListAdapter
+        val item = adapter.getItem(position)
+        val infoIntent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+        infoIntent.addCategory(Intent.CATEGORY_DEFAULT)
+        infoIntent.data = Uri.parse("package:${item?.packageId}")
+        startActivity(infoIntent)
     }
 }
 
