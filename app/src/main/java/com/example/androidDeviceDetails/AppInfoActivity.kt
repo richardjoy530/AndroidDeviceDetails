@@ -10,6 +10,7 @@ import android.text.format.DateFormat
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.adapters.AppInfoListAdapter
 import com.example.androidDeviceDetails.databinding.ActivityAppInfoBinding
@@ -42,6 +43,7 @@ class AppInfoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_app_info)
+        binding.pieChartConstraintLayout.isVisible=false
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -186,15 +188,14 @@ class AppInfoActivity : AppCompatActivity() {
             } catch (e: Exception) {
             }
 
+
             binding.enrollProgressbar.post {
                 binding.enrollProgressbar.setOnClickListener {
-                    Log.d("TAG", "setAppIfoData: $eapps[true]")
-                    Log.d("TAG", "setAppIfoData: $eapps[true]")
-                    Log.d("TAG", "setAppIfoData: $eapps[true]")
-                    Log.d("TAG", "setAppIfoData: $eapps[true]")
+                    Log.d("TAG", "setAppIfoData: ${eapps[true]}")
 
                 }
             }
+
             Log.d("TAG", "enrolled: $enrolled")
             Log.d("TAG", "installed: $installed")
             Log.d("TAG", "updated: $updated")
@@ -209,6 +210,11 @@ class AppInfoActivity : AppCompatActivity() {
             binding.installedProgressBar.progress = (updated + installed).toInt()
             binding.enrollProgressbar.progress = (updated + installed + enrolled.toInt()).toInt()
             binding.uninstalledProgressbar.progress = (updated + installed + enrolled + uninstalled).toInt()
+            binding.pieChartConstraintLayout.post {
+                binding.pieChartConstraintLayout.isVisible=true
+
+            }
+
 
         }
     }
