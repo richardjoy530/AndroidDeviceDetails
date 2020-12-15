@@ -6,7 +6,9 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.util.Log
+import androidx.core.content.ContextCompat
 import com.example.androidDeviceDetails.DeviceDetailsApplication
+import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.models.AppDetails
 import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.services.CollectorService
@@ -99,7 +101,14 @@ object Utils {
     }
 
     fun getApplicationIcon(packageName: String): Drawable {
-        return DeviceDetailsApplication.instance.packageManager.getApplicationIcon(packageName)
+        return try {
+            DeviceDetailsApplication.instance.packageManager.getApplicationIcon(packageName)
+        } catch (e: Exception) {
+            ContextCompat.getDrawable(
+                DeviceDetailsApplication.instance,
+                R.drawable.ic_android_black_24dp
+            )!!
+        }
     }
 
 
