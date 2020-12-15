@@ -3,10 +3,11 @@ package com.example.androidDeviceDetails
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.text.format.DateFormat
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.text.format.DateFormat
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.adapters.AppInfoListAdapter
@@ -28,8 +29,8 @@ class AppInfoActivity : AppCompatActivity() {
     private lateinit var appList: List<AppInfoCookedData>
     private lateinit var binding: ActivityAppInfoBinding
     private var startTime: Long = 0
-    private var  endTime: Long = 0
-    private  var  startTimeFlag: Boolean = true
+    private var endTime: Long = 0
+    private var startTimeFlag: Boolean = true
     val context = this
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,22 +53,34 @@ class AppInfoActivity : AppCompatActivity() {
             calendar[Calendar.MINUTE] = minute
             val simpleDateFormat = SimpleDateFormat("HH:mm',' dd/MM/yyyy")
             val time = simpleDateFormat.format(calendar.timeInMillis)
-            if(startTimeFlag){
+            if (startTimeFlag) {
                 startTime = calendar.timeInMillis
-                binding.startdateView.text = time
-                if(startTime != 0L && endTime != 0L )
-                    setAppIfoData(startTime,endTime)
-            }
-
-            else{
+                if (startTime < endTime || endTime == 0L) {
+                    binding.startdateView.text = time
+                    if (startTime != 0L && endTime != 0L)
+                        setAppIfoData(startTime, endTime)
+                } else {
+                    Toast.makeText(
+                        this,
+                        "Start time must be lower than end time",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            } else {
                 endTime = calendar.timeInMillis
-                binding.enddateView.text = time
-                if(startTime != 0L && endTime != 0L )
-                    setAppIfoData(startTime,endTime)
+                if (startTime < endTime || startTime == 0L) {
+                    binding.enddateView.text = time
+                    if (startTime != 0L && endTime != 0L)
+                        setAppIfoData(startTime, endTime)
+                } else {
+                    Toast.makeText(
+                        this,
+                        "End time must be greater than start time",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
             }
-
-//            val endTime = startTime + (((((23 * 60) + 59) * 60) + 59) * 1000)
-
         }
 
         val datePickerListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
@@ -98,6 +111,11 @@ class AppInfoActivity : AppCompatActivity() {
                     month,
                     day
                 )
+            if (endTime != 0L) {
+                datePickerDialog.datePicker.maxDate = endTime
+            } else {
+                datePickerDialog.datePicker.maxDate = Date().time
+            }
             datePickerDialog.show()
         }
 
@@ -114,6 +132,13 @@ class AppInfoActivity : AppCompatActivity() {
                     month,
                     day
                 )
+            datePickerDialog.show()
+            if (startTime != 0L) {
+                datePickerDialog.datePicker.minDate = startTime
+                datePickerDialog.datePicker.maxDate = System.currentTimeMillis()
+            } else {
+                datePickerDialog.datePicker.maxDate = System.currentTimeMillis()
+            }
             datePickerDialog.show()
         }
     }
