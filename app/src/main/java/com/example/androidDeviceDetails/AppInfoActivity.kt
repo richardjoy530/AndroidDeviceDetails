@@ -98,7 +98,7 @@ class AppInfoActivity : AppCompatActivity() {
         }
 
 
-        binding.button.setOnClickListener {
+        binding.startdateView.setOnClickListener {
             startTimeFlag = true
             day = calendar.get(Calendar.DAY_OF_MONTH)
             month = calendar.get(Calendar.MONTH)
@@ -119,7 +119,7 @@ class AppInfoActivity : AppCompatActivity() {
             datePickerDialog.show()
         }
 
-        binding.button2.setOnClickListener {
+        binding.enddateView.setOnClickListener {
             startTimeFlag = false
             day = calendar.get(Calendar.DAY_OF_MONTH)
             month = calendar.get(Calendar.MONTH)
