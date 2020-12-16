@@ -3,6 +3,7 @@ package com.example.androidDeviceDetails.managers
 import android.app.usage.NetworkStats
 import android.app.usage.NetworkStatsManager
 import android.content.Context
+import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.os.Build
@@ -29,7 +30,7 @@ class AppDataUsageCollector(var context: Context) {
             networkStats = networkStatsManager.querySummary(
                 ConnectivityManager.TYPE_WIFI,
                 "",
-                System.currentTimeMillis() - minutesAgo * 60 * 1000,
+                context.packageManager.getPackageInfo(context.packageName, 0).firstInstallTime,
                 System.currentTimeMillis()
             )
             val bucket = NetworkStats.Bucket()
