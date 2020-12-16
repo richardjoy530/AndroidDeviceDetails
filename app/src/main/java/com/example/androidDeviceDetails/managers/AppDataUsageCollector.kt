@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.RemoteException
 import android.util.Log
@@ -28,7 +29,7 @@ class AppDataUsageCollector(var context: Context) {
         val networkStats: NetworkStats
         try {
             networkStats = networkStatsManager.querySummary(
-                ConnectivityManager.TYPE_WIFI,
+                NetworkCapabilities.TRANSPORT_WIFI,
                 "",
                 context.packageManager.getPackageInfo(context.packageName, 0).firstInstallTime,
                 System.currentTimeMillis()
