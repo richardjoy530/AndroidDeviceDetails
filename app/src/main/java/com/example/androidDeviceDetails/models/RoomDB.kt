@@ -19,6 +19,7 @@ abstract class RoomDB : RoomDatabase() {
     abstract fun appHistoryDao(): AppHistoryDao
     abstract fun wifiDao(): WifiDao
     abstract fun cellularDao(): CellularDao
+    abstract fun appDataUsage(): AppHistoryDao
 
     companion object {
         private var INSTANCE: RoomDB? = null
