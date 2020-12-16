@@ -13,7 +13,6 @@ import android.os.Build
 import android.os.IBinder
 import android.telephony.PhoneStateListener
 import android.telephony.TelephonyManager
-import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import com.example.androidDeviceDetails.managers.AppDataUsageCollector
 import com.example.androidDeviceDetails.managers.AppUsage
@@ -77,9 +76,9 @@ class CollectorService : Service() {
         timer.scheduleAtFixedRate(
             object : TimerTask() {
                 override fun run() {
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-                        val appDataUsageCollector=AppDataUsageCollector(context)
-                        appDataUsageCollector.updateAppDataUsageDB()
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        val appDataUsageCollector = AppDataUsageCollector(context)
+                        appDataUsageCollector.updateAppDataUsageDB(timeInterval)
                     }
                     appUsage.updateAppUsageDB(timeInterval)
                 }

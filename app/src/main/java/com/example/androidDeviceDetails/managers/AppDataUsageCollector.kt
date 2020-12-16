@@ -3,6 +3,7 @@ package com.example.androidDeviceDetails.managers
 import android.app.usage.NetworkStats
 import android.app.usage.NetworkStatsManager
 import android.content.Context
+import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.os.Build
 import android.os.RemoteException
@@ -21,14 +22,14 @@ class AppDataUsageCollector(var context: Context) {
     private val networkStatsManager =
         context.getSystemService(AppCompatActivity.NETWORK_STATS_SERVICE) as NetworkStatsManager
 
-    fun updateAppDataUsageDB(/*minutesAgo:Long*/) {
+    fun updateAppDataUsageDB(minutesAgo: Long) {
         val db = RoomDB.getDatabase()!!
         val networkStats: NetworkStats
         try {
             networkStats = networkStatsManager.querySummary(
                 ConnectivityManager.TYPE_WIFI,
                 "",
-                1605779115000,//System.currentTimeMillis()-minutesAgo,
+                System.currentTimeMillis() - minutesAgo * 60 * 1000,
                 System.currentTimeMillis()
             )
             val bucket = NetworkStats.Bucket()
@@ -36,12 +37,20 @@ class AppDataUsageCollector(var context: Context) {
                 networkStats.getNextBucket(bucket)
                 val packageName = context.packageManager.getNameForUid(bucket.uid)
                 if (packageName!= null && packageName != "null") {
-                    Log.d("TAG", "updateAppDataUsageDB: ${Utils.getApplicationLabel(packageName)} ")
+                    try {
+                        Log.d(
+                            "TAG",
+                            "updateAppDataUsageDB: ${Utils.getApplicationLabel(packageName)} "
+                        )
+                    } catch (e: PackageManager.NameNotFoundException) {
+                        Log.e("Error", "PackageName null")
+                    }
                     val appDataUsage = AppDataUsage(
                         System.currentTimeMillis(),
                         packageName,
                         bucket.txBytes + bucket.rxBytes
                     )
+                    Log.d("TAG", "Usage: ${(bucket.txBytes + bucket.rxBytes) / (1024 * 1024)}MB ")
                     Log.d("TAG", "updateAppDataUsageDB: ")
                     GlobalScope.launch(Dispatchers.IO) { db.appDataUsage().insertAll(appDataUsage) }
                 }
