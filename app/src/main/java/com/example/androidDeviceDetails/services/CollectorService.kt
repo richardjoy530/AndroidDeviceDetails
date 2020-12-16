@@ -13,7 +13,9 @@ import android.os.Build
 import android.os.IBinder
 import android.telephony.PhoneStateListener
 import android.telephony.TelephonyManager
+import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
+import com.example.androidDeviceDetails.managers.AppDataUsageCollector
 import com.example.androidDeviceDetails.managers.AppUsage
 import com.example.androidDeviceDetails.managers.SignalChangeListener
 import com.example.androidDeviceDetails.receivers.AppStateReceiver
@@ -70,9 +72,15 @@ class CollectorService : Service() {
         timer = Timer()
         val timeInterval: Long = 1
         val appUsage = AppUsage(this)
+        val context=this
+
         timer.scheduleAtFixedRate(
             object : TimerTask() {
                 override fun run() {
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                        val appDataUsageCollector=AppDataUsageCollector(context)
+                        appDataUsageCollector.updateAppDataUsageDB()
+                    }
                     appUsage.updateAppUsageDB(timeInterval)
                 }
             },
