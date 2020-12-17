@@ -3,9 +3,7 @@ package com.example.androidDeviceDetails.managers
 import android.app.usage.NetworkStats
 import android.app.usage.NetworkStatsManager
 import android.content.Context
-import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
-import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.RemoteException
@@ -38,7 +36,7 @@ class AppDataUsageCollector(var context: Context) {
             while (networkStats.hasNextBucket()) {
                 networkStats.getNextBucket(bucket)
                 val packageName = context.packageManager.getNameForUid(bucket.uid)
-                if (packageName!= null && packageName != "null") {
+                if (packageName != null && packageName != "null") {
                     try {
                         Log.d(
                             "TAG",
@@ -50,7 +48,8 @@ class AppDataUsageCollector(var context: Context) {
                     val appDataUsage = AppDataUsage(
                         System.currentTimeMillis(),
                         packageName,
-                        bucket.txBytes + bucket.rxBytes
+                        bucket.txBytes,
+                        bucket.rxBytes
                     )
                     Log.d("TAG", "Usage: ${(bucket.txBytes + bucket.rxBytes) / (1024 * 1024)}MB ")
                     Log.d("TAG", "updateAppDataUsageDB: ")

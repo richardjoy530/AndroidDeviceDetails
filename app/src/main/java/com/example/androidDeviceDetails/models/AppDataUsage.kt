@@ -6,7 +6,8 @@ import androidx.room.*
 data class AppDataUsage(
     @PrimaryKey val timeStamp: Long,
     @ColumnInfo(name = "packageName ") val packageName: String,
-    @ColumnInfo(name = "dataUsage ") val dataUsage: Long,
+    @ColumnInfo(name = "transferredData ") val transferredData: Long,
+    @ColumnInfo(name = "receivedData ") val receivedData: Long
 )
 
 @Dao
