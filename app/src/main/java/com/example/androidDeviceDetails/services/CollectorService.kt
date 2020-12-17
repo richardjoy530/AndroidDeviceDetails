@@ -78,7 +78,7 @@ class CollectorService : Service() {
                 override fun run() {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         val appDataUsageCollector = AppDataUsageCollector(context)
-                        appDataUsageCollector.updateAppDataUsageDB(timeInterval)
+                        appDataUsageCollector.updateAppWifiDataUsageDB(timeInterval)
                         appDataUsageCollector.updateAppMobileDataUsageDB(timeInterval)
 
                     }

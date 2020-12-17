@@ -16,13 +16,14 @@ import com.example.androidDeviceDetails.utils.Utils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlin.math.log
 
 @RequiresApi(Build.VERSION_CODES.M)
 class AppDataUsageCollector(var context: Context) {
     private val networkStatsManager =
         context.getSystemService(AppCompatActivity.NETWORK_STATS_SERVICE) as NetworkStatsManager
 
-    fun updateAppDataUsageDB(minutesAgo: Long) {
+    fun updateAppWifiDataUsageDB(minutesAgo: Long) {
         val db = RoomDB.getDatabase()!!
         val networkStats: NetworkStats
         try {
@@ -33,6 +34,7 @@ class AppDataUsageCollector(var context: Context) {
                 System.currentTimeMillis()
             )
             val bucket = NetworkStats.Bucket()
+            Log.d("TAG", "updateAppWifiDataUsageDB: ")
             while (networkStats.hasNextBucket()) {
                 networkStats.getNextBucket(bucket)
                 val packageName = context.packageManager.getNameForUid(bucket.uid)
@@ -48,8 +50,8 @@ class AppDataUsageCollector(var context: Context) {
                     val appDataUsage = AppDataUsage(
                         System.currentTimeMillis(),
                         packageName,
-                        bucket.txBytes,
-                        bucket.rxBytes
+                        bucket.txBytes, 0L,
+                        bucket.rxBytes, 0L
                     )
                     Log.d("TAG", "Usage: ${(bucket.txBytes + bucket.rxBytes) / (1024 * 1024)}MB ")
                     Log.d("TAG", "updateAppDataUsageDB: ")
@@ -61,6 +63,7 @@ class AppDataUsageCollector(var context: Context) {
         }
 
     }
+
     fun updateAppMobileDataUsageDB(minutesAgo: Long) {
         val db = RoomDB.getDatabase()!!
         val networkStats: NetworkStats
@@ -87,8 +90,8 @@ class AppDataUsageCollector(var context: Context) {
                     val appDataUsage = AppDataUsage(
                         System.currentTimeMillis(),
                         packageName,
-                        bucket.txBytes,
-                        bucket.rxBytes
+                        0L, bucket.txBytes,
+                        0L, bucket.rxBytes
                     )
                     Log.d("TAG", "Usage: ${(bucket.txBytes + bucket.rxBytes) / (1024 * 1024)}MB ")
                     Log.d("TAG", "updateAppDataUsageDB: ")
