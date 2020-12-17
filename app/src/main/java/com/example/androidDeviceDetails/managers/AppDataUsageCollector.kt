@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.RemoteException
+import android.telephony.TelephonyManager
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -16,7 +17,6 @@ import com.example.androidDeviceDetails.utils.Utils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlin.math.log
 
 @RequiresApi(Build.VERSION_CODES.M)
 class AppDataUsageCollector(var context: Context) {
@@ -29,7 +29,7 @@ class AppDataUsageCollector(var context: Context) {
         try {
             networkStats = networkStatsManager.querySummary(
                 NetworkCapabilities.TRANSPORT_WIFI,
-                "",
+                null,
                 context.packageManager.getPackageInfo(context.packageName, 0).firstInstallTime,
                 System.currentTimeMillis()
             )
@@ -70,7 +70,7 @@ class AppDataUsageCollector(var context: Context) {
         try {
             networkStats = networkStatsManager.querySummary(
                 NetworkCapabilities.TRANSPORT_CELLULAR,
-                "",
+                null,
                 context.packageManager.getPackageInfo(context.packageName, 0).firstInstallTime,
                 System.currentTimeMillis()
             )
