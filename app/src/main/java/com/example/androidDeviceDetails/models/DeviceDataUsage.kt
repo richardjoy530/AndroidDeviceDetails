@@ -3,30 +3,29 @@ package com.example.androidDeviceDetails.models
 import androidx.room.*
 
 @Entity
-data class AppDataUsage(
+data class DeviceDataUsage(
     @PrimaryKey val timeStamp: Long,
-    @ColumnInfo(name = "packageName ") val packageName: String,
     @ColumnInfo(name = "transferredDataWifi") val transferredDataWifi: Long,
     @ColumnInfo(name = "transferredDataMobile") val transferredDataMobile: Long,
     @ColumnInfo(name = "receivedDataWifi ") val receivedDataWifi: Long,
     @ColumnInfo(name = "receivedDataMobile ") val receivedDataMobile: Long
 )
 
+
 @Dao
-interface AppDataUsageDao {
-    @Query("SELECT * FROM AppDataUsage")
-    fun getAll(): List<AppDataUsage>
+interface DeviceDataUsageDao {
+    @Query("SELECT * FROM DeviceDataUsage")
+    fun getAll(): List<DeviceDataUsage>
 
-    @Query("SELECT * FROM AppDataUsage WHERE timeStamp BETWEEN (:startTime) AND (:endTime)")
-    fun getAllBetween(startTime: Long, endTime: Long): List<AppDataUsage>
+    @Query("SELECT * FROM DeviceDataUsage WHERE timeStamp BETWEEN (:startTime) AND (:endTime)")
+    fun getAllBetween(startTime: Long, endTime: Long): List<DeviceDataUsage>
 
-    @Query("DELETE FROM AppDataUsage")
+    @Query("DELETE FROM DeviceDataUsage")
     fun deleteAll()
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(vararg appDataUsage: AppDataUsage)
+    fun insertAll(vararg deviceDataUsage: DeviceDataUsage)
 
     @Delete
-    fun delete(appDataUsage: AppDataUsage)
+    fun delete(deviceDataUsage: DeviceDataUsage)
 }
-

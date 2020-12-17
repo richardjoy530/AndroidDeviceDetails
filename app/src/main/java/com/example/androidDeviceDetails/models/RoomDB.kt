@@ -8,7 +8,7 @@ import com.example.androidDeviceDetails.DeviceDetailsApplication
 
 
 @Database(
-    entities = [AppUsageModel::class, BatteryRawModel::class, LocationModel::class, Apps::class, AppHistory::class, WifiRaw::class, CellularRaw::class,AppDataUsage::class],
+    entities = [AppUsageModel::class, BatteryRawModel::class, LocationModel::class, Apps::class, AppHistory::class, WifiRaw::class, CellularRaw::class, AppDataUsage::class, DeviceDataUsage::class],
     version = 1
 )
 abstract class RoomDB : RoomDatabase() {
@@ -20,6 +20,7 @@ abstract class RoomDB : RoomDatabase() {
     abstract fun wifiDao(): WifiDao
     abstract fun cellularDao(): CellularDao
     abstract fun appDataUsage(): AppDataUsageDao
+    abstract fun deviceDataUsage(): DeviceDataUsage
 
     companion object {
         private var INSTANCE: RoomDB? = null
