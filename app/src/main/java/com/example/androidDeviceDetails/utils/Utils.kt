@@ -93,11 +93,15 @@ object Utils {
 
     fun getApplicationLabel(packageName: String): String {
         val packageManager = DeviceDetailsApplication.instance.packageManager
-        val info = packageManager.getApplicationInfo(
-            packageName,
-            PackageManager.GET_META_DATA
-        )
-        return packageManager.getApplicationLabel(info) as String
+        return try {
+            val info = packageManager.getApplicationInfo(
+                packageName,
+                PackageManager.GET_META_DATA
+            )
+            packageManager.getApplicationLabel(info) as String
+        } catch (e: Exception) {
+            packageName
+        }
     }
 
     fun getApplicationIcon(packageName: String): Drawable {

@@ -47,13 +47,13 @@
             android:name=".services.CollectorService"
             android:enabled="true" />
 
-        <receiver
-            android:name=".receivers.BatteryReceiver"
-            android:enabled="true">
-            <intent-filter>
-                <action android:name="android.intent.action.PHONE_STATE" />
-            </intent-filter>
-        </receiver>
+        <!--        <receiver-->
+        <!--            android:name=".receivers.BatteryReceiver"-->
+        <!--            android:enabled="true">-->
+        <!--            <intent-filter>-->
+        <!--                <action android:name="android.intent.action.PHONE_STATE" />-->
+        <!--            </intent-filter>-->
+        <!--        </receiver>-->
         <receiver
             android:name=".receivers.OnBootReceiver"
             android:enabled="true">
