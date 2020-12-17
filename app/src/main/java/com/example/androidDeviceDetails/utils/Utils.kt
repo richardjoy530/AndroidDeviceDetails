@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.util.Log
-import androidx.core.content.ContextCompat
 import com.example.androidDeviceDetails.DeviceDetailsApplication
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.models.AppDetails
@@ -16,7 +15,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.io.File
-import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -63,11 +61,15 @@ object Utils {
 
     fun getApplicationLabel(packageName: String): String {
         val packageManager = DeviceDetailsApplication.instance.packageManager
-        val info = packageManager.getApplicationInfo(
-            packageName,
-            PackageManager.GET_META_DATA
-        )
-        return packageManager.getApplicationLabel(info) as String
+        return try {
+            val info = packageManager.getApplicationInfo(
+                packageName,
+                PackageManager.GET_META_DATA
+            )
+            packageManager.getApplicationLabel(info) as String
+        } catch (e: Exception) {
+            packageName
+        }
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")

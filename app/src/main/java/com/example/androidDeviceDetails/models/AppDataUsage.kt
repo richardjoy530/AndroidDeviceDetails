@@ -6,10 +6,10 @@ import androidx.room.*
 data class AppDataUsage(
     @PrimaryKey val timeStamp: Long,
     @ColumnInfo(name = "packageName ") val packageName: String,
-    @ColumnInfo(name = "transferredDataWifi") val transferredDataWifi: Long,
-    @ColumnInfo(name = "transferredDataMobile") val transferredDataMobile: Long,
-    @ColumnInfo(name = "receivedDataWifi ") val receivedDataWifi: Long,
-    @ColumnInfo(name = "receivedDataMobile ") val receivedDataMobile: Long
+    @ColumnInfo(name = "transferredDataWifi") var transferredDataWifi: Long,
+    @ColumnInfo(name = "transferredDataMobile") var transferredDataMobile: Long,
+    @ColumnInfo(name = "receivedDataWifi ") var receivedDataWifi: Long,
+    @ColumnInfo(name = "receivedDataMobile ") var receivedDataMobile: Long
 )
 
 @Dao
