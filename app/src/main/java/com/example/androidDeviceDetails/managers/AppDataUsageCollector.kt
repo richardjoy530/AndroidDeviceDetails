@@ -61,4 +61,44 @@ class AppDataUsageCollector(var context: Context) {
         }
 
     }
+    fun updateAppMobileDataUsageDB(minutesAgo: Long) {
+        val db = RoomDB.getDatabase()!!
+        val networkStats: NetworkStats
+        try {
+            networkStats = networkStatsManager.querySummary(
+                NetworkCapabilities.TRANSPORT_CELLULAR,
+                "",
+                context.packageManager.getPackageInfo(context.packageName, 0).firstInstallTime,
+                System.currentTimeMillis()
+            )
+            val bucket = NetworkStats.Bucket()
+            while (networkStats.hasNextBucket()) {
+                networkStats.getNextBucket(bucket)
+                val packageName = context.packageManager.getNameForUid(bucket.uid)
+                if (packageName != null && packageName != "null") {
+                    try {
+                        Log.d(
+                            "TAG",
+                            "updateAppDataUsageDB: ${Utils.getApplicationLabel(packageName)} "
+                        )
+                    } catch (e: PackageManager.NameNotFoundException) {
+                        Log.e("Error", "PackageName null")
+                    }
+                    val appDataUsage = AppDataUsage(
+                        System.currentTimeMillis(),
+                        packageName,
+                        bucket.txBytes,
+                        bucket.rxBytes
+                    )
+                    Log.d("TAG", "Usage: ${(bucket.txBytes + bucket.rxBytes) / (1024 * 1024)}MB ")
+                    Log.d("TAG", "updateAppDataUsageDB: ")
+                    GlobalScope.launch(Dispatchers.IO) { db.appDataUsage().insertAll(appDataUsage) }
+                }
+            }
+        } catch (e: RemoteException) {
+            Log.d("TAG", "getUsage: RemoteException")
+        }
+
+    }
+
 }

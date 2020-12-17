@@ -79,6 +79,8 @@ class CollectorService : Service() {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         val appDataUsageCollector = AppDataUsageCollector(context)
                         appDataUsageCollector.updateAppDataUsageDB(timeInterval)
+                        appDataUsageCollector.updateAppMobileDataUsageDB(timeInterval)
+
                     }
                     appUsage.updateAppUsageDB(timeInterval)
                 }
