@@ -5,7 +5,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.TextView
@@ -15,11 +14,7 @@ import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.adapters.BatteryListAdapter
 import com.example.androidDeviceDetails.databinding.ActivityBatteryBinding
 import com.example.androidDeviceDetails.managers.AppBatteryUsageManager
-import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.utils.Utils
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import java.util.*
 
 @SuppressLint("SetTextI18n")
@@ -37,14 +32,6 @@ class BatteryActivity : AppCompatActivity(), View.OnClickListener {
         setCalender(offset = 0, reset = true, tillToday = true)
         batteryBinding.batteryListView.setOnItemClickListener { parent, _, position, _ ->
             redirectToAppInfo(parent, position)
-        }
-        GlobalScope.launch(Dispatchers.IO) {
-            RoomDB.getDatabase()!!.appDataUsage().getAll().forEach {
-                Log.d(
-                    TAG,
-                    "onCreate: Time: ${Utils.getDateTime(it.timeStamp)} Usage: ${it.dataUsage} Name ${it.packageName} "
-                )
-            }
         }
     }
 

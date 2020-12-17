@@ -8,8 +8,10 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.net.wifi.WifiManager
 import android.os.Build
 import android.os.IBinder
+import android.telephony.PhoneStateListener
 import android.telephony.TelephonyManager
 import androidx.core.app.NotificationCompat
 import com.example.androidDeviceDetails.managers.AppUsage
@@ -17,7 +19,6 @@ import com.example.androidDeviceDetails.managers.SignalChangeListener
 import com.example.androidDeviceDetails.receivers.AppStateReceiver
 import com.example.androidDeviceDetails.receivers.BatteryReceiver
 import com.example.androidDeviceDetails.receivers.WifiReceiver
-import com.example.androidDeviceDetails.statsTest
 import java.util.*
 
 const val CHANNEL_ID = "androidDeviceDetails"
@@ -66,7 +67,6 @@ class CollectorService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        statsTest()
         timer = Timer()
         val timeInterval: Long = 1
         val appUsage = AppUsage(this)
@@ -79,12 +79,12 @@ class CollectorService : Service() {
             0, 1000 * 60 * timeInterval
         )
 
-//        mTelephonyManager.listen(mPhoneStateListener, PhoneStateListener.LISTEN_SIGNAL_STRENGTHS)
-//        val intentWifi = IntentFilter()
-//        intentWifi.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)
+        mTelephonyManager.listen(mPhoneStateListener, PhoneStateListener.LISTEN_SIGNAL_STRENGTHS)
+        val intentWifi = IntentFilter()
+        intentWifi.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)
 
         this.registerReceiver(mBatteryReceiver, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
-//        this.registerReceiver(mWifiReceiver, intentWifi)
+        this.registerReceiver(mWifiReceiver, intentWifi)
 
         return super.onStartCommand(intent, flags, startId)
     }
@@ -92,7 +92,7 @@ class CollectorService : Service() {
     override fun onDestroy() {
         super.onDestroy()
         this.unregisterReceiver(mBatteryReceiver)
-//        this.unregisterReceiver(mWifiReceiver)
+        this.unregisterReceiver(mWifiReceiver)
         this.unregisterReceiver(mAppStateReceiver)
         timer.cancel()
         stopSelf()

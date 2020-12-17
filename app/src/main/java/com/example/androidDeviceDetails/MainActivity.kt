@@ -30,7 +30,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 .putBoolean(PrefManager.INITIAL_LAUNCH, true)
         }
         init()
-        toggleService()
     }
 
     private fun init() {
