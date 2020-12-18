@@ -3,6 +3,7 @@ package com.example.androidDeviceDetails.managers
 import android.app.usage.NetworkStats
 import android.app.usage.NetworkStatsManager
 import android.content.Context
+import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.RemoteException
@@ -10,18 +11,19 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.androidDeviceDetails.models.AppDataUsage
+import com.example.androidDeviceDetails.models.DeviceDataUsage
 import com.example.androidDeviceDetails.models.RoomDB
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.M)
 class AppDataUsageCollector(var context: Context) {
+    val db = RoomDB.getDatabase()!!
     private val networkStatsManager =
         context.getSystemService(AppCompatActivity.NETWORK_STATS_SERVICE) as NetworkStatsManager
 
-    fun updateAppWifiDataUsageDB(minutesAgo: Long) {
+    fun updateAppDataUsageDB(minutesAgo: Long) {
         val appDataUsageList = arrayListOf<AppDataUsage>()
-        val db = RoomDB.getDatabase()!!
         val networkStatsWifi: NetworkStats
         val networkStatsMobileData: NetworkStats
 
@@ -103,6 +105,36 @@ class AppDataUsageCollector(var context: Context) {
         }
 
     }
+    fun updateDeviceDataUsageDB(){
 
+        var bucket: NetworkStats.Bucket
+        var totalWifiDataRx = 0L
+        var totalWifiDataTx = 0L
+        var totalMobileDataRx=0L
+        var totalMobileDataTx=0L
+        try {
+            bucket = networkStatsManager.querySummaryForDevice(
+                ConnectivityManager.TYPE_WIFI,
+                null,
+                context.packageManager.getPackageInfo(context.packageName, 0).firstInstallTime,
+                System.currentTimeMillis())
+            totalWifiDataRx +=  bucket.rxBytes
+            totalWifiDataTx +=  bucket.txBytes
+            bucket = networkStatsManager.querySummaryForDevice(
+                ConnectivityManager.TYPE_MOBILE,
+                null,
+                context.packageManager.getPackageInfo(context.packageName, 0).firstInstallTime,
+                System.currentTimeMillis())
+            totalMobileDataRx +=  bucket.rxBytes
+            totalMobileDataTx +=  bucket.txBytes
+            GlobalScope.launch {
+                db.deviceDataUsage().insertAll(DeviceDataUsage(System.currentTimeMillis(),totalWifiDataTx,totalMobileDataTx,totalWifiDataRx,totalMobileDataRx))
+            }
+
+        } catch (e: RemoteException) {
+            Log.d("TAG", "getUsage: RemoteException")
+        }
+
+    }
 
 }
