@@ -1,5 +1,6 @@
 package com.example.androidDeviceDetails
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.net.Uri
@@ -14,6 +15,7 @@ import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.adapters.BatteryListAdapter
 import com.example.androidDeviceDetails.databinding.ActivityBatteryBinding
 import com.example.androidDeviceDetails.managers.AppBatteryUsageManager
+import com.example.androidDeviceDetails.managers.AppEntry
 import com.example.androidDeviceDetails.utils.Utils
 import java.util.*
 
@@ -39,7 +41,7 @@ class BatteryActivity : AppCompatActivity(), View.OnClickListener {
         when (v?.id) {
             R.id.leftArrow -> setCooker(offset = -1)
             R.id.rightArrow -> setCooker(offset = 1)
-            R.id.description -> toggleCookingMode(v)
+            R.id.description -> toggleCookingMode(v as TextView)
             R.id.today -> selectDate()
         }
     }
@@ -68,15 +70,13 @@ class BatteryActivity : AppCompatActivity(), View.OnClickListener {
         calendar.add(Calendar.DAY_OF_MONTH, offset)
         batteryBinding.today.text = Utils.getDateString(calendar)
         AppBatteryUsageManager().cookBatteryData(
-            context = this,
-            batteryBinding,
+            onCookingDone,
             if (tillToday) 0 else calendar.timeInMillis,
             endTime = calendar.timeInMillis + 24 * 60 * 60 * 1000
         )
     }
 
-    private fun toggleCookingMode(v: View) {
-        v as TextView
+    private fun toggleCookingMode(v: TextView) {
         if (v.text == getString(R.string.till_today)) {
             v.text = getString(R.string.day_wise)
             batteryBinding.batteryDatePicker.isVisible = true
@@ -88,6 +88,25 @@ class BatteryActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    private val onCookingDone = object : ICookingDone {
+        override fun onEmptyDB() {
+            batteryBinding.root.post {
+                batteryBinding.batteryListView.adapter =
+                    BatteryListAdapter(this@BatteryActivity, R.layout.battery_tile, arrayListOf())
+                batteryBinding.total.text = getString(R.string.no_usage_recorded)
+            }
+        }
+
+        @SuppressLint("SetTextI18n")
+        override fun onData(appEntryList: ArrayList<AppEntry>, totalDrop: Int) {
+            batteryBinding.root.post {
+                batteryBinding.batteryListView.adapter =
+                    BatteryListAdapter(this@BatteryActivity, R.layout.battery_tile, appEntryList)
+                batteryBinding.total.text = "Total drop is $totalDrop %"
+            }
+        }
+    }
+
     private fun redirectToAppInfo(parent: AdapterView<*>, position: Int) {
         val adapter = parent.adapter as BatteryListAdapter
         val item = adapter.getItem(position)
@@ -96,5 +115,10 @@ class BatteryActivity : AppCompatActivity(), View.OnClickListener {
         infoIntent.data = Uri.parse("package:${item?.packageId}")
         startActivity(infoIntent)
     }
+}
+
+interface ICookingDone {
+    fun onEmptyDB()
+    fun onData(appEntryList: ArrayList<AppEntry>, totalDrop: Int)
 }
 
