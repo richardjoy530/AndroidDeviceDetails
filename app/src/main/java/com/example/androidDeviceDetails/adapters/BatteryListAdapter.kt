@@ -31,7 +31,7 @@ class BatteryListAdapter(
         } else holder = vi?.tag as ViewHolder
 
         holder.appNameView?.text = Utils.getApplicationLabel(items[position].packageId)
-        val text = "Dropped " + items[position].drop.toString() + " %"
+        val text = "Dropped ${items[position].drop} %"
         holder.dropTextView?.text = text
         holder.appIconView?.setImageDrawable(Utils.getApplicationIcon(items[position].packageId))
 

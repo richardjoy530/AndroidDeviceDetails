@@ -1,6 +1,5 @@
 package com.example.androidDeviceDetails.managers
 
-import android.annotation.SuppressLint
 import com.example.androidDeviceDetails.ICookingDone
 import com.example.androidDeviceDetails.models.RoomDB
 import kotlinx.coroutines.GlobalScope
@@ -9,7 +8,6 @@ import kotlinx.coroutines.launch
 class AppBatteryUsageManager {
     private var db: RoomDB = RoomDB.getDatabase()!!
 
-    @SuppressLint("SetTextI18n")
     fun cookBatteryData(
         callback: ICookingDone,
         beginTime: Long,
@@ -43,7 +41,7 @@ class AppBatteryUsageManager {
                 var totalDrop = 0
                 for (i in appEntryList) totalDrop += i.drop
                 callback.onData(appEntryList, totalDrop)
-            } else callback.onEmptyDB()
+            } else callback.onNoData()
         }
     }
 }

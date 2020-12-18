@@ -1,6 +1,5 @@
 package com.example.androidDeviceDetails
 
-import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.net.Uri
@@ -27,14 +26,16 @@ class BatteryActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         batteryBinding = DataBindingUtil.setContentView(this, R.layout.activity_battery)
-        batteryBinding.leftArrow.setOnClickListener(this)
-        batteryBinding.rightArrow.setOnClickListener(this)
-        batteryBinding.description.setOnClickListener(this)
-        batteryBinding.today.setOnClickListener(this)
-        setCooker(offset = 0, reset = true, tillToday = true)
-        batteryBinding.batteryListView.setOnItemClickListener { parent, _, position, _ ->
-            redirectToAppInfo(parent, position)
+        batteryBinding.apply {
+            leftArrow.setOnClickListener(this@BatteryActivity)
+            rightArrow.setOnClickListener(this@BatteryActivity)
+            description.setOnClickListener(this@BatteryActivity)
+            today.setOnClickListener(this@BatteryActivity)
+            batteryListView.setOnItemClickListener { parent, _, position, _ ->
+                redirectToAppInfo(parent, position)
+            }
         }
+        setCooker(offset = 0, reset = true, tillToday = true)
     }
 
     override fun onClick(v: View?) {
@@ -89,7 +90,7 @@ class BatteryActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private val onCookingDone = object : ICookingDone {
-        override fun onEmptyDB() {
+        override fun onNoData() {
             batteryBinding.root.post {
                 batteryBinding.batteryListView.adapter =
                     BatteryListAdapter(this@BatteryActivity, R.layout.battery_tile, arrayListOf())
@@ -97,12 +98,12 @@ class BatteryActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
 
-        @SuppressLint("SetTextI18n")
         override fun onData(appEntryList: ArrayList<AppEntry>, totalDrop: Int) {
             batteryBinding.root.post {
                 batteryBinding.batteryListView.adapter =
                     BatteryListAdapter(this@BatteryActivity, R.layout.battery_tile, appEntryList)
-                batteryBinding.total.text = "Total drop is $totalDrop %"
+                val totalText = "Total drop is $totalDrop %"
+                batteryBinding.total.text = totalText
             }
         }
     }
@@ -118,7 +119,7 @@ class BatteryActivity : AppCompatActivity(), View.OnClickListener {
 }
 
 interface ICookingDone {
-    fun onEmptyDB()
+    fun onNoData()
     fun onData(appEntryList: ArrayList<AppEntry>, totalDrop: Int)
 }
 
