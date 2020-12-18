@@ -21,11 +21,9 @@ import java.util.*
 
 object Utils {
     private const val format = "dd/MM/yyyy HH:mm:ss:"
-    private val formatter = SimpleDateFormat(format, Locale.ENGLISH)
+    private val f = SimpleDateFormat(format, Locale.ENGLISH)
 
-    fun getDateTime(timestamp: Long): String {
-        return formatter.format(Date(timestamp))
-    }
+    fun getDateTime(millis: Long): String = f.format(Date(millis))
 
     fun getWeek(day: Int): String {
         when (day) {
@@ -165,5 +163,11 @@ object Utils {
             }
         }
     }
+
+    fun getDateString(calendar: Calendar): String =
+        "${getWeek(calendar.get(Calendar.DAY_OF_WEEK))}, ${calendar.get(Calendar.DAY_OF_MONTH)} ${
+            getMonth(calendar.get(Calendar.MONTH))
+        }"
+
 
 }
