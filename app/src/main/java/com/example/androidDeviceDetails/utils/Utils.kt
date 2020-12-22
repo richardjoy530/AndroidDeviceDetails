@@ -103,7 +103,7 @@ object Utils {
     }
 
     fun getFileSize(size: Long): String {
-        if (size <= 0) return "0"
+        if (size <= 0) return "0 KB"
         val units = arrayOf("B", "KB", "MB", "GB", "TB")
         val digitGroups = (log10(size.toDouble()) / log10(1024.0)).toInt()
         return DecimalFormat("#,##0.#").format(size / 1024.0.pow(digitGroups.toDouble()))
@@ -115,7 +115,7 @@ object Utils {
         return try {
             DeviceDetailsApplication.instance.packageManager.getApplicationIcon(packageName)
         } catch (e: Exception) {
-            DeviceDetailsApplication.instance.getDrawable(R.drawable.ic_android_black_24dp)!!
+            DeviceDetailsApplication.instance.getDrawable(R.drawable.ic_baseline_android_24)!!
         }
     }
 

@@ -14,6 +14,7 @@ import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.utils.Utils
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.text.DecimalFormat
 import java.util.*
 
 class AppDataActivity : AppCompatActivity(), View.OnClickListener {
@@ -113,19 +114,21 @@ class AppDataActivity : AppCompatActivity(), View.OnClickListener {
         }
 
     private fun updateTextViews() {
-        val startTime =
-            startCalendar.get(Calendar.HOUR).toString() + ":" + startCalendar.get(Calendar.MINUTE)
-                .toString()
-        val endTime =
-            endCalendar.get(Calendar.HOUR).toString() + ":" + endCalendar.get(Calendar.MINUTE)
-                .toString()
-        val startDate = startCalendar.get(Calendar.DAY_OF_MONTH).toString() + ", " + Utils.getMonth(
-            startCalendar.get(Calendar.MONTH)
-        ) + " " + startCalendar.get(Calendar.YEAR)
+        val dec = DecimalFormat("00")
 
-        val endDate = endCalendar.get(Calendar.DAY_OF_MONTH).toString() + ", " + Utils.getMonth(
-            endCalendar.get(Calendar.MONTH)
-        ) + " " + endCalendar.get(Calendar.YEAR)
+        var startTime = dec.format(startCalendar.get(Calendar.HOUR)) + ":"
+        startTime += dec.format(startCalendar.get(Calendar.MINUTE))
+
+        var endTime = dec.format(endCalendar.get(Calendar.HOUR)) + ":"
+        endTime += dec.format(endCalendar.get(Calendar.MINUTE))
+
+        var startDate = startCalendar.get(Calendar.DAY_OF_MONTH).toString() + ", "
+        startDate += Utils.getMonth(startCalendar.get(Calendar.MONTH)) + " "
+        startDate += startCalendar.get(Calendar.YEAR)
+
+        var endDate = endCalendar.get(Calendar.DAY_OF_MONTH).toString() + ", "
+        endDate += Utils.getMonth(endCalendar.get(Calendar.MONTH)) + " "
+        endDate += endCalendar.get(Calendar.YEAR)
 
         binding.apply {
             this.startTime.text = startTime
