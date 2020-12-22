@@ -20,4 +20,6 @@
     <string name="date">Mon, 14 Dec</string>
     <string name="pie_chart_size">200dp</string>
     <string name="app_data">APP DATA</string>
+    <string name="wifi_data_usage">Wifi Data Usage</string>
+    <string name="cellular_data_usage">Cellular Data Usage</string>
 </resources>
