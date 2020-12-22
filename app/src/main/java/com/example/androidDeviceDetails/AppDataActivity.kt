@@ -9,10 +9,14 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.databinding.ActivityAppDataBinding
+import com.example.androidDeviceDetails.models.AppDataUsage
+import com.example.androidDeviceDetails.models.RoomDB
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
-class AppDataActivity : AppCompatActivity(), View.OnClickListener  {
+class AppDataActivity : AppCompatActivity(), View.OnClickListener {
     private val startCalendar: Calendar = Calendar.getInstance()
     private lateinit var binding: ActivityAppDataBinding
     private val simpleDateFormat = SimpleDateFormat("HH:mm',' dd/MM/yyyy")
@@ -46,12 +50,14 @@ class AppDataActivity : AppCompatActivity(), View.OnClickListener  {
             day
         ).show()
     }
+
     private var startDatePickerListener =
         DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
             startCalendar.set(year, month, dayOfMonth)
             setStartTime()
         }
-    private  fun setStartTime(){
+
+    private fun setStartTime() {
         val hour = startCalendar.get(Calendar.HOUR)
         val minute = startCalendar.get(Calendar.MINUTE)
         TimePickerDialog(
@@ -61,14 +67,15 @@ class AppDataActivity : AppCompatActivity(), View.OnClickListener  {
     }
 
 
-    private val startTimePickerListener = TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
-        startCalendar[Calendar.HOUR_OF_DAY] = hourOfDay
-        startCalendar[Calendar.MINUTE] = minute
-        startTime=startCalendar.timeInMillis
-        Log.d("TAG", "StartTime: $startTime")
+    private val startTimePickerListener =
+        TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
+            startCalendar[Calendar.HOUR_OF_DAY] = hourOfDay
+            startCalendar[Calendar.MINUTE] = minute
+            startTime = startCalendar.timeInMillis
+            Log.d("TAG", "StartTime: $startTime")
 
 
-    }
+        }
 
     private fun setEndDate() {
         val day = startCalendar.get(Calendar.DAY_OF_MONTH)
@@ -82,12 +89,14 @@ class AppDataActivity : AppCompatActivity(), View.OnClickListener  {
             day
         ).show()
     }
+
     private var endDatePickerListener =
         DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
             startCalendar.set(year, month, dayOfMonth)
             setEndTime()
         }
-    private  fun setEndTime(){
+
+    private fun setEndTime() {
         val hour = startCalendar.get(Calendar.HOUR)
         val minute = startCalendar.get(Calendar.MINUTE)
         TimePickerDialog(
@@ -100,8 +109,43 @@ class AppDataActivity : AppCompatActivity(), View.OnClickListener  {
     private val endTimePickerListener = TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
         startCalendar[Calendar.HOUR_OF_DAY] = hourOfDay
         startCalendar[Calendar.MINUTE] = minute
-        endTime=startCalendar.timeInMillis
+        endTime = startCalendar.timeInMillis
         Log.d("TAG", "EndTime: $endTime")
+        appDataCooker(startTime, endTime)
+
+    }
+
+    private fun appDataCooker(startTime: Long, endTime: Long) {
+        val db = RoomDB.getDatabase()?.appDataUsage()!!
+        GlobalScope.launch {
+            val inBetweenList=db.getAllBetween(startTime,endTime)
+            val firstElementTime=inBetweenList.first().timeStamp
+            val initialAppDataList = inBetweenList.filter { it.timeStamp==firstElementTime }
+            val lastElementTime=inBetweenList.last().timeStamp
+            val finalAppDataList = inBetweenList.filter { it.timeStamp==lastElementTime }
+            val totalDataUsageList = arrayListOf<AppDataUsage>()
+            finalAppDataList.forEach {
+                val nullCheckList =
+                    initialAppDataList.filter { appDataUsage -> it.packageName == appDataUsage.packageName }
+                if (nullCheckList.isNotEmpty()) {
+                    val initialAppData = nullCheckList[0]
+                    totalDataUsageList.add(
+                        AppDataUsage(0,
+                            it.timeStamp,
+                            it.packageName,
+                            it.transferredDataWifi - initialAppData.transferredDataWifi,
+                            it.transferredDataMobile - initialAppData.transferredDataMobile,
+                            it.receivedDataWifi - initialAppData.receivedDataWifi,
+                            it.receivedDataMobile - initialAppData.receivedDataMobile
+                        )
+                    )
+                } else totalDataUsageList.add(it)
+            }
+            totalDataUsageList.forEach {
+                Log.d("TAG", "appDataCooker: $it ")
+            }
+
+        }
 
     }
 

@@ -100,16 +100,17 @@ class AppDataUsageCollector(var context: Context) {
         wifiEnable: Boolean = true
     ): AppDataUsage {
         val packageName = context.packageManager.getNameForUid(bucket.uid)!!
+        val timeNow=System.currentTimeMillis()
         return if (wifiEnable)
-            AppDataUsage(
-                System.currentTimeMillis(),
+            AppDataUsage(0,
+                timeNow.minus(timeNow.rem(60*1000)),
                 packageName,
                 bucket.txBytes, 0L,
                 bucket.rxBytes, 0L
             )
         else
-            AppDataUsage(
-                System.currentTimeMillis(),
+            AppDataUsage(0,
+                timeNow.minus(timeNow.rem(60*1000)),
                 packageName,
                 0L, bucket.txBytes, 0L,
                 bucket.rxBytes,

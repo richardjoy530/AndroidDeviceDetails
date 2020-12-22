@@ -4,7 +4,8 @@ import androidx.room.*
 
 @Entity
 data class AppDataUsage(
-    @PrimaryKey val timeStamp: Long,
+    @PrimaryKey(autoGenerate = true) val rowId: Int,
+    @ColumnInfo(name = "timeStamp") val timeStamp: Long,
     @ColumnInfo(name = "packageName ") val packageName: String,
     @ColumnInfo(name = "transferredDataWifi") var transferredDataWifi: Long,
     @ColumnInfo(name = "transferredDataMobile") var transferredDataMobile: Long,

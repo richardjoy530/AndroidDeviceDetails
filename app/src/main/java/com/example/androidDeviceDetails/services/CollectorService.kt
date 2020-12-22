@@ -69,7 +69,7 @@ class CollectorService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         timer = Timer()
-        val timeInterval: Long = 5
+        val timeInterval: Long = 1
         val appUsage = AppUsage(this)
         val context=this
 
