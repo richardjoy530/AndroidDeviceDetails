@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var appInfoButton: Button
     private lateinit var batteryInfoButton: Button
     private lateinit var toggleServiceButton: Button
+    private lateinit var appDataButton: Button
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -49,6 +50,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         batteryInfoButton.setOnClickListener(this)
         toggleServiceButton = findViewById(R.id.toggleSwitch)
         toggleServiceButton.setOnClickListener(this)
+        appDataButton=findViewById(R.id.appData)
+        appDataButton.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -66,6 +69,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 startActivity(intent)
             }
             R.id.toggleSwitch -> toggleService()
+            R.id.appData->{
+                val intent = Intent(this, AppDataActivity::class.java).apply {}
+                startActivity(intent)
+            }
         }
     }
 
