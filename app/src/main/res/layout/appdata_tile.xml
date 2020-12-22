@@ -31,24 +31,41 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/app_name"
-            android:textSize="16sp"
-            android:textColor="?attr/batteryTitle"/>
+            android:textColor="?attr/batteryTitle"
+            android:textSize="16sp" />
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/wifi"
+                android:src="@drawable/ic_baseline_network_wifi_18" />
+
             <TextView
                 android:id="@+id/appWifiData"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
                 android:text="@string/wifi_data_usage"
-                android:textSize="12sp"
-                android:layout_marginEnd="4sp"/>
+                android:textSize="12sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:contentDescription="@string/wifi"
+                android:src="@drawable/ic_round_network_cell_18" />
+
             <TextView
                 android:id="@+id/appCellularData"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
                 android:text="@string/cellular_data_usage"
-                android:textSize="12sp"/>
+                android:textSize="12sp" />
         </LinearLayout>
 
 

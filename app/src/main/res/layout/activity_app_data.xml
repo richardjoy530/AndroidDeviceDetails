@@ -1,87 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".AppDataActivity">
 
-        <LinearLayout
-            android:id="@+id/container"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingBottom="10dp"
+            android:layout_marginVertical="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:id="@+id/startContainer"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <ImageButton
-                    android:id="@+id/button"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="18dp"
-                    android:background="@drawable/ic_baseline_calendar_today_24"
-                    android:backgroundTint="?attr/iconTint"
-                    android:padding="10dp" />
+                android:gravity="center"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/endContainer"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0">
 
                 <TextView
-                    android:id="@+id/startDateViewAppData"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/mode_selector_bg"
-                    android:backgroundTint="?attr/TimeDateBackground"
-                    android:hint="Start Date/Time Here"
-                    android:padding="10dp"
+                    android:layout_marginVertical="2dp"
+                    android:text="@string/start"
+                    android:textSize="12sp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="2dp">
+
+                    <TextView
+                        android:id="@+id/startTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/_11_00"
+                        android:textAlignment="center"
+                        android:textColor="?attr/batteryTitle"
+                        android:textSize="40sp" />
+
+                    <TextView
+                        android:id="@+id/startAMPM"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/pm"
+                        android:textAlignment="center"
+                        android:textSize="14sp"
+                        tools:ignore="SmallSp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/startDate"
+                    android:layout_width="wrap_content"
+                    android:layout_marginVertical="2dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/_21_jan_2020"
                     android:textColor="?attr/batteryTitle" />
+
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:id="@+id/endContainer"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <ImageButton
-                    android:id="@+id/button2"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="18dp"
-                    android:background="@drawable/ic_baseline_calendar_today_24"
-                    android:backgroundTint="?attr/iconTint"
-                    android:padding="10dp" />
+                android:gravity="center"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/startContainer"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    android:id="@+id/endDateViewAppData"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/mode_selector_bg"
-                    android:backgroundTint="?attr/TimeDateBackground"
-                    android:hint="End Date/Time Here"
-                    android:padding="10dp"
+                    android:layout_marginVertical="2dp"
+                    android:text="@string/end"
+                    android:textSize="12sp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="2dp">
+
+                    <TextView
+                        android:id="@+id/endTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/_11_00"
+                        android:textAlignment="center"
+                        android:textColor="?attr/batteryTitle"
+                        android:textSize="40sp" />
+
+                    <TextView
+                        android:id="@+id/endAMPM"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/pm"
+                        android:textAlignment="center"
+                        android:textSize="14sp"
+                        tools:ignore="SmallSp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/endDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="2dp"
+                    android:text="@string/_21_jan_2020"
                     android:textColor="?attr/batteryTitle" />
+
+
             </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-        </LinearLayout>
         <ListView
-            android:id="@+id/appInfoListView"
+            android:id="@+id/appDataListView"
+            android:layout_marginTop="60dp"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:divider="@null"
-            app:layout_constraintTop_toBottomOf="@id/container"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
