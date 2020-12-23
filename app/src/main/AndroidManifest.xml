@@ -32,7 +32,7 @@
             android:parentActivityName=".MainActivity"/>
         <activity
             android:name=".AppInfoActivity"
-            android:label="Application Info"
+            android:label="Network Usage"
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".BatteryActivity"

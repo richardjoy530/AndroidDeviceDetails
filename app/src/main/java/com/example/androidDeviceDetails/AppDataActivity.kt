@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.text.format.DateFormat
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.adapters.AppDataListAdapter
 import com.example.androidDeviceDetails.databinding.ActivityAppDataBinding
@@ -148,38 +149,52 @@ class AppDataActivity : AppCompatActivity(), View.OnClickListener {
         val db = RoomDB.getDatabase()?.appDataUsage()!!
         GlobalScope.launch {
             val inBetweenList = db.getAllBetween(startTime, endTime)
-            val firstElementTime = inBetweenList.first().timeStamp
-            val initialAppDataList = inBetweenList.filter { it.timeStamp == firstElementTime }
-            val lastElementTime = inBetweenList.last().timeStamp
-            val finalAppDataList = inBetweenList.filter { it.timeStamp == lastElementTime }
-            val totalDataUsageList = arrayListOf<AppDataUsage>()
-            finalAppDataList.forEach {
-                val nullCheckList =
-                    initialAppDataList.filter { appDataUsage -> it.packageName == appDataUsage.packageName }
-                if (nullCheckList.isNotEmpty()) {
-                    val initialAppData = nullCheckList[0]
-                    totalDataUsageList.add(
-                        AppDataUsage(
-                            0,
-                            it.timeStamp,
-                            it.packageName,
-                            it.transferredDataWifi - initialAppData.transferredDataWifi,
-                            it.transferredDataMobile - initialAppData.transferredDataMobile,
-                            it.receivedDataWifi - initialAppData.receivedDataWifi,
-                            it.receivedDataMobile - initialAppData.receivedDataMobile
+            if (inBetweenList.isNotEmpty()) {
+                val firstElementTime = inBetweenList.first().timeStamp
+                val initialAppDataList = inBetweenList.filter { it.timeStamp == firstElementTime }
+                val lastElementTime = inBetweenList.last().timeStamp
+                val finalAppDataList = inBetweenList.filter { it.timeStamp == lastElementTime }
+                val totalDataUsageList = arrayListOf<AppDataUsage>()
+                finalAppDataList.forEach {
+                    val nullCheckList =
+                        initialAppDataList.filter { appDataUsage -> it.packageName == appDataUsage.packageName }
+                    if (nullCheckList.isNotEmpty()) {
+                        val initialAppData = nullCheckList[0]
+                        totalDataUsageList.add(
+                            AppDataUsage(
+                                0,
+                                it.timeStamp,
+                                it.packageName,
+                                it.transferredDataWifi - initialAppData.transferredDataWifi,
+                                it.transferredDataMobile - initialAppData.transferredDataMobile,
+                                it.receivedDataWifi - initialAppData.receivedDataWifi,
+                                it.receivedDataMobile - initialAppData.receivedDataMobile
+                            )
                         )
+                    } else totalDataUsageList.add(it)
+                }
+                binding.root.post {
+                    binding.apply {
+                        appDataListView.adapter = AppDataListAdapter(
+                            this@AppDataActivity,
+                            R.layout.appdata_tile,
+                            totalDataUsageList
+                        )
+                        noData.isVisible = false
+                    }
+                }
+            } else binding.root.post {
+                binding.apply {
+                    appDataListView.adapter = AppDataListAdapter(
+                        this@AppDataActivity,
+                        R.layout.appdata_tile,
+                        arrayListOf()
                     )
-                } else totalDataUsageList.add(it)
+                    noData.isVisible = true
+                }
             }
-            binding.root.post {
-                binding.appDataListView.adapter = AppDataListAdapter(
-                    this@AppDataActivity,
-                    R.layout.appdata_tile,
-                    totalDataUsageList
-                )
-            }
-        }
 
+        }
     }
 
 }
