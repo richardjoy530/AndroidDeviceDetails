@@ -1,7 +1,10 @@
 package com.example.androidDeviceDetails.services
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.Service
 import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.net.wifi.WifiManager
@@ -49,6 +52,13 @@ class CollectorService : Service() {
         this.registerReceiver(mAppStateReceiver, filter)
 
         if (Build.VERSION.SDK_INT >= 26) {
+            val channel = NotificationChannel(
+                CHANNEL_ID,
+                "Collecting Data",
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+            (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager)
+                .createNotificationChannel(channel)
             val notification = NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle("Monitoring device usage")
                 .setContentText("Background service running")
