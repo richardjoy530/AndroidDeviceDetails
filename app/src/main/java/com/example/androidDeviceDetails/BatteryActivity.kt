@@ -1,30 +1,25 @@
 package com.example.androidDeviceDetails
 
 import android.app.DatePickerDialog
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.provider.Settings
 import android.view.View
-import android.widget.AdapterView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
-import com.example.androidDeviceDetails.adapters.BatteryListAdapter
 import com.example.androidDeviceDetails.databinding.ActivityBatteryBinding
-import com.example.androidDeviceDetails.managers.AppBatteryUsageManager
-import com.example.androidDeviceDetails.managers.AppEntry
-import com.example.androidDeviceDetails.utils.Utils
 import java.util.*
 
 class BatteryActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var calendar: Calendar
     private lateinit var batteryBinding: ActivityBatteryBinding
+    private lateinit var batteryController: BatteryController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        batteryController = BatteryController(this)
+
         batteryBinding = DataBindingUtil.setContentView(this, R.layout.activity_battery)
         batteryBinding.apply {
             leftArrow.setOnClickListener(this@BatteryActivity)
@@ -32,17 +27,17 @@ class BatteryActivity : AppCompatActivity(), View.OnClickListener {
             description.setOnClickListener(this@BatteryActivity)
             today.setOnClickListener(this@BatteryActivity)
             batteryListView.setOnItemClickListener { parent, _, position, _ ->
-                redirectToAppInfo(parent, position)
+                batteryController.redirectToAppInfo(parent, position)
             }
         }
-        setCooker(offset = 0, reset = true, tillToday = true)
+        batteryController.setCooker(offset = 0, reset = true, tillToday = true)
     }
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.leftArrow -> setCooker(offset = -1)
-            R.id.rightArrow -> setCooker(offset = 1)
-            R.id.description -> toggleCookingMode(v as TextView)
+            R.id.leftArrow -> batteryController.setCooker(offset = -1)
+            R.id.rightArrow -> batteryController.setCooker(offset = 1)
+            R.id.description -> batteryController.toggleCookingMode(v as TextView)
             R.id.today -> selectDate()
         }
     }
@@ -60,66 +55,7 @@ class BatteryActivity : AppCompatActivity(), View.OnClickListener {
     private var datePickerListener =
         DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
             calendar.set(year, month, dayOfMonth)
-            setCooker()
+            batteryController.setCooker()
         }
-
-    private fun setCooker(offset: Int = 0, reset: Boolean = false, tillToday: Boolean = false) {
-        if (reset) calendar = Calendar.getInstance()
-        calendar[Calendar.HOUR_OF_DAY] = 0
-        calendar[Calendar.MINUTE] = 0
-        calendar[Calendar.SECOND] = 0
-        calendar.add(Calendar.DAY_OF_MONTH, offset)
-        batteryBinding.today.text = Utils.getDateString(calendar)
-        AppBatteryUsageManager().cookBatteryData(
-            onCookingDone,
-            if (tillToday) 0 else calendar.timeInMillis,
-            endTime = calendar.timeInMillis + 24 * 60 * 60 * 1000
-        )
-    }
-
-    private fun toggleCookingMode(v: TextView) {
-        if (v.text == getString(R.string.till_today)) {
-            v.text = getString(R.string.day_wise)
-            batteryBinding.batteryDatePicker.isVisible = true
-            setCooker(offset = 0, reset = true)
-        } else {
-            v.text = getString(R.string.till_today)
-            batteryBinding.batteryDatePicker.isVisible = false
-            setCooker(offset = 0, reset = true, tillToday = true)
-        }
-    }
-
-    private val onCookingDone = object : ICookingDone {
-        override fun onNoData() {
-            batteryBinding.root.post {
-                batteryBinding.batteryListView.adapter =
-                    BatteryListAdapter(this@BatteryActivity, R.layout.battery_tile, arrayListOf())
-                batteryBinding.total.text = getString(R.string.no_usage_recorded)
-            }
-        }
-
-        override fun onData(appEntryList: ArrayList<AppEntry>, totalDrop: Int) {
-            batteryBinding.root.post {
-                batteryBinding.batteryListView.adapter =
-                    BatteryListAdapter(this@BatteryActivity, R.layout.battery_tile, appEntryList)
-                val totalText = "Total drop is $totalDrop %"
-                batteryBinding.total.text = totalText
-            }
-        }
-    }
-
-    private fun redirectToAppInfo(parent: AdapterView<*>, position: Int) {
-        val adapter = parent.adapter as BatteryListAdapter
-        val item = adapter.getItem(position)
-        val infoIntent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-        infoIntent.addCategory(Intent.CATEGORY_DEFAULT)
-        infoIntent.data = Uri.parse("package:${item?.packageId}")
-        startActivity(infoIntent)
-    }
-}
-
-interface ICookingDone {
-    fun onNoData()
-    fun onData(appEntryList: ArrayList<AppEntry>, totalDrop: Int)
 }
 
