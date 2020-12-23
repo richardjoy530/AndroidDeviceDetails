@@ -12,7 +12,6 @@ import java.util.*
 
 class BatteryActivity : AppCompatActivity(), View.OnClickListener {
 
-    private lateinit var calendar: Calendar
     private lateinit var batteryBinding: ActivityBatteryBinding
     private lateinit var batteryController: BatteryController
 
@@ -45,15 +44,15 @@ class BatteryActivity : AppCompatActivity(), View.OnClickListener {
         DatePickerDialog(
             this,
             datePickerListener,
-            calendar.get(Calendar.YEAR),
-            calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.DAY_OF_MONTH)
+            batteryController.calendar.get(Calendar.YEAR),
+            batteryController.calendar.get(Calendar.MONTH),
+            batteryController.calendar.get(Calendar.DAY_OF_MONTH)
         ).show()
     }
 
     private var datePickerListener =
         DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
-            calendar.set(year, month, dayOfMonth)
+            batteryController.calendar.set(year, month, dayOfMonth)
             batteryController.setCooker()
         }
 }

@@ -13,7 +13,7 @@ import com.example.androidDeviceDetails.utils.Utils
 import java.util.*
 
 class BatteryController(val context: Context, private val batteryBinding: ActivityBatteryBinding) {
-    private lateinit var calendar: Calendar
+    lateinit var calendar: Calendar
     private val batteryViewModel = BatteryViewModel(batteryBinding, context)
 
     fun setCooker(offset: Int = 0, reset: Boolean = false, tillToday: Boolean = false) {
@@ -47,10 +47,10 @@ class BatteryController(val context: Context, private val batteryBinding: Activi
 
     fun toggleCookingMode(v: TextView) {
         if (v.text == context.getString(R.string.till_today)) {
-            batteryViewModel.onTillTodayMode(v)
+            batteryViewModel.onDayWiseMode(v)
             setCooker(offset = 0, reset = true)
         } else {
-            batteryViewModel.onDayWiseMode(v)
+            batteryViewModel.onTillTodayMode(v)
             setCooker(offset = 0, reset = true, tillToday = true)
         }
     }
