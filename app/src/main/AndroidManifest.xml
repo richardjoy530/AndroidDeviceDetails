@@ -27,15 +27,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidDeviceDetails">
-        <activity android:name=".AppDataActivity"
+        <activity android:name=".AppInfoActivity"
             android:label="Application Info"
             android:parentActivityName=".MainActivity"/>
         <activity
-            android:name=".AppInfoActivity"
+            android:name=".AppDataActivity"
             android:label="Network Usage"
             android:parentActivityName=".MainActivity" />
         <activity
-            android:name=".BatteryActivity"
+            android:name=".battery.BatteryActivity"
             android:label="Battery Usage"
             android:parentActivityName=".MainActivity" />
         <activity android:name=".MainActivity">
@@ -55,7 +55,7 @@
             android:name=".receivers.BatteryReceiver"
             android:enabled="true">
             <intent-filter>
-                <action android:name="android.intent.action.PHONE_STATE" />
+                <action android:name="android.intent.action.BATTERY_CHANGED" />
             </intent-filter>
         </receiver>
         <receiver

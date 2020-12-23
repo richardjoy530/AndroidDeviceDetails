@@ -1,11 +1,7 @@
 package com.example.androidDeviceDetails.services
 
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.app.Service
 import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.net.wifi.WifiManager
@@ -14,6 +10,7 @@ import android.os.IBinder
 import android.telephony.PhoneStateListener
 import android.telephony.TelephonyManager
 import androidx.core.app.NotificationCompat
+import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.managers.AppDataUsageCollector
 import com.example.androidDeviceDetails.managers.AppUsage
 import com.example.androidDeviceDetails.managers.SignalChangeListener
@@ -52,16 +49,12 @@ class CollectorService : Service() {
         this.registerReceiver(mAppStateReceiver, filter)
 
         if (Build.VERSION.SDK_INT >= 26) {
-            val channel = NotificationChannel(
-                CHANNEL_ID,
-                "Collecting Data",
-                NotificationManager.IMPORTANCE_DEFAULT
-            )
-            (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager)
-                .createNotificationChannel(channel)
-            val notification: Notification = NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("")
-                .setContentText("").build()
+            val notification = NotificationCompat.Builder(this, CHANNEL_ID)
+                .setContentTitle("Monitoring device usage")
+                .setContentText("Background service running")
+                .setSmallIcon(R.drawable.ic_baseline_settings_18)
+                .setBadgeIconType(NotificationCompat.BADGE_ICON_SMALL)
+                .build()
             startForeground(1, notification)
 
         }

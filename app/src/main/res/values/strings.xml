@@ -19,6 +19,7 @@
     <string name="left">Left</string>
     <string name="date">Mon, 14 Dec</string>
     <string name="pie_chart_size">200dp</string>
+    <string name="day_wise">Day wise</string>
     <string name="app_data">APP DATA</string>
     <string name="wifi_data_usage">550 MB</string>
     <string name="cellular_data_usage">10 MB</string>

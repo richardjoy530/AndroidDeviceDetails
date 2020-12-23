@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.util.Log
+import androidx.core.content.ContextCompat
 import com.example.androidDeviceDetails.DeviceDetailsApplication
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.models.AppDetails
@@ -23,7 +24,9 @@ import kotlin.math.pow
 
 object Utils {
     private const val format = "dd/MM/yyyy HH:mm:ss:"
-    private val formatter = SimpleDateFormat(format, Locale.ENGLISH)
+    private val f = SimpleDateFormat(format, Locale.ENGLISH)
+
+    fun getDateTime(millis: Long): String = f.format(Date(millis))
 
     fun getWeek(day: Int): String {
         when (day) {
@@ -110,12 +113,14 @@ object Utils {
             .toString() + " " + units[digitGroups]
     }
 
-    @SuppressLint("UseCompatLoadingForDrawables")
     fun getApplicationIcon(packageName: String): Drawable {
         return try {
             DeviceDetailsApplication.instance.packageManager.getApplicationIcon(packageName)
         } catch (e: Exception) {
-            DeviceDetailsApplication.instance.getDrawable(R.drawable.ic_baseline_android_24)!!
+            ContextCompat.getDrawable(
+                DeviceDetailsApplication.instance,
+                R.drawable.ic_android_black_24dp
+            )!!
         }
     }
 
@@ -169,5 +174,11 @@ object Utils {
             }
         }
     }
+
+    fun getDateString(calendar: Calendar): String =
+        "${getWeek(calendar.get(Calendar.DAY_OF_WEEK))}, ${calendar.get(Calendar.DAY_OF_MONTH)} ${
+            getMonth(calendar.get(Calendar.MONTH))
+        }"
+
 
 }

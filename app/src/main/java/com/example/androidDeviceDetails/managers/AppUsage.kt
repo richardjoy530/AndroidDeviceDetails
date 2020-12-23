@@ -4,7 +4,7 @@ import android.app.usage.UsageEvents
 import android.app.usage.UsageStatsManager
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
-import com.example.androidDeviceDetails.models.AppUsageModel
+import com.example.androidDeviceDetails.battery.models.AppEventEntity
 import com.example.androidDeviceDetails.models.RoomDB
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -25,11 +25,11 @@ class AppUsage(context: Context) {
             val evt = UsageEvents.Event()
             events.getNextEvent(evt)
             if (evt.eventType == 1) {
-                val appUsageData = AppUsageModel(
+                val appUsageData = AppEventEntity(
                     timeStamp = evt.timeStamp,
                     packageName = evt.packageName
                 )
-                GlobalScope.launch(Dispatchers.IO) { db.appUsageInfoDao().insertAll(appUsageData) }
+                GlobalScope.launch(Dispatchers.IO) { db.appEventDao().insertAll(appUsageData) }
             }
         }
     }
