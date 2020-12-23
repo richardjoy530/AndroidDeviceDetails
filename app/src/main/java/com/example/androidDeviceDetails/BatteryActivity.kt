@@ -17,10 +17,8 @@ class BatteryActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        batteryController = BatteryController(this)
-
         batteryBinding = DataBindingUtil.setContentView(this, R.layout.activity_battery)
+        batteryController = BatteryController(this, batteryBinding)
         batteryBinding.apply {
             leftArrow.setOnClickListener(this@BatteryActivity)
             rightArrow.setOnClickListener(this@BatteryActivity)

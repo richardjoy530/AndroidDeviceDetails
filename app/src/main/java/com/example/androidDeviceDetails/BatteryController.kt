@@ -6,7 +6,6 @@ import android.net.Uri
 import android.provider.Settings
 import android.widget.AdapterView
 import android.widget.TextView
-import androidx.core.view.isVisible
 import com.example.androidDeviceDetails.adapters.BatteryListAdapter
 import com.example.androidDeviceDetails.databinding.ActivityBatteryBinding
 import com.example.androidDeviceDetails.managers.AppBatteryUsageManager
@@ -14,9 +13,9 @@ import com.example.androidDeviceDetails.managers.AppEntry
 import com.example.androidDeviceDetails.utils.Utils
 import java.util.*
 
-class BatteryController(val context: Context) {
+class BatteryController(val context: Context, private val batteryBinding: ActivityBatteryBinding) {
     private lateinit var calendar: Calendar
-    private lateinit var batteryBinding: ActivityBatteryBinding
+    private val batteryViewModel = BatteryViewModel(batteryBinding, context)
 
     fun setCooker(offset: Int = 0, reset: Boolean = false, tillToday: Boolean = false) {
         if (reset) calendar = Calendar.getInstance()
@@ -33,22 +32,9 @@ class BatteryController(val context: Context) {
     }
 
     private val onCookingDone = object : ICookingDone {
-        override fun onNoData() {
-            batteryBinding.root.post {
-                batteryBinding.batteryListView.adapter =
-                    BatteryListAdapter(context, R.layout.battery_tile, arrayListOf())
-                batteryBinding.total.text = context.getString(R.string.no_usage_recorded)
-            }
-        }
-
-        override fun onData(appEntryList: ArrayList<AppEntry>, totalDrop: Int) {
-            batteryBinding.root.post {
-                batteryBinding.batteryListView.adapter =
-                    BatteryListAdapter(context, R.layout.battery_tile, appEntryList)
-                val totalText = "Total drop is $totalDrop %"
-                batteryBinding.total.text = totalText
-            }
-        }
+        override fun onNoData() = batteryViewModel.onNoData()
+        override fun onData(appEntryList: ArrayList<AppEntry>, totalDrop: Int) =
+            batteryViewModel.onData(appEntryList, totalDrop)
     }
 
     fun redirectToAppInfo(parent: AdapterView<*>, position: Int) {
@@ -62,12 +48,10 @@ class BatteryController(val context: Context) {
 
     fun toggleCookingMode(v: TextView) {
         if (v.text == context.getString(R.string.till_today)) {
-            v.text = context.getString(R.string.day_wise)
-            batteryBinding.batteryDatePicker.isVisible = true
+            batteryViewModel.onTillTodayMode(v)
             setCooker(offset = 0, reset = true)
         } else {
-            v.text = context.getString(R.string.till_today)
-            batteryBinding.batteryDatePicker.isVisible = false
+            batteryViewModel.onDayWiseMode(v)
             setCooker(offset = 0, reset = true, tillToday = true)
         }
     }
