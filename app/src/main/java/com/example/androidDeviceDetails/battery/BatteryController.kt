@@ -1,4 +1,4 @@
-package com.example.androidDeviceDetails
+package com.example.androidDeviceDetails.battery
 
 import android.content.Context
 import android.content.Intent
@@ -6,10 +6,9 @@ import android.net.Uri
 import android.provider.Settings
 import android.widget.AdapterView
 import android.widget.TextView
-import com.example.androidDeviceDetails.adapters.BatteryListAdapter
+import com.example.androidDeviceDetails.ICookingDone
+import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.databinding.ActivityBatteryBinding
-import com.example.androidDeviceDetails.managers.AppBatteryUsageManager
-import com.example.androidDeviceDetails.managers.AppEntry
 import com.example.androidDeviceDetails.utils.Utils
 import java.util.*
 
@@ -24,7 +23,7 @@ class BatteryController(val context: Context, private val batteryBinding: Activi
         calendar[Calendar.SECOND] = 0
         calendar.add(Calendar.DAY_OF_MONTH, offset)
         batteryBinding.today.text = Utils.getDateString(calendar)
-        AppBatteryUsageManager().cookBatteryData(
+        BatteryCooker().cookBatteryData(
             onCookingDone,
             if (tillToday) 0 else calendar.timeInMillis,
             endTime = calendar.timeInMillis + 24 * 60 * 60 * 1000
@@ -33,8 +32,8 @@ class BatteryController(val context: Context, private val batteryBinding: Activi
 
     private val onCookingDone = object : ICookingDone {
         override fun onNoData() = batteryViewModel.onNoData()
-        override fun onData(appEntryList: ArrayList<AppEntry>, totalDrop: Int) =
-            batteryViewModel.onData(appEntryList, totalDrop)
+        override fun onData(batteryAppEntryList: ArrayList<BatteryAppEntry>, totalDrop: Int) =
+            batteryViewModel.onData(batteryAppEntryList, totalDrop)
     }
 
     fun redirectToAppInfo(parent: AdapterView<*>, position: Int) {

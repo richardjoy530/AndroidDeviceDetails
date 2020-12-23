@@ -1,11 +1,10 @@
-package com.example.androidDeviceDetails
+package com.example.androidDeviceDetails.battery
 
 import android.content.Context
 import android.widget.TextView
 import androidx.core.view.isVisible
-import com.example.androidDeviceDetails.adapters.BatteryListAdapter
+import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.databinding.ActivityBatteryBinding
-import com.example.androidDeviceDetails.managers.AppEntry
 import java.util.*
 
 class BatteryViewModel(private val batteryBinding: ActivityBatteryBinding, val context: Context) {
@@ -17,10 +16,10 @@ class BatteryViewModel(private val batteryBinding: ActivityBatteryBinding, val c
         }
     }
 
-    fun onData(appEntryList: ArrayList<AppEntry>, totalDrop: Int) {
+    fun onData(batteryAppEntryList: ArrayList<BatteryAppEntry>, totalDrop: Int) {
         batteryBinding.root.post {
             batteryBinding.batteryListView.adapter =
-                BatteryListAdapter(context, R.layout.battery_tile, appEntryList)
+                BatteryListAdapter(context, R.layout.battery_tile, batteryAppEntryList)
             val totalText = "Total drop is $totalDrop %"
             batteryBinding.total.text = totalText
         }

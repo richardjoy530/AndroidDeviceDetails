@@ -5,15 +5,19 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.androidDeviceDetails.DeviceDetailsApplication
+import com.example.androidDeviceDetails.battery.models.AppEventDao
+import com.example.androidDeviceDetails.battery.models.AppEventEntity
+import com.example.androidDeviceDetails.battery.models.BatteryDao
+import com.example.androidDeviceDetails.battery.models.BatteryEntity
 
 
 @Database(
-    entities = [AppUsageModel::class, BatteryRawModel::class, LocationModel::class, Apps::class, AppHistory::class, WifiRaw::class, CellularRaw::class],
+    entities = [AppEventEntity::class, BatteryEntity::class, LocationModel::class, Apps::class, AppHistory::class, WifiRaw::class, CellularRaw::class],
     version = 1
 )
 abstract class RoomDB : RoomDatabase() {
-    abstract fun batteryInfoDao(): BatteryInfoDao
-    abstract fun appUsageInfoDao(): AppUsageInfoDao
+    abstract fun batteryDao(): BatteryDao
+    abstract fun appEventDao(): AppEventDao
     abstract fun locationDao(): ILocationDao
     abstract fun appsDao(): AppsDao
     abstract fun appHistoryDao(): AppHistoryDao

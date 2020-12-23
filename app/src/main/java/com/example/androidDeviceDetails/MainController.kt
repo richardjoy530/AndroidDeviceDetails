@@ -3,7 +3,6 @@ package com.example.androidDeviceDetails
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import com.example.androidDeviceDetails.managers.AppBatteryUsageManager
 import com.example.androidDeviceDetails.services.CollectorService
 import com.example.androidDeviceDetails.utils.Utils
 
