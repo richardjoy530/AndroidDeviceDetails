@@ -6,6 +6,7 @@ import android.content.Context
 import com.example.androidDeviceDetails.ICookingDone
 import com.example.androidDeviceDetails.cooker.NetworkUsageCooker
 import com.example.androidDeviceDetails.databinding.ActivityAppDataBinding
+import com.example.androidDeviceDetails.models.TimeInterval
 import com.example.androidDeviceDetails.models.networkUsageModels.AppNetworkUsageEntity
 import com.example.androidDeviceDetails.viewModel.NetworkUsageViewModel
 import java.util.*
@@ -16,17 +17,15 @@ class NetworkUsageController(
 ) {
     val startCalendar: Calendar = Calendar.getInstance()
     val endCalendar: Calendar = Calendar.getInstance()
-    private val networkUsageViewModel = NetworkUsageViewModel(context, networkUsageBinding)
+    private val networkUsageViewModel = NetworkUsageViewModel(networkUsageBinding,context)
     fun setCooker() {
         networkUsageViewModel.updateTextViews(startCalendar, endCalendar)
         startCalendar.set(Calendar.SECOND, 0)
         endCalendar.set(Calendar.SECOND, 0)
         startCalendar.set(Calendar.MILLISECOND, 0)
         endCalendar.set(Calendar.MILLISECOND, 0)
-        NetworkUsageCooker().appDataCooker(
-            onCookingDone,
-            startCalendar.timeInMillis,
-            endCalendar.timeInMillis
+        NetworkUsageCooker().cook(
+            TimeInterval(0L,0L),onCookingDone
         )
     }
 

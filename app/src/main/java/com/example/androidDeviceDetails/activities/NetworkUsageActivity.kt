@@ -8,13 +8,19 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.R
+import com.example.androidDeviceDetails.controller.AppController
 import com.example.androidDeviceDetails.controller.NetworkUsageController
 import com.example.androidDeviceDetails.databinding.ActivityAppDataBinding
+import com.example.androidDeviceDetails.models.TimeInterval
+import com.example.androidDeviceDetails.models.networkUsageModels.AppNetworkUsageEntity
 import java.util.*
 
 class NetworkUsageActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var networkUsageBinding: ActivityAppDataBinding
-    private lateinit var networkUsageController: NetworkUsageController
+    private lateinit var networkUsageController: AppController<ActivityAppDataBinding,AppNetworkUsageEntity>
+    private lateinit var startCalendar: Calendar
+    private lateinit var endCalendar: Calendar
+
 
     companion object {
         const val NAME = "network"
@@ -23,15 +29,19 @@ class NetworkUsageActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         networkUsageBinding = DataBindingUtil.setContentView(this, R.layout.activity_app_data)
-        networkUsageController = NetworkUsageController(this, networkUsageBinding)
+        networkUsageController = AppController(NAME,networkUsageBinding,this)
+        startCalendar= Calendar.getInstance()
+        startCalendar.set(Calendar.HOUR,0)
+        startCalendar.set(Calendar.MINUTE,0)
+        endCalendar= Calendar.getInstance()
         networkUsageBinding.apply {
             startTime.setOnClickListener(this@NetworkUsageActivity)
             startDate.setOnClickListener(this@NetworkUsageActivity)
             endTime.setOnClickListener(this@NetworkUsageActivity)
             endDate.setOnClickListener(this@NetworkUsageActivity)
         }
-        networkUsageController.startCalendar.add(Calendar.DAY_OF_MONTH, -1)
-        networkUsageController.setCooker()
+        startCalendar.add(Calendar.DAY_OF_MONTH, -1)
+        networkUsageController.cook(TimeInterval(startCalendar.timeInMillis,endCalendar.timeInMillis))
     }
 
     override fun onClick(v: View?) {
@@ -44,8 +54,8 @@ class NetworkUsageActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun setStartTime() {
-        val hour = networkUsageController.startCalendar.get(Calendar.HOUR)
-        val minute = networkUsageController.startCalendar.get(Calendar.MINUTE)
+        val hour = startCalendar.get(Calendar.HOUR)
+        val minute =startCalendar.get(Calendar.MINUTE)
         TimePickerDialog(
             this@NetworkUsageActivity, startTimePickerListener, hour, minute,
             DateFormat.is24HourFormat(this)
@@ -54,15 +64,15 @@ class NetworkUsageActivity : AppCompatActivity(), View.OnClickListener {
 
     private val startTimePickerListener =
         TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
-            networkUsageController.startCalendar[Calendar.HOUR_OF_DAY] = hourOfDay
-            networkUsageController.startCalendar[Calendar.MINUTE] = minute
-            networkUsageController.setCooker()
+            startCalendar[Calendar.HOUR_OF_DAY] = hourOfDay
+            startCalendar[Calendar.MINUTE] = minute
+            networkUsageController.cook(TimeInterval(startCalendar.timeInMillis,endCalendar.timeInMillis))
         }
 
     private fun setStartDate() {
-        val day = networkUsageController.startCalendar.get(Calendar.DAY_OF_MONTH)
-        val month = networkUsageController.startCalendar.get(Calendar.MONTH)
-        val year = networkUsageController.startCalendar.get(Calendar.YEAR)
+        val day = startCalendar.get(Calendar.DAY_OF_MONTH)
+        val month = startCalendar.get(Calendar.MONTH)
+        val year = startCalendar.get(Calendar.YEAR)
         DatePickerDialog(
             this@NetworkUsageActivity,
             startDatePickerListener,
@@ -74,13 +84,13 @@ class NetworkUsageActivity : AppCompatActivity(), View.OnClickListener {
 
     private var startDatePickerListener =
         DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
-            networkUsageController.startCalendar.set(year, month, dayOfMonth)
-            networkUsageController.setCooker()
+            startCalendar.set(year, month, dayOfMonth)
+            networkUsageController.cook(TimeInterval(startCalendar.timeInMillis,endCalendar.timeInMillis))
         }
 
     private fun setEndTime() {
-        val hour = networkUsageController.startCalendar.get(Calendar.HOUR)
-        val minute = networkUsageController.startCalendar.get(Calendar.MINUTE)
+        val hour = startCalendar.get(Calendar.HOUR)
+        val minute = startCalendar.get(Calendar.MINUTE)
         TimePickerDialog(
             this@NetworkUsageActivity, endTimePickerListener, hour, minute,
             DateFormat.is24HourFormat(this)
@@ -88,15 +98,15 @@ class NetworkUsageActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private val endTimePickerListener = TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
-        networkUsageController.endCalendar[Calendar.HOUR_OF_DAY] = hourOfDay
-        networkUsageController.endCalendar[Calendar.MINUTE] = minute
-        networkUsageController.setCooker()
+        endCalendar[Calendar.HOUR_OF_DAY] = hourOfDay
+        endCalendar[Calendar.MINUTE] = minute
+        networkUsageController.cook(TimeInterval(startCalendar.timeInMillis,endCalendar.timeInMillis))
     }
 
     private fun setEndDate() {
-        val day = networkUsageController.endCalendar.get(Calendar.DAY_OF_MONTH)
-        val month = networkUsageController.endCalendar.get(Calendar.MONTH)
-        val year = networkUsageController.endCalendar.get(Calendar.YEAR)
+        val day = endCalendar.get(Calendar.DAY_OF_MONTH)
+        val month = endCalendar.get(Calendar.MONTH)
+        val year = endCalendar.get(Calendar.YEAR)
         DatePickerDialog(
             this@NetworkUsageActivity,
             endDatePickerListener,
@@ -108,8 +118,8 @@ class NetworkUsageActivity : AppCompatActivity(), View.OnClickListener {
 
     private var endDatePickerListener =
         DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
-            networkUsageController.endCalendar.set(year, month, dayOfMonth)
-            networkUsageController.setCooker()
+            endCalendar.set(year, month, dayOfMonth)
+            networkUsageController.cook(TimeInterval(startCalendar.timeInMillis,endCalendar.timeInMillis))
         }
 
 
