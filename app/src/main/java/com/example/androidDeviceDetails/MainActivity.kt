@@ -8,6 +8,7 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.example.androidDeviceDetails.activities.BatteryActivity
+import com.example.androidDeviceDetails.activities.NetworkUsageActivity
 import com.example.androidDeviceDetails.utils.PrefManager
 import com.example.androidDeviceDetails.utils.Utils
 
@@ -57,13 +58,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 val intent = Intent(this, BatteryActivity::class.java).apply {}
                 startActivity(intent)
             }
-            R.id.appInfo ->{
+            R.id.appInfo -> {
                 val intent = Intent(this, AppInfoActivity::class.java).apply {}
                 startActivity(intent)
             }
             R.id.toggleSwitch -> toggleService()
-            R.id.appData->{
-                val intent = Intent(this, AppDataActivity::class.java).apply {}
+            R.id.appData -> {
+                val intent = Intent(this, NetworkUsageActivity::class.java).apply {}
                 startActivity(intent)
             }
         }

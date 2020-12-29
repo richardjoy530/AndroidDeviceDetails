@@ -10,7 +10,7 @@ class BatteryCooker {
     private var db: RoomDB = RoomDB.getDatabase()!!
 
     fun cookBatteryData(
-        callback: ICookingDone,
+        callback: ICookingDone<BatteryAppEntry>,
         beginTime: Long,
         endTime: Long = System.currentTimeMillis()
     ) {
@@ -39,9 +39,7 @@ class BatteryCooker {
                     previousApp = appEvent
                     previousBattery = batteryInfo
                 }
-                var totalDrop = 0
-                for (i in appEntryList) totalDrop += i.drop
-                callback.onData(appEntryList, totalDrop)
+                callback.onData(appEntryList)
             } else callback.onNoData()
         }
     }

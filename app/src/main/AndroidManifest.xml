@@ -31,7 +31,7 @@
             android:label="Application Info"
             android:parentActivityName=".MainActivity"/>
         <activity
-            android:name=".AppDataActivity"
+            android:name=".activities.NetworkUsageActivity"
             android:label="Network Usage"
             android:parentActivityName=".MainActivity" />
         <activity

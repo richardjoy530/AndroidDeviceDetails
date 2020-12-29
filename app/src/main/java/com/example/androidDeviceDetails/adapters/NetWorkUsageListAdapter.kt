@@ -5,30 +5,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.ImageView
-import android.widget.TextView
 import com.example.androidDeviceDetails.R
-import com.example.androidDeviceDetails.models.AppDataUsage
+import com.example.androidDeviceDetails.models.networkUsageModels.AppNetworkUsageEntity
 import com.example.androidDeviceDetails.utils.Utils
 
-class AppDataListAdapter(
+class NetWorkUsageListAdapter(
     private var _context: Context,
     private var resource: Int,
-    private var items: ArrayList<AppDataUsage>
-) : ArrayAdapter<AppDataUsage>(_context, resource, items) {
+    private var items: ArrayList<AppNetworkUsageEntity>
+) : ArrayAdapter<AppNetworkUsageEntity>(_context, resource, items) {
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val layoutInflater = LayoutInflater.from(_context)
         var vi = convertView
-        val holder: AppDataViewHolder
+        val holder: NetworkUsageItemViewHolder
         if (convertView == null) {
             vi = layoutInflater.inflate(resource, null)
-            holder = AppDataViewHolder()
+            holder = NetworkUsageItemViewHolder()
             holder.appNameView = vi.findViewById(R.id.appName)
             holder.wifiUsageView = vi.findViewById(R.id.appWifiData)
             holder.cellularUsageView = vi.findViewById(R.id.appCellularData)
             holder.appIconView = vi.findViewById(R.id.appIcon)
             vi.tag = holder
-        } else holder = vi?.tag as AppDataViewHolder
+        } else holder = vi?.tag as NetworkUsageItemViewHolder
 
         holder.appNameView?.text = Utils.getApplicationLabel(items[position].packageName)
         var text =
@@ -44,9 +42,3 @@ class AppDataListAdapter(
 }
 
 
-data class AppDataViewHolder(
-    var appNameView: TextView? = null,
-    var wifiUsageView: TextView? = null,
-    var cellularUsageView: TextView? = null,
-    var appIconView: ImageView? = null,
-)

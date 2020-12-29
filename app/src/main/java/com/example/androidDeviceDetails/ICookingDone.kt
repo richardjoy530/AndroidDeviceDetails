@@ -1,9 +1,8 @@
 package com.example.androidDeviceDetails
 
-import com.example.androidDeviceDetails.models.batteryModels.BatteryAppEntry
 import java.util.*
 
-interface ICookingDone {
+interface ICookingDone<T> {
     fun onNoData()
-    fun onData(batteryAppEntryList: ArrayList<BatteryAppEntry>, totalDrop: Int)
+    fun onData(outputList: ArrayList<T>)
 }

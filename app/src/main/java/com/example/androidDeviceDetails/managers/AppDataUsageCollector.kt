@@ -8,9 +8,9 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import com.example.androidDeviceDetails.models.AppDataUsage
-import com.example.androidDeviceDetails.models.DeviceDataUsage
 import com.example.androidDeviceDetails.models.RoomDB
+import com.example.androidDeviceDetails.models.networkUsageModels.AppNetworkUsageEntity
+import com.example.androidDeviceDetails.models.networkUsageModels.DeviceNetworkUsageEntity
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -23,7 +23,7 @@ class AppDataUsageCollector(var context: Context) {
         context.getSystemService(AppCompatActivity.NETWORK_STATS_SERVICE) as NetworkStatsManager
 
     fun updateAppDataUsageDB() {
-        val appDataUsageList = arrayListOf<AppDataUsage>()
+        val appDataUsageList = arrayListOf<AppNetworkUsageEntity>()
         val networkStatsWifi = networkStatsManager.querySummary(
             NetworkCapabilities.TRANSPORT_WIFI,
             null, firstInstallTime, System.currentTimeMillis()
@@ -64,7 +64,7 @@ class AppDataUsageCollector(var context: Context) {
                         }
             }
         }
-        GlobalScope.launch { appDataUsageList.forEach { db.appDataUsage().insertAll(it) } }
+        GlobalScope.launch { appDataUsageList.forEach { db.appNetworkUsageDao().insertAll(it) } }
     }
 
     fun updateDeviceDataUsageDB() {
@@ -85,8 +85,8 @@ class AppDataUsageCollector(var context: Context) {
         totalMobileDataRx += bucket.rxBytes
         totalMobileDataTx += bucket.txBytes
         GlobalScope.launch {
-            db.deviceDataUsage().insertAll(
-                DeviceDataUsage(
+            db.deviceNetworkUsageDao().insertAll(
+                DeviceNetworkUsageEntity(
                     System.currentTimeMillis(),
                     totalWifiDataTx, totalMobileDataTx,
                     totalWifiDataRx, totalMobileDataRx
@@ -98,19 +98,21 @@ class AppDataUsageCollector(var context: Context) {
     private fun appDataUsageFactory(
         bucket: NetworkStats.Bucket,
         wifiEnable: Boolean = true
-    ): AppDataUsage {
+    ): AppNetworkUsageEntity {
         val packageName = context.packageManager.getNameForUid(bucket.uid)!!
-        val timeNow=System.currentTimeMillis()
+        val timeNow = System.currentTimeMillis()
         return if (wifiEnable)
-            AppDataUsage(0,
-                timeNow.minus(timeNow.rem(60*1000)),
+            AppNetworkUsageEntity(
+                0,
+                timeNow.minus(timeNow.rem(60 * 1000)),
                 packageName,
                 bucket.txBytes, 0L,
                 bucket.rxBytes, 0L
             )
         else
-            AppDataUsage(0,
-                timeNow.minus(timeNow.rem(60*1000)),
+            AppNetworkUsageEntity(
+                0,
+                timeNow.minus(timeNow.rem(60 * 1000)),
                 packageName,
                 0L, bucket.txBytes, 0L,
                 bucket.rxBytes,

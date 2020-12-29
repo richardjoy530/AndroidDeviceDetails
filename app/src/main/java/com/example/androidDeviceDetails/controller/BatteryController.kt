@@ -32,12 +32,12 @@ class BatteryController(val context: Context, private val batteryBinding: Activi
             if (tillToday) 0 else calendar.timeInMillis,
             endTime = calendar.timeInMillis + 24 * 60 * 60 * 1000
         )
-    }
+    }//TODO: make fun for calender
 
-    private val onCookingDone = object : ICookingDone {
+    private val onCookingDone = object : ICookingDone<BatteryAppEntry> {
         override fun onNoData() = batteryViewModel.onNoData()
-        override fun onData(batteryAppEntryList: ArrayList<BatteryAppEntry>, totalDrop: Int) =
-            batteryViewModel.onData(batteryAppEntryList, totalDrop)
+        override fun onData(outputList: ArrayList<BatteryAppEntry>) =
+            batteryViewModel.onData(outputList)
     }
 
     fun redirectToAppInfo(parent: AdapterView<*>, position: Int) {
@@ -47,7 +47,7 @@ class BatteryController(val context: Context, private val batteryBinding: Activi
         infoIntent.addCategory(Intent.CATEGORY_DEFAULT)
         infoIntent.data = Uri.parse("package:${item?.packageId}")
         context.startActivity(infoIntent)
-    }
+    }//TODO: Move to mainActivity
 
     fun toggleCookingMode(v: TextView) {
         if (v.text == context.getString(R.string.till_today)) {

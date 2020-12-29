@@ -9,10 +9,14 @@ import com.example.androidDeviceDetails.models.batteryModels.AppEventDao
 import com.example.androidDeviceDetails.models.batteryModels.AppEventEntity
 import com.example.androidDeviceDetails.models.batteryModels.BatteryDao
 import com.example.androidDeviceDetails.models.batteryModels.BatteryEntity
+import com.example.androidDeviceDetails.models.networkUsageModels.AppNetworkUsageDao
+import com.example.androidDeviceDetails.models.networkUsageModels.AppNetworkUsageEntity
+import com.example.androidDeviceDetails.models.networkUsageModels.DeviceNetworkUsageDao
+import com.example.androidDeviceDetails.models.networkUsageModels.DeviceNetworkUsageEntity
 
 
 @Database(
-    entities = [AppEventEntity::class, BatteryEntity::class, LocationModel::class, Apps::class, AppHistory::class, WifiRaw::class, CellularRaw::class, AppDataUsage::class, DeviceDataUsage::class],
+    entities = [AppEventEntity::class, BatteryEntity::class, LocationModel::class, Apps::class, AppHistory::class, WifiRaw::class, CellularRaw::class, AppNetworkUsageEntity::class, DeviceNetworkUsageEntity::class],
     version = 1
 )
 abstract class RoomDB : RoomDatabase() {
@@ -23,8 +27,8 @@ abstract class RoomDB : RoomDatabase() {
     abstract fun appHistoryDao(): AppHistoryDao
     abstract fun wifiDao(): WifiDao
     abstract fun cellularDao(): CellularDao
-    abstract fun appDataUsage(): AppDataUsageDao
-    abstract fun deviceDataUsage(): DeviceDataUsageDao
+    abstract fun appNetworkUsageDao(): AppNetworkUsageDao
+    abstract fun deviceNetworkUsageDao(): DeviceNetworkUsageDao
 
     companion object {
         private var INSTANCE: RoomDB? = null

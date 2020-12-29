@@ -18,10 +18,12 @@ class BatteryViewModel(private val batteryBinding: ActivityBatteryBinding, val c
         }
     }
 
-    fun onData(batteryAppEntryList: ArrayList<BatteryAppEntry>, totalDrop: Int) {
+    fun onData(outputList: ArrayList<BatteryAppEntry>) {
+        var totalDrop = 0
+        for (i in outputList) totalDrop += i.drop
         batteryBinding.root.post {
             batteryBinding.batteryListView.adapter =
-                BatteryListAdapter(context, R.layout.battery_tile, batteryAppEntryList)
+                BatteryListAdapter(context, R.layout.battery_tile, outputList)
             val totalText = "Total drop is $totalDrop %"
             batteryBinding.total.text = totalText
         }
