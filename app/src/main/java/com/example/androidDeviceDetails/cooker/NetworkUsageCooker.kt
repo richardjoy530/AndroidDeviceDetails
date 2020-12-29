@@ -11,6 +11,7 @@ import java.util.ArrayList
 
 class NetworkUsageCooker : BaseCooker() {
 
+    @Suppress("UNCHECKED_CAST")
     override fun <T> cook(time: TimeInterval, callback: ICookingDone<T>) {
         val db = RoomDB.getDatabase()?.appNetworkUsageDao()!!
         GlobalScope.launch {
