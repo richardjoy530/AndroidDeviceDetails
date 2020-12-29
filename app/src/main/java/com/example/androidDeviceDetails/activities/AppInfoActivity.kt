@@ -1,4 +1,4 @@
-package com.example.androidDeviceDetails
+package com.example.androidDeviceDetails.activities
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
@@ -15,6 +15,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
+import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.controller.AppInfoController
 import com.example.androidDeviceDetails.managers.AppInfoManager
 import com.example.androidDeviceDetails.models.appInfoModels.EventType
