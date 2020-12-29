@@ -14,37 +14,35 @@ import kotlinx.coroutines.launch
 
 class AppInfoController(binding: ActivityAppInfoBinding, var context: Context) {
 
-    private var viewModel: AppInfoViewModel = AppInfoViewModel(binding)
-    private var eventFilter: Int = EventType.ALL_EVENTS.ordinal
-
-    private val appInfoData = object : IAppInfoCookedData {
-        override fun onDataReceived(appList: List<AppInfoCookedData>) {
-            var filteredList = appList.toMutableList()
-            if (eventFilter != EventType.ALL_EVENTS.ordinal) {
-                filteredList.removeAll { it.eventType.ordinal != eventFilter }
-            }
-            filteredList = filteredList.sortedBy { it.appName }.toMutableList()
-            filteredList.removeAll { it.packageName == DeviceDetailsApplication.instance.packageName }
-            viewModel.updateAppList(filteredList, context)
-            viewModel.updateDonutChart(appList)
-        }
-
-        override fun onNoData() {
-            viewModel.clearDisplay()
-        }
-    }
-
-    fun setAppIfoData(
-        startTime: Long,
-        endTime: Long,
-        eventFilter: Int
-    ) {
-        this.eventFilter = eventFilter
-        GlobalScope.launch(Dispatchers.IO) {
-            AppInfoCooker.createInstance()
-                .getAppsBetween(startTime, endTime, appInfoData)
-        }
-    }
+//    private var viewModel: AppInfoViewModel = AppInfoViewModel(binding, context)
+//    private var eventFilter: Int = EventType.ALL_EVENTS.ordinal
+//
+//    private val appInfoData = object : IAppInfoCookedData {
+//        override fun onDataReceived(appList: List<AppInfoCookedData>) {
+//            var filteredList = appList.toMutableList()
+//            if (eventFilter != EventType.ALL_EVENTS.ordinal) {
+//                filteredList.removeAll { it.eventType.ordinal != eventFilter }
+//            }
+//            filteredList = filteredList.sortedBy { it.appName }.toMutableList()
+//            filteredList.removeAll { it.packageName == DeviceDetailsApplication.instance.packageName }
+//            viewModel.updateAppList(filteredList, context)
+//            viewModel.updateDonutChart(appList)
+//        }
+//
+//        override fun onNoData() {
+//            viewModel.clearDisplay()
+//        }
+//    }
+//
+//    fun setAppIfoData(
+//        startTime: Long,
+//        endTime: Long
+//    ) {
+//        GlobalScope.launch(Dispatchers.IO) {
+//            AppInfoCooker.createInstance()
+//                .getAppsBetween(startTime, endTime, appInfoData)
+//        }
+//    }
 
 
 }

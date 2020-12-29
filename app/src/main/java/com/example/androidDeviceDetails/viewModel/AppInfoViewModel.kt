@@ -2,17 +2,59 @@ package com.example.androidDeviceDetails.viewModel
 
 import android.content.Context
 import androidx.core.view.isVisible
+import com.example.androidDeviceDetails.DeviceDetailsApplication
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.adapters.AppInfoListAdapter
+import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.databinding.ActivityAppInfoBinding
 import com.example.androidDeviceDetails.managers.AppInfoManager
 import com.example.androidDeviceDetails.models.appInfoModels.AppInfoCookedData
 import com.example.androidDeviceDetails.models.appInfoModels.EventType
 import kotlin.math.ceil
 
-class AppInfoViewModel(private val binding: ActivityAppInfoBinding) {
+class AppInfoViewModel(private val binding: ActivityAppInfoBinding, val context: Context) :
+    BaseViewModel() {
 
-    fun updateDonutChart(appList: List<AppInfoCookedData>) {
+    override fun onNoData() {
+        binding.root.post {
+            binding.appInfoListView.adapter = null
+            binding.statisticsContainer.isVisible = false
+            binding.appInfoListView.isVisible = false
+        }
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    override fun <T> onData(outputList: ArrayList<T>) {
+        val appList = outputList as ArrayList<AppInfoCookedData>
+        var filteredList = appList.toMutableList()
+        val eventFilter = binding.statisticsContainer.tag.toString().toIntOrNull()
+        if (eventFilter != EventType.ALL_EVENTS.ordinal) {
+            filteredList.removeAll { it.eventType.ordinal != eventFilter }
+        }
+        filteredList = filteredList.sortedBy { it.appName }.toMutableList()
+        filteredList.removeAll { it.packageName == DeviceDetailsApplication.instance.packageName }
+        if (filteredList.isNotEmpty()) {
+            binding.root.post {
+                binding.appInfoListView.adapter = null
+                binding.statisticsContainer.isVisible = true
+                binding.appInfoListView.isVisible = true
+                binding.appInfoListView.adapter =
+                    AppInfoListAdapter(
+                        context,
+                        R.layout.appinfo_tile,
+                        filteredList
+                    )
+                AppInfoManager.justifyListViewHeightBasedOnChildren(
+                    binding.appInfoListView,
+                    filteredList.size
+                )
+            }
+        } else {
+            binding.root.post {
+                binding.appInfoListView.isVisible = false
+            }
+        }
+
         val total = appList.size.toDouble()
         val enrolledAppCount =
             appList.groupingBy { it.eventType.ordinal == EventType.APP_ENROLL.ordinal }
@@ -47,38 +89,6 @@ class AppInfoViewModel(private val binding: ActivityAppInfoBinding) {
             binding.installCount.text = (installedAppCount[true] ?: 0).toString()
             binding.updateCount.text = (updateAppCount[true] ?: 0).toString()
             binding.uninstallCount.text = (uninstalledAppCount[true] ?: 0).toString()
-        }
-    }
-
-    fun updateAppList(filteredList: MutableList<AppInfoCookedData>, context: Context) {
-        if (filteredList.isNotEmpty()) {
-            binding.root.post {
-                binding.appInfoListView.adapter = null
-                binding.statisticsContainer.isVisible = true
-                binding.appInfoListView.isVisible = true
-                binding.appInfoListView.adapter =
-                    AppInfoListAdapter(
-                        context,
-                        R.layout.appinfo_tile,
-                        filteredList
-                    )
-                AppInfoManager.justifyListViewHeightBasedOnChildren(
-                    binding.appInfoListView,
-                    filteredList.size
-                )
-            }
-        } else {
-            binding.root.post {
-                binding.appInfoListView.isVisible = false
-            }
-        }
-    }
-
-    fun clearDisplay() {
-        binding.root.post {
-            binding.appInfoListView.adapter = null
-            binding.statisticsContainer.isVisible = false
-            binding.appInfoListView.isVisible = false
         }
     }
 }

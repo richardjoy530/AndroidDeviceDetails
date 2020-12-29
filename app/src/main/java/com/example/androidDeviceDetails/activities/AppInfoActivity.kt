@@ -16,9 +16,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.R
-import com.example.androidDeviceDetails.controller.AppInfoController
+import com.example.androidDeviceDetails.controller.AppController
 import com.example.androidDeviceDetails.databinding.ActivityAppInfoBinding
 import com.example.androidDeviceDetails.managers.AppInfoManager
+import com.example.androidDeviceDetails.models.TimeInterval
+import com.example.androidDeviceDetails.models.appInfoModels.AppInfoCookedData
 import com.example.androidDeviceDetails.models.appInfoModels.EventType
 import com.example.androidDeviceDetails.services.CollectorService
 import com.example.androidDeviceDetails.utils.Utils
@@ -34,7 +36,7 @@ class AppInfoActivity : AppCompatActivity() {
     private var endTime: Long = 0
     private var startTimeFlag: Boolean = true
     private var eventFilter = EventType.ALL_EVENTS.ordinal
-    private lateinit var controller: AppInfoController
+    private lateinit var controller: AppController<ActivityAppInfoBinding,AppInfoCookedData>
 
     @SuppressLint("SimpleDateFormat")
     private val simpleDateFormat = SimpleDateFormat("HH:mm',' dd/MM/yyyy")
@@ -55,30 +57,35 @@ class AppInfoActivity : AppCompatActivity() {
             R.id.spinner_all -> {
                 eventFilter = EventType.ALL_EVENTS.ordinal
                 title.text = "All"
+                binding.statisticsContainer.tag = "4"
             }
             R.id.spinner_enrolled -> {
                 eventFilter = EventType.APP_ENROLL.ordinal
                 title.text = "Enrolled"
+                binding.statisticsContainer.tag = "0"
 
             }
             R.id.spinner_installed -> {
                 eventFilter = EventType.APP_INSTALLED.ordinal
                 title.text = "Installed"
+                binding.statisticsContainer.tag = "1"
             }
             R.id.spinner_updated -> {
                 eventFilter = EventType.APP_UPDATED.ordinal
                 title.text = "Updated"
+                binding.statisticsContainer.tag = "2"
             }
             R.id.spinner_uninstalled -> {
                 eventFilter = EventType.APP_UNINSTALLED.ordinal
                 title.text = "Uninstalled"
+                binding.statisticsContainer.tag = "3"
             }
             R.id.filter_text -> {
             }
             else -> super.onSupportNavigateUp()
         }
         if (startTime != 0L && endTime != 0L) {
-            controller.setAppIfoData(startTime, endTime, eventFilter)
+            controller.cook(TimeInterval(startTime, endTime))
         }
         return true
     }
@@ -86,14 +93,14 @@ class AppInfoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_app_info)
-        controller = AppInfoController(binding, this)
+        controller = AppController(NAME,binding,this)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.statisticsContainer.isVisible = false
         binding.appInfoListView.isEnabled = false
 
         startTime = Utils.loadPreviousDayTime()
         endTime = System.currentTimeMillis()
-        controller.setAppIfoData(startTime, endTime, eventFilter)
+        controller.cook(TimeInterval(startTime, endTime))
         binding.startdateView.text = simpleDateFormat.format(startTime)
         binding.enddateView.text = simpleDateFormat.format(endTime)
 
@@ -136,7 +143,7 @@ class AppInfoActivity : AppCompatActivity() {
             if (startTime < endTime || endTime == 0L) {
                 binding.startdateView.text = time
                 if (startTime != 0L && endTime != 0L)
-                    controller.setAppIfoData(startTime, endTime, eventFilter)
+                    controller.cook(TimeInterval(startTime, endTime))
             } else {
                 Toast.makeText(
                     this,
@@ -149,7 +156,7 @@ class AppInfoActivity : AppCompatActivity() {
             if (startTime < endTime || startTime == 0L) {
                 binding.enddateView.text = time
                 if (startTime != 0L && endTime != 0L)
-                    controller.setAppIfoData(startTime, endTime, eventFilter)
+                    controller.cook(TimeInterval(startTime, endTime))
             } else {
                 Toast.makeText(
                     this,
