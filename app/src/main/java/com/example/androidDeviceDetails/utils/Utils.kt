@@ -10,9 +10,9 @@ import android.util.Log
 import androidx.core.content.ContextCompat
 import com.example.androidDeviceDetails.DeviceDetailsApplication
 import com.example.androidDeviceDetails.R
+import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.models.appInfoModels.AppDetails
 import com.example.androidDeviceDetails.models.appInfoModels.EventType
-import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.services.CollectorService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -153,7 +153,10 @@ object Utils {
             appDetails.appTitle = context.packageManager.getApplicationLabel(pInfo2).toString()
             val mask = ApplicationInfo.FLAG_SYSTEM or ApplicationInfo.FLAG_UPDATED_SYSTEM_APP
             appDetails.isSystemApp = (pInfo2.flags and mask == 0).not()
-            Log.d("isSystem App", " ${appDetails.appTitle} is system App : ${appDetails.isSystemApp}")
+            Log.d(
+                "isSystem App",
+                " ${appDetails.appTitle} is system App : ${appDetails.isSystemApp}"
+            )
         } catch (e: PackageManager.NameNotFoundException) {
             e.printStackTrace()
         }
@@ -185,7 +188,7 @@ object Utils {
         }"
 
 
-    fun loadPreviousDayTime() : Long {
+    fun loadPreviousDayTime(): Long {
         val cal = Calendar.getInstance()
         cal[Calendar.HOUR] = 0
         cal[Calendar.MINUTE] = 0

@@ -1,9 +1,9 @@
 package com.example.androidDeviceDetails.cooker
 
 import com.example.androidDeviceDetails.interfaces.IAppInfoCookedData
+import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.models.appInfoModels.AppInfoCookedData
 import com.example.androidDeviceDetails.models.appInfoModels.EventType
-import com.example.androidDeviceDetails.models.RoomDB
 
 class AppInfoCooker {
 

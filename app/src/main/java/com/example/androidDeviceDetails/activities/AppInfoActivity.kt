@@ -17,9 +17,9 @@ import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.controller.AppInfoController
+import com.example.androidDeviceDetails.databinding.ActivityAppInfoBinding
 import com.example.androidDeviceDetails.managers.AppInfoManager
 import com.example.androidDeviceDetails.models.appInfoModels.EventType
-import com.example.androidDeviceDetails.databinding.ActivityAppInfoBinding
 import com.example.androidDeviceDetails.services.CollectorService
 import com.example.androidDeviceDetails.utils.Utils
 import java.text.SimpleDateFormat
@@ -34,7 +34,7 @@ class AppInfoActivity : AppCompatActivity() {
     private var endTime: Long = 0
     private var startTimeFlag: Boolean = true
     private var eventFilter = EventType.ALL_EVENTS.ordinal
-    private lateinit var controller : AppInfoController
+    private lateinit var controller: AppInfoController
 
     @SuppressLint("SimpleDateFormat")
     private val simpleDateFormat = SimpleDateFormat("HH:mm',' dd/MM/yyyy")
@@ -69,7 +69,8 @@ class AppInfoActivity : AppCompatActivity() {
                 eventFilter = EventType.APP_UNINSTALLED.ordinal
                 title.text = "Uninstalled"
             }
-            R.id.filter_text -> {}
+            R.id.filter_text -> {
+            }
             else -> super.onSupportNavigateUp()
         }
         if (startTime != 0L && endTime != 0L) {
@@ -81,7 +82,7 @@ class AppInfoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_app_info)
-        controller = AppInfoController(binding,this)
+        controller = AppInfoController(binding, this)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.statisticsContainer.isVisible = false
         binding.appInfoListView.isEnabled = false
@@ -185,7 +186,7 @@ class AppInfoActivity : AppCompatActivity() {
     }
 
     fun deleteApp(view: View) {
-        AppInfoManager.deleteApp(view,packageManager,this)
+        AppInfoManager.deleteApp(view, packageManager, this)
     }
 
 }

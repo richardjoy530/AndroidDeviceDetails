@@ -13,6 +13,6 @@ data class AppsEntity(
     @ColumnInfo(name = "apk_size") var appSize: Long,
     @ColumnInfo(name = "apk_title") var appTitle: String,
     @ColumnInfo(name = "is_system_app") var isSystemApp: Boolean
-    )
+)
 
 

@@ -11,8 +11,8 @@ class AppStateReceiver : BroadcastReceiver() {
         val action = intent.action
         val packageName = intent.data?.schemeSpecificPart ?: "not found"
 
-        if (action == Intent.ACTION_PACKAGE_ADDED ) {
-            if(!intent.getBooleanExtra(Intent.EXTRA_REPLACING, false))
+        if (action == Intent.ACTION_PACKAGE_ADDED) {
+            if (!intent.getBooleanExtra(Intent.EXTRA_REPLACING, false))
                 AppInfoCollectionHelper.appInstalled(context, packageName)
             else
                 AppInfoCollectionHelper.appUpgraded(context, packageName)

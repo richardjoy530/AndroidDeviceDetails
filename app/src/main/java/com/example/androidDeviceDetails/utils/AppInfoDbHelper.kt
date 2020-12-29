@@ -1,9 +1,9 @@
 package com.example.androidDeviceDetails.utils
 
+import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.models.appInfoModels.AppDetails
 import com.example.androidDeviceDetails.models.appInfoModels.AppHistoryEntity
 import com.example.androidDeviceDetails.models.appInfoModels.AppsEntity
-import com.example.androidDeviceDetails.models.RoomDB
 
 object AppInfoDbHelper {
     fun writeToAppsDb(id: Int, packageName: String, appDetails: AppDetails, db: RoomDB) {
@@ -25,14 +25,14 @@ object AppInfoDbHelper {
         eventType: Int,
         appDetails: AppDetails,
         db: RoomDB,
-        previousVersionCode : Long = 0,
-        timestamp:Long=System.currentTimeMillis()
+        previousVersionCode: Long = 0,
+        timestamp: Long = System.currentTimeMillis()
     ) {
         db.appHistoryDao().insertAll(
             AppHistoryEntity(
                 rowId = 0,
                 appId = id,
-                timestamp =timestamp ,
+                timestamp = timestamp,
                 eventType = eventType,
                 previousVersionCode = previousVersionCode,
                 currentVersionCode = appDetails.versionCode,

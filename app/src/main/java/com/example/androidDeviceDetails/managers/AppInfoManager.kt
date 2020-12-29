@@ -13,7 +13,7 @@ import com.example.androidDeviceDetails.utils.Utils
 
 object AppInfoManager {
 
-    fun justifyListViewHeightBasedOnChildren(listView: ListView, size : Int) {
+    fun justifyListViewHeightBasedOnChildren(listView: ListView, size: Int) {
         val adapter: ListAdapter = listView.adapter ?: return
         val vg: ViewGroup = listView
         val totalHeight: Int
@@ -26,7 +26,7 @@ object AppInfoManager {
         listView.requestLayout()
     }
 
-    fun deleteApp(view: View, packageManager: PackageManager, context : Context) {
+    fun deleteApp(view: View, packageManager: PackageManager, context: Context) {
         val packageName = view.tag as String
         if (Utils.isPackageInstalled(packageName, packageManager)) {
             val packageURI = Uri.parse("package:${packageName}")

@@ -5,7 +5,10 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.ArrayAdapter
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.example.androidDeviceDetails.R
@@ -17,7 +20,7 @@ class AppInfoListAdapter(
     private var _context: Context,
     private var resource: Int,
     private var items: List<AppInfoCookedData>
-): ArrayAdapter<AppInfoCookedData>(_context, resource, items){
+) : ArrayAdapter<AppInfoCookedData>(_context, resource, items) {
     @SuppressLint("ViewHolder", "SetTextI18n")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val layoutInflater = LayoutInflater.from(_context)
@@ -41,18 +44,17 @@ class AppInfoListAdapter(
             3 -> R.color.mat_yellow
             else -> R.color.teal_700
         }
-        eventBadge.setColorFilter(ContextCompat.getColor(context, color), android.graphics.PorterDuff.Mode.MULTIPLY)
+        eventBadge.setColorFilter(
+            ContextCompat.getColor(context, color),
+            android.graphics.PorterDuff.Mode.MULTIPLY
+        )
         uninstallButton.tag = items[position].packageName
-        if(items[position].eventType.ordinal == EventType.APP_ENROLL.ordinal)
-        {
+        if (items[position].eventType.ordinal == EventType.APP_ENROLL.ordinal) {
             eventBadge.isVisible = false
         }
-        if(items[position].isSystemApp)
-        {
+        if (items[position].isSystemApp) {
             uninstallButton.isVisible = false
-        }
-        else if(items[position].eventType == EventType.APP_UNINSTALLED)
-        {
+        } else if (items[position].eventType == EventType.APP_UNINSTALLED) {
             uninstallButton.isVisible = false
         }
         return view

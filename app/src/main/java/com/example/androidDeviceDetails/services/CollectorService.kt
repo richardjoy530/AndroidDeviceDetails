@@ -75,7 +75,7 @@ class CollectorService : Service() {
         timer = Timer()
         val timeInterval: Long = 1
         val appUsage = AppUsage(this)
-        val context=this
+        val context = this
 
         timer.scheduleAtFixedRate(
             object : TimerTask() {

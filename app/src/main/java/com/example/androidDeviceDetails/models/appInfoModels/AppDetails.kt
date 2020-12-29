@@ -5,5 +5,5 @@ data class AppDetails(
     var versionName: String,
     var appSize: Long,
     var appTitle: String,
-    var isSystemApp : Boolean
+    var isSystemApp: Boolean
 )

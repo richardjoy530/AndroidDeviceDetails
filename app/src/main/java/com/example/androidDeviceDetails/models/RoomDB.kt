@@ -13,8 +13,6 @@ import com.example.androidDeviceDetails.models.batteryModels.AppEventDao
 import com.example.androidDeviceDetails.models.batteryModels.AppEventEntity
 import com.example.androidDeviceDetails.models.batteryModels.BatteryDao
 import com.example.androidDeviceDetails.models.batteryModels.BatteryEntity
-import com.example.androidDeviceDetails.models.networkUsageModels.AppNetworkUsageEntity
-import com.example.androidDeviceDetails.models.networkUsageModels.DeviceNetworkUsageEntity
 import com.example.androidDeviceDetails.models.networkUsageModels.AppNetworkUsageDao
 import com.example.androidDeviceDetails.models.networkUsageModels.AppNetworkUsageEntity
 import com.example.androidDeviceDetails.models.networkUsageModels.DeviceNetworkUsageDao
