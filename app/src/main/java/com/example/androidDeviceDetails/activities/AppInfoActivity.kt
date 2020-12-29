@@ -1,4 +1,4 @@
-package com.example.androidDeviceDetails
+package com.example.androidDeviceDetails.activities
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
@@ -7,50 +7,96 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.text.format.DateFormat
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
-import com.example.androidDeviceDetails.adapters.AppInfoListAdapter
+import com.example.androidDeviceDetails.R
+import com.example.androidDeviceDetails.controller.AppInfoController
+import com.example.androidDeviceDetails.managers.AppInfoManager
+import com.example.androidDeviceDetails.models.appInfoModels.EventType
 import com.example.androidDeviceDetails.databinding.ActivityAppInfoBinding
-import com.example.androidDeviceDetails.managers.AppStateCooker
-import com.example.androidDeviceDetails.models.AppInfoCookedData
-import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.services.CollectorService
-import com.example.androidDeviceDetails.utils.EventType
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import com.example.androidDeviceDetails.utils.Utils
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.math.ceil
 
 
 class AppInfoActivity : AppCompatActivity() {
 
     private val calendar: Calendar = Calendar.getInstance()
-    private lateinit var appList: List<AppInfoCookedData>
     private lateinit var binding: ActivityAppInfoBinding
     private var startTime: Long = 0
     private var endTime: Long = 0
     private var startTimeFlag: Boolean = true
-    val context = this
+    private var eventFilter = EventType.ALL_EVENTS.ordinal
+    private lateinit var controller : AppInfoController
 
     @SuppressLint("SimpleDateFormat")
     private val simpleDateFormat = SimpleDateFormat("HH:mm',' dd/MM/yyyy")
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.app_info_menu, menu)
+        return true
+    }
+
+    @SuppressLint("SetTextI18n")
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val title = findViewById<TextView>(R.id.filter_text)
+        when (item.itemId) {
+            R.id.spinner_all -> {
+                eventFilter = EventType.ALL_EVENTS.ordinal
+                title.text = "All"
+            }
+            R.id.spinner_enrolled -> {
+                eventFilter = EventType.APP_ENROLL.ordinal
+                title.text = "Enrolled"
+
+            }
+            R.id.spinner_installed -> {
+                eventFilter = EventType.APP_INSTALLED.ordinal
+                title.text = "Installed"
+            }
+            R.id.spinner_updated -> {
+                eventFilter = EventType.APP_UPDATED.ordinal
+                title.text = "Updated"
+            }
+            R.id.spinner_uninstalled -> {
+                eventFilter = EventType.APP_UNINSTALLED.ordinal
+                title.text = "Uninstalled"
+            }
+            R.id.filter_text -> {}
+            else -> super.onSupportNavigateUp()
+        }
+        if (startTime != 0L && endTime != 0L) {
+            controller.setAppIfoData(startTime, endTime, eventFilter)
+        }
+        return true
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_app_info)
+        controller = AppInfoController(binding,this)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.statisticsContainer.isVisible = false
+        binding.appInfoListView.isEnabled = false
 
+        startTime = Utils.loadPreviousDayTime()
+        endTime = System.currentTimeMillis()
+        controller.setAppIfoData(startTime, endTime, eventFilter)
+        binding.startdateView.text = simpleDateFormat.format(startTime)
+        binding.enddateView.text = simpleDateFormat.format(endTime)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             this.startForegroundService(Intent(this, CollectorService::class.java))
         } else {
             this.startService(Intent(this, CollectorService::class.java))
         }
-
 
         binding.startdateView.setOnClickListener {
             startTimeFlag = true
@@ -85,7 +131,7 @@ class AppInfoActivity : AppCompatActivity() {
             if (startTime < endTime || endTime == 0L) {
                 binding.startdateView.text = time
                 if (startTime != 0L && endTime != 0L)
-                    setAppIfoData(startTime, endTime)
+                    controller.setAppIfoData(startTime, endTime, eventFilter)
             } else {
                 Toast.makeText(
                     this,
@@ -98,7 +144,7 @@ class AppInfoActivity : AppCompatActivity() {
             if (startTime < endTime || startTime == 0L) {
                 binding.enddateView.text = time
                 if (startTime != 0L && endTime != 0L)
-                    setAppIfoData(startTime, endTime)
+                    controller.setAppIfoData(startTime, endTime, eventFilter)
             } else {
                 Toast.makeText(
                     this,
@@ -138,64 +184,8 @@ class AppInfoActivity : AppCompatActivity() {
         )
     }
 
-    @SuppressLint("SimpleDateFormat")
-    fun setAppIfoData(startTime: Long, endTime: Long) {
-        GlobalScope.launch(Dispatchers.IO) {
-            appList = AppStateCooker.createInstance()
-                .getAppsBetween(startTime, endTime, applicationContext)
-            val db = RoomDB.getDatabase(applicationContext)!!
-            for (app in appList) {
-                app.packageName = db.appsDao().getPackageByID(app.appId)
-            }
-            appList = appList.sortedBy { it.appName }
-            binding.appInfoListView.post {
-                binding.appInfoListView.adapter = null
-                binding.appInfoListView.adapter =
-                    AppInfoListAdapter(
-                        context,
-                        R.layout.appinfo_tile,
-                        appList
-                    )
-            }
-
-
-            val total = appList.size.toDouble()
-            val enrolledAppCount =
-                appList.groupingBy { it.eventType.ordinal == EventType.APP_ENROLL.ordinal }
-                    .eachCount()
-            val enrolled = ceil(((enrolledAppCount[true] ?: 0).toDouble().div(total).times(100)))
-
-            val installedAppCount =
-                appList.groupingBy { it.eventType.ordinal == EventType.APP_INSTALLED.ordinal }
-                    .eachCount()
-            val installed = ceil(((installedAppCount[true] ?: 0).toDouble().div(total).times(100)))
-
-            val updateAppCount =
-                appList.groupingBy { it.eventType.ordinal == EventType.APP_UPDATED.ordinal }
-                    .eachCount()
-            val updated = ceil(((updateAppCount[true] ?: 0).toDouble().div(total).times(100)))
-
-            val uninstalledAppCount =
-                appList.groupingBy { it.eventType.ordinal == EventType.APP_UNINSTALLED.ordinal }
-                    .eachCount()
-            val uninstalled =
-                ceil(((uninstalledAppCount[true] ?: 0).toDouble().div(total).times(100)))
-
-            binding.updatedProgressBar.progress = (updated.toInt())
-            binding.installedProgressBar.progress = (updated + installed).toInt()
-            binding.enrollProgressbar.progress = (updated + installed + enrolled.toInt()).toInt()
-            binding.uninstalledProgressbar.progress =
-                (updated + installed + enrolled + uninstalled).toInt()
-            binding.pieChartConstraintLayout.post {
-                binding.statisticsContainer.isVisible = true
-                binding.enrollCount.text = (enrolledAppCount[true] ?: 0).toString()
-                binding.installCount.text = (installedAppCount[true] ?: 0).toString()
-                binding.updateCount.text = (updateAppCount[true] ?: 0).toString()
-                binding.uninstallCount.text = (uninstalledAppCount[true] ?: 0).toString()
-            }
-
-
-        }
+    fun deleteApp(view: View) {
+        AppInfoManager.deleteApp(view,packageManager,this)
     }
-}
 
+}

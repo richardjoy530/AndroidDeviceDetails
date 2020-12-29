@@ -1,20 +1,21 @@
 package com.example.androidDeviceDetails.utils
 
-import com.example.androidDeviceDetails.models.AppDetails
-import com.example.androidDeviceDetails.models.AppHistory
-import com.example.androidDeviceDetails.models.Apps
+import com.example.androidDeviceDetails.models.appInfoModels.AppDetails
+import com.example.androidDeviceDetails.models.appInfoModels.AppHistoryEntity
+import com.example.androidDeviceDetails.models.appInfoModels.AppsEntity
 import com.example.androidDeviceDetails.models.RoomDB
 
-object DbHelper {
+object AppInfoDbHelper {
     fun writeToAppsDb(id: Int, packageName: String, appDetails: AppDetails, db: RoomDB) {
         db.appsDao().insertAll(
-            Apps(
+            AppsEntity(
                 uid = id,
                 packageName = packageName,
                 currentVersionCode = appDetails.versionCode,
                 versionName = appDetails.versionName,
                 appSize = appDetails.appSize,
-                appTitle = appDetails.appTitle
+                appTitle = appDetails.appTitle,
+                isSystemApp = appDetails.isSystemApp
             )
         )
     }
@@ -28,7 +29,7 @@ object DbHelper {
         timestamp:Long=System.currentTimeMillis()
     ) {
         db.appHistoryDao().insertAll(
-            AppHistory(
+            AppHistoryEntity(
                 rowId = 0,
                 appId = id,
                 timestamp =timestamp ,
@@ -37,7 +38,8 @@ object DbHelper {
                 currentVersionCode = appDetails.versionCode,
                 versionName = appDetails.versionName,
                 appSize = appDetails.appSize,
-                appTitle = appDetails.appTitle
+                appTitle = appDetails.appTitle,
+                isSystemApp = appDetails.isSystemApp
             )
         )
     }

@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import com.example.androidDeviceDetails.activities.AppInfoActivity
 import com.example.androidDeviceDetails.activities.BatteryActivity
 import com.example.androidDeviceDetails.activities.NetworkUsageActivity
 import com.example.androidDeviceDetails.utils.PrefManager

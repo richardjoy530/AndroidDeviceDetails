@@ -3,13 +3,15 @@ package com.example.androidDeviceDetails.utils
 import android.annotation.SuppressLint
 import android.app.ActivityManager
 import android.content.Context
+import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.util.Log
 import androidx.core.content.ContextCompat
 import com.example.androidDeviceDetails.DeviceDetailsApplication
 import com.example.androidDeviceDetails.R
-import com.example.androidDeviceDetails.models.AppDetails
+import com.example.androidDeviceDetails.models.appInfoModels.AppDetails
+import com.example.androidDeviceDetails.models.appInfoModels.EventType
 import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.services.CollectorService
 import kotlinx.coroutines.Dispatchers
@@ -135,7 +137,7 @@ object Utils {
     }
 
     fun getAppDetails(context: Context, packageName: String): AppDetails {
-        val appDetails = AppDetails(-1, "Null", -1, "Not Found")
+        val appDetails = AppDetails(-1, "Null", -1, "Not Found", false)
         try {
             val pInfo2 = context.packageManager.getApplicationInfo(packageName, 0)
             val pInfo = context.packageManager.getPackageInfo(packageName, 0)
@@ -149,7 +151,9 @@ object Utils {
             val file = File(pInfo2.sourceDir)
             appDetails.appSize = file.length() / 1024
             appDetails.appTitle = context.packageManager.getApplicationLabel(pInfo2).toString()
-            Log.d("AppName", "getVersion: " + appDetails.appTitle)
+            val mask = ApplicationInfo.FLAG_SYSTEM or ApplicationInfo.FLAG_UPDATED_SYSTEM_APP
+            appDetails.isSystemApp = (pInfo2.flags and mask == 0).not()
+            Log.d("isSystem App", " ${appDetails.appTitle} is system App : ${appDetails.isSystemApp}")
         } catch (e: PackageManager.NameNotFoundException) {
             e.printStackTrace()
         }
@@ -163,9 +167,9 @@ object Utils {
         GlobalScope.launch(Dispatchers.IO) {
             for (i in packages) {
                 val details = getAppDetails(context, i.packageName)
-                DbHelper.writeToAppsDb(0, i.packageName, details, db)
+                AppInfoDbHelper.writeToAppsDb(0, i.packageName, details, db)
                 val id = db.appsDao().getIdByName(i.packageName)
-                DbHelper.writeToAppHistoryDb(
+                AppInfoDbHelper.writeToAppHistoryDb(
                     id,
                     EventType.APP_ENROLL.ordinal,
                     details,
@@ -180,5 +184,22 @@ object Utils {
             getMonth(calendar.get(Calendar.MONTH))
         }"
 
+
+    fun loadPreviousDayTime() : Long {
+        val cal = Calendar.getInstance()
+        cal[Calendar.HOUR] = 0
+        cal[Calendar.MINUTE] = 0
+        cal.add(Calendar.DAY_OF_MONTH, -1)
+        return cal.timeInMillis
+    }
+
+    fun isPackageInstalled(packageName: String, packageManager: PackageManager): Boolean {
+        return try {
+            packageManager.getPackageInfo(packageName, 0)
+            true
+        } catch (e: PackageManager.NameNotFoundException) {
+            false
+        }
+    }
 
 }
