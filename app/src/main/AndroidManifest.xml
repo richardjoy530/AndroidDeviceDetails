@@ -37,7 +37,11 @@
                 android:value=".MainActivity" />
         </activity>
         <activity
-            android:name=".BatteryActivity"
+            android:name=".AppDataActivity"
+            android:label="Network Usage"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".activities.BatteryActivity"
             android:label="Battery Usage"
             android:parentActivityName=".MainActivity" />
         <activity android:name=".MainActivity">
@@ -57,7 +61,7 @@
             android:name=".receivers.BatteryReceiver"
             android:enabled="true">
             <intent-filter>
-                <action android:name="android.intent.action.PHONE_STATE" />
+                <action android:name="android.intent.action.BATTERY_CHANGED" />
             </intent-filter>
         </receiver>
         <receiver

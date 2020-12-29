@@ -1,6 +1,5 @@
 package com.example.androidDeviceDetails.services
 
-import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.Service
@@ -14,6 +13,8 @@ import android.os.IBinder
 import android.telephony.PhoneStateListener
 import android.telephony.TelephonyManager
 import androidx.core.app.NotificationCompat
+import com.example.androidDeviceDetails.R
+import com.example.androidDeviceDetails.managers.AppDataUsageCollector
 import com.example.androidDeviceDetails.managers.AppUsage
 import com.example.androidDeviceDetails.managers.SignalChangeListener
 import com.example.androidDeviceDetails.receivers.AppStateReceiver
@@ -59,9 +60,12 @@ class CollectorService : Service() {
             )
             (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager)
                 .createNotificationChannel(channel)
-            val notification: Notification = NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("")
-                .setContentText("").build()
+            val notification = NotificationCompat.Builder(this, CHANNEL_ID)
+                .setContentTitle("Monitoring device usage")
+                .setContentText("Background service running")
+                .setSmallIcon(R.drawable.ic_baseline_settings_18)
+                .setBadgeIconType(NotificationCompat.BADGE_ICON_SMALL)
+                .build()
             startForeground(1, notification)
 
         }
@@ -71,9 +75,17 @@ class CollectorService : Service() {
         timer = Timer()
         val timeInterval: Long = 1
         val appUsage = AppUsage(this)
+        val context=this
+
         timer.scheduleAtFixedRate(
             object : TimerTask() {
                 override fun run() {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        val appDataUsageCollector = AppDataUsageCollector(context)
+                        appDataUsageCollector.updateAppDataUsageDB()
+                        appDataUsageCollector.updateDeviceDataUsageDB()
+
+                    }
                     appUsage.updateAppUsageDB(timeInterval)
                 }
             },

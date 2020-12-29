@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="10dp"
-    android:layout_marginVertical="5dp"
+    android:layout_marginVertical="10dp"
     android:paddingStart="14dp"
     android:descendantFocusability="blocksDescendants"
     android:paddingEnd="14dp">
@@ -45,6 +45,7 @@
     </LinearLayout>
 
     <ImageButton
+        android:id="@+id/infoButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="false"

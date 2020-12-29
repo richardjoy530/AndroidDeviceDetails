@@ -1,35 +1,39 @@
 package com.example.androidDeviceDetails.adapters
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.ImageView
-import android.widget.TextView
 import com.example.androidDeviceDetails.R
-import com.example.androidDeviceDetails.managers.AppEntry
+import com.example.androidDeviceDetails.models.batteryModels.BatteryAppEntry
 import com.example.androidDeviceDetails.utils.Utils
+
 
 class BatteryListAdapter(
     private var _context: Context,
     private var resource: Int,
-    private var items: ArrayList<AppEntry>
-) : ArrayAdapter<AppEntry>(_context, resource, items) {
-    @SuppressLint("ViewHolder", "SetTextI18n")
+    private var items: ArrayList<BatteryAppEntry>
+) : ArrayAdapter<BatteryAppEntry>(_context, resource, items) {
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val layoutInflater = LayoutInflater.from(_context)
-        val view = layoutInflater.inflate(resource, null)
+        var vi = convertView
+        val holder: BatteryItemViewHolder
+        if (convertView == null) {
+            vi = layoutInflater.inflate(resource, null)
+            holder = BatteryItemViewHolder()
+            holder.appNameView = vi.findViewById(R.id.appName)
+            holder.dropTextView = vi.findViewById(R.id.dropText)
+            holder.appIconView = vi.findViewById(R.id.appIcon)
+            vi.tag = holder
+        } else holder = vi?.tag as BatteryItemViewHolder
 
-        val appNameView = view.findViewById<TextView>(R.id.appName)
-        val dropTextView = view.findViewById<TextView>(R.id.dropText)
-        val appIconView = view.findViewById<ImageView>(R.id.appIcon)
+        holder.appNameView?.text = Utils.getApplicationLabel(items[position].packageId)
+        val text = "Dropped ${items[position].drop} %"
+        holder.dropTextView?.text = text
+        holder.appIconView?.setImageDrawable(Utils.getApplicationIcon(items[position].packageId))
 
-        appNameView.text = Utils.getApplicationLabel(items[position].packageId)
-        dropTextView.text = "Total drop is " + items[position].drop.toString() + "%"
-        appIconView.setImageDrawable(Utils.getApplicationIcon(items[position].packageId))
-
-        return view
+        return vi!!
     }
 }
+

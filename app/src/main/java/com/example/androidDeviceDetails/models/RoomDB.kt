@@ -6,23 +6,27 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.androidDeviceDetails.DeviceDetailsApplication
 import com.example.androidDeviceDetails.appInfo.models.AppHistoryEntity
+import com.example.androidDeviceDetails.appInfo.models.AppsEntity
+import com.example.androidDeviceDetails.appInfo.models.AppHistoryEntity
 import com.example.androidDeviceDetails.appInfo.models.AppHistoryDao
 import com.example.androidDeviceDetails.appInfo.models.AppsEntity
 import com.example.androidDeviceDetails.appInfo.models.AppsDao
 
 
 @Database(
-    entities = [AppUsageModel::class, BatteryRawModel::class, LocationModel::class, AppsEntity::class, AppHistoryEntity::class, WifiRaw::class, CellularRaw::class],
+    entities = [AppEventEntity::class, BatteryEntity::class, LocationModel::class, AppsEntity::class, AppHistoryEntity::class, WifiRaw::class, CellularRaw::class, AppDataUsage::class, DeviceDataUsage::class],
     version = 1
 )
 abstract class RoomDB : RoomDatabase() {
-    abstract fun batteryInfoDao(): BatteryInfoDao
-    abstract fun appUsageInfoDao(): AppUsageInfoDao
+    abstract fun batteryDao(): BatteryDao
+    abstract fun appEventDao(): AppEventDao
     abstract fun locationDao(): ILocationDao
     abstract fun appsDao(): AppsDao
     abstract fun appHistoryDao(): AppHistoryDao
     abstract fun wifiDao(): WifiDao
     abstract fun cellularDao(): CellularDao
+    abstract fun appDataUsage(): AppDataUsageDao
+    abstract fun deviceDataUsage(): DeviceDataUsageDao
 
     companion object {
         private var INSTANCE: RoomDB? = null

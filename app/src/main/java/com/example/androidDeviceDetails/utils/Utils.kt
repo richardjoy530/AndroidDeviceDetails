@@ -18,16 +18,47 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.io.File
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
-
+import kotlin.math.log10
+import kotlin.math.pow
 
 object Utils {
     private const val format = "dd/MM/yyyy HH:mm:ss:"
-    private val formatter = SimpleDateFormat(format, Locale.ENGLISH)
+    private val f = SimpleDateFormat(format, Locale.ENGLISH)
 
-    fun getDateTime(timestamp: Long): String {
-        return formatter.format(Date(timestamp))
+    fun getDateTime(millis: Long): String = f.format(Date(millis))
+
+    fun getWeek(day: Int): String {
+        when (day) {
+            Calendar.SUNDAY -> return "Sun"
+            Calendar.MONDAY -> return "Mon"
+            Calendar.TUESDAY -> return "Tue"
+            Calendar.WEDNESDAY -> return "Wed"
+            Calendar.THURSDAY -> return "Thu"
+            Calendar.FRIDAY -> return "Fri"
+            Calendar.SATURDAY -> return "Sat"
+        }
+        return "Day"
+    }
+
+    fun getMonth(month: Int): String {
+        when (month) {
+            Calendar.JANUARY -> return "Jan"
+            Calendar.FEBRUARY -> return "Feb"
+            Calendar.MARCH -> return "Mar"
+            Calendar.APRIL -> return "Apr"
+            Calendar.MAY -> return "May"
+            Calendar.JUNE -> return "Jun"
+            Calendar.JULY -> return "Jul"
+            Calendar.AUGUST -> return "Aug"
+            Calendar.SEPTEMBER -> return "Sep"
+            Calendar.OCTOBER -> return "Oct"
+            Calendar.NOVEMBER -> return "Nov"
+            Calendar.DECEMBER -> return "Dec"
+        }
+        return "Nil"
     }
 
     fun getEventType(eventType: Int): String {
@@ -65,19 +96,33 @@ object Utils {
 
     fun getApplicationLabel(packageName: String): String {
         val packageManager = DeviceDetailsApplication.instance.packageManager
-        val info = packageManager.getApplicationInfo(
-            packageName,
-            PackageManager.GET_META_DATA
-        )
-        return packageManager.getApplicationLabel(info) as String
+        return try {
+            val info = packageManager.getApplicationInfo(
+                packageName,
+                PackageManager.GET_META_DATA
+            )
+            packageManager.getApplicationLabel(info) as String
+        } catch (e: Exception) {
+            packageName
+        }
     }
 
-    @SuppressLint("UseCompatLoadingForDrawables")
+    fun getFileSize(size: Long): String {
+        if (size <= 0) return "0 KB"
+        val units = arrayOf("B", "KB", "MB", "GB", "TB")
+        val digitGroups = (log10(size.toDouble()) / log10(1024.0)).toInt()
+        return DecimalFormat("#,##0.#").format(size / 1024.0.pow(digitGroups.toDouble()))
+            .toString() + " " + units[digitGroups]
+    }
+
     fun getApplicationIcon(packageName: String): Drawable {
         return try {
             DeviceDetailsApplication.instance.packageManager.getApplicationIcon(packageName)
         } catch (e: Exception) {
-            DeviceDetailsApplication.instance.getDrawable(R.drawable.ic_android_black_24dp)!!
+            ContextCompat.getDrawable(
+                DeviceDetailsApplication.instance,
+                R.drawable.ic_android_black_24dp
+            )!!
         }
     }
 
@@ -133,6 +178,12 @@ object Utils {
             }
         }
     }
+
+    fun getDateString(calendar: Calendar): String =
+        "${getWeek(calendar.get(Calendar.DAY_OF_WEEK))}, ${calendar.get(Calendar.DAY_OF_MONTH)} ${
+            getMonth(calendar.get(Calendar.MONTH))
+        }"
+
 
     fun loadPreviousDayTime() : Long {
         val cal = Calendar.getInstance()
