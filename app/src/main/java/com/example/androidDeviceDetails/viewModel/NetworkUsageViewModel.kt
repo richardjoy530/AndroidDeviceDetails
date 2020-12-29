@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.core.view.isVisible
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.adapters.NetWorkUsageListAdapter
+import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.databinding.ActivityAppDataBinding
 import com.example.androidDeviceDetails.models.networkUsageModels.AppNetworkUsageEntity
 import com.example.androidDeviceDetails.utils.Utils
@@ -11,9 +12,9 @@ import java.text.DecimalFormat
 import java.util.*
 
 class NetworkUsageViewModel(
-    val context: Context,
-    private val networkUsageBinding: ActivityAppDataBinding
-) {
+    private val networkUsageBinding: ActivityAppDataBinding,
+    val context: Context
+) : BaseViewModel() {
     fun updateTextViews(startCalendar: Calendar, endCalendar: Calendar) {
         val dec = DecimalFormat("00")
 
@@ -40,7 +41,7 @@ class NetworkUsageViewModel(
         }
     }
 
-    fun onNoData() {
+    override fun onNoData() {
         networkUsageBinding.root.post {
             networkUsageBinding.apply {
                 appDataListView.adapter = NetWorkUsageListAdapter(
@@ -53,13 +54,14 @@ class NetworkUsageViewModel(
         }
     }
 
-    fun onData(outputList: ArrayList<AppNetworkUsageEntity>) {
+    @Suppress("UNCHECKED_CAST")
+    override fun <T> onData(outputList: ArrayList<T>) {
         networkUsageBinding.root.post {
             networkUsageBinding.apply {
                 appDataListView.adapter = NetWorkUsageListAdapter(
                     context,
                     R.layout.appdata_tile,
-                    outputList
+                    outputList as ArrayList<AppNetworkUsageEntity>
                 )
                 noData.isVisible = false
             }

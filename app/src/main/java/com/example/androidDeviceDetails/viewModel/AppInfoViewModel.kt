@@ -4,13 +4,15 @@ import android.content.Context
 import androidx.core.view.isVisible
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.adapters.AppInfoListAdapter
+import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.databinding.ActivityAppInfoBinding
 import com.example.androidDeviceDetails.managers.AppInfoManager
 import com.example.androidDeviceDetails.models.appInfoModels.AppInfoCookedData
 import com.example.androidDeviceDetails.models.appInfoModels.EventType
 import kotlin.math.ceil
 
-class AppInfoViewModel(private val binding: ActivityAppInfoBinding) {
+class AppInfoViewModel(private val binding: ActivityAppInfoBinding, val context: Context) :
+    BaseViewModel() {
 
     fun updateDonutChart(appList: List<AppInfoCookedData>) {
         val total = appList.size.toDouble()
@@ -80,5 +82,13 @@ class AppInfoViewModel(private val binding: ActivityAppInfoBinding) {
             binding.statisticsContainer.isVisible = false
             binding.appInfoListView.isVisible = false
         }
+    }
+
+    override fun onNoData() {
+        TODO("Not yet implemented")
+    }
+
+    override fun <T> onData(outputList: ArrayList<T>) {
+        TODO("Not yet implemented")
     }
 }
