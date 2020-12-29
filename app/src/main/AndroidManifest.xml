@@ -35,7 +35,7 @@
             android:label="Network Usage"
             android:parentActivityName=".MainActivity" />
         <activity
-            android:name=".battery.BatteryActivity"
+            android:name=".activities.BatteryActivity"
             android:label="Battery Usage"
             android:parentActivityName=".MainActivity" />
         <activity android:name=".MainActivity">

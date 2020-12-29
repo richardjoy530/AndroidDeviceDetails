@@ -1,7 +1,8 @@
-package com.example.androidDeviceDetails.battery
+package com.example.androidDeviceDetails.cooker
 
 import com.example.androidDeviceDetails.ICookingDone
 import com.example.androidDeviceDetails.models.RoomDB
+import com.example.androidDeviceDetails.models.batteryModels.BatteryAppEntry
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 

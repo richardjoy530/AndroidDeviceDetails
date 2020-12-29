@@ -1,4 +1,4 @@
-package com.example.androidDeviceDetails.battery
+package com.example.androidDeviceDetails.activities
 
 import android.app.DatePickerDialog
 import android.os.Bundle
@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.R
+import com.example.androidDeviceDetails.controller.BatteryController
 import com.example.androidDeviceDetails.databinding.ActivityBatteryBinding
 import java.util.*
 

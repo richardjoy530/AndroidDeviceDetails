@@ -1,4 +1,4 @@
-package com.example.androidDeviceDetails.battery.models
+package com.example.androidDeviceDetails.models.batteryModels
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

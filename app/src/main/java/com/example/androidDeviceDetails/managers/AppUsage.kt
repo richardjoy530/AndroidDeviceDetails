@@ -4,8 +4,8 @@ import android.app.usage.UsageEvents
 import android.app.usage.UsageStatsManager
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
-import com.example.androidDeviceDetails.battery.models.AppEventEntity
 import com.example.androidDeviceDetails.models.RoomDB
+import com.example.androidDeviceDetails.models.batteryModels.AppEventEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

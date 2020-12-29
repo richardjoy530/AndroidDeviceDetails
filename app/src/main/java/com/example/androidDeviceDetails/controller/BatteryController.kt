@@ -1,4 +1,4 @@
-package com.example.androidDeviceDetails.battery
+package com.example.androidDeviceDetails.controller
 
 import android.content.Context
 import android.content.Intent
@@ -8,8 +8,12 @@ import android.widget.AdapterView
 import android.widget.TextView
 import com.example.androidDeviceDetails.ICookingDone
 import com.example.androidDeviceDetails.R
+import com.example.androidDeviceDetails.adapters.BatteryListAdapter
+import com.example.androidDeviceDetails.cooker.BatteryCooker
 import com.example.androidDeviceDetails.databinding.ActivityBatteryBinding
+import com.example.androidDeviceDetails.models.batteryModels.BatteryAppEntry
 import com.example.androidDeviceDetails.utils.Utils
+import com.example.androidDeviceDetails.viewModel.BatteryViewModel
 import java.util.*
 
 class BatteryController(val context: Context, private val batteryBinding: ActivityBatteryBinding) {

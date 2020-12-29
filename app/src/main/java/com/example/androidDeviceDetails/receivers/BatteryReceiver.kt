@@ -6,8 +6,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.BatteryManager
 import android.util.Log
-import com.example.androidDeviceDetails.battery.models.BatteryEntity
 import com.example.androidDeviceDetails.models.RoomDB
+import com.example.androidDeviceDetails.models.batteryModels.BatteryEntity
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 

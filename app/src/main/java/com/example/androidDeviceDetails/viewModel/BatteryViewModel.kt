@@ -1,10 +1,12 @@
-package com.example.androidDeviceDetails.battery
+package com.example.androidDeviceDetails.viewModel
 
 import android.content.Context
 import android.widget.TextView
 import androidx.core.view.isVisible
 import com.example.androidDeviceDetails.R
+import com.example.androidDeviceDetails.adapters.BatteryListAdapter
 import com.example.androidDeviceDetails.databinding.ActivityBatteryBinding
+import com.example.androidDeviceDetails.models.batteryModels.BatteryAppEntry
 import java.util.*
 
 class BatteryViewModel(private val batteryBinding: ActivityBatteryBinding, val context: Context) {

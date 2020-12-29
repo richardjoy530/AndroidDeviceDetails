@@ -1,4 +1,4 @@
-package com.example.androidDeviceDetails.battery
+package com.example.androidDeviceDetails.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import com.example.androidDeviceDetails.R
+import com.example.androidDeviceDetails.models.batteryModels.BatteryAppEntry
 import com.example.androidDeviceDetails.utils.Utils
 
 

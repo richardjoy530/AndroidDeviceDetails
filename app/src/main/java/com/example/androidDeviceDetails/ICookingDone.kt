@@ -1,6 +1,6 @@
 package com.example.androidDeviceDetails
 
-import com.example.androidDeviceDetails.battery.BatteryAppEntry
+import com.example.androidDeviceDetails.models.batteryModels.BatteryAppEntry
 import java.util.*
 
 interface ICookingDone {
