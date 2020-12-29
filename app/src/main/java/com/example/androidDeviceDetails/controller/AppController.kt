@@ -5,7 +5,6 @@ import com.example.androidDeviceDetails.ICookingDone
 import com.example.androidDeviceDetails.base.BaseCooker
 import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.models.TimeInterval
-import java.util.*
 
 class AppController<T, MT>(dataType: String, binding: T, val context: Context) {
 

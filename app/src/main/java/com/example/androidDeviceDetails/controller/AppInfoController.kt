@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 
 class AppInfoController(binding: ActivityAppInfoBinding, var context: Context) {
 
-    private var viewModel: AppInfoViewModel = AppInfoViewModel(binding)
+    private var viewModel: AppInfoViewModel = AppInfoViewModel(binding,context)
     private var eventFilter: Int = EventType.ALL_EVENTS.ordinal
 
     private val appInfoData = object : IAppInfoCookedData {

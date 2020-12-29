@@ -10,6 +10,8 @@ import com.example.androidDeviceDetails.models.networkUsageModels.AppNetworkUsag
 import com.example.androidDeviceDetails.utils.Utils
 import java.text.DecimalFormat
 import java.util.*
+import kotlin.collections.ArrayList
+
 
 class NetworkUsageViewModel(
     private val networkUsageBinding: ActivityAppDataBinding,

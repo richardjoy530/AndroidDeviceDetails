@@ -7,16 +7,14 @@ import com.example.androidDeviceDetails.models.TimeInterval
 import com.example.androidDeviceDetails.models.networkUsageModels.AppNetworkUsageEntity
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.util.ArrayList
 
 class NetworkUsageCooker : BaseCooker() {
-    fun appDataCooker(
-        callback: ICookingDone<AppNetworkUsageEntity>,
-        startTime: Long,
-        endTime: Long
-    ) {
+
+    override fun <T> cook(time: TimeInterval, callback: ICookingDone<T>) {
         val db = RoomDB.getDatabase()?.appNetworkUsageDao()!!
         GlobalScope.launch {
-            val inBetweenList = db.getAllBetween(startTime, endTime)
+            val inBetweenList = db.getAllBetween(time.startTime, time.endTime)
             if (inBetweenList.isNotEmpty()) {
                 val firstElementTime = inBetweenList.first().timeStamp
                 val initialAppDataList = inBetweenList.filter { it.timeStamp == firstElementTime }
@@ -41,14 +39,10 @@ class NetworkUsageCooker : BaseCooker() {
                         )
                     } else totalDataUsageList.add(it)
                 }
-                callback.onData(totalDataUsageList)
+                callback.onData(totalDataUsageList as ArrayList<T> )
             } else callback.onNoData()
 
         }
-    }
-
-    override fun <T> cook(time: TimeInterval, callback: ICookingDone<T>) {
-        TODO("Not yet implemented")
     }
 
 }
