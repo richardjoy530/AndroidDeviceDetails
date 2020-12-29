@@ -7,11 +7,11 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.util.Log
+import androidx.core.content.ContextCompat
 import com.example.androidDeviceDetails.DeviceDetailsApplication
 import com.example.androidDeviceDetails.R
-import com.example.androidDeviceDetails.appInfo.collectionHelper.DbHelper
-import com.example.androidDeviceDetails.appInfo.models.AppDetails
-import com.example.androidDeviceDetails.appInfo.models.EventType
+import com.example.androidDeviceDetails.models.appInfoModels.AppDetails
+import com.example.androidDeviceDetails.models.appInfoModels.EventType
 import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.services.CollectorService
 import kotlinx.coroutines.Dispatchers

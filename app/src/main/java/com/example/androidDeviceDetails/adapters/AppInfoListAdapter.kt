@@ -1,4 +1,4 @@
-package com.example.androidDeviceDetails.appInfo
+package com.example.androidDeviceDetails.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -9,8 +9,8 @@ import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.example.androidDeviceDetails.R
-import com.example.androidDeviceDetails.appInfo.models.AppInfoCookedData
-import com.example.androidDeviceDetails.appInfo.models.EventType
+import com.example.androidDeviceDetails.models.appInfoModels.AppInfoCookedData
+import com.example.androidDeviceDetails.models.appInfoModels.EventType
 import com.example.androidDeviceDetails.utils.Utils
 
 class AppInfoListAdapter(

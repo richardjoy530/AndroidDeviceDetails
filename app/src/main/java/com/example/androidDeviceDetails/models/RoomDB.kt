@@ -5,12 +5,14 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.androidDeviceDetails.DeviceDetailsApplication
-import com.example.androidDeviceDetails.appInfo.models.AppHistoryEntity
-import com.example.androidDeviceDetails.appInfo.models.AppsEntity
-import com.example.androidDeviceDetails.appInfo.models.AppHistoryEntity
-import com.example.androidDeviceDetails.appInfo.models.AppHistoryDao
-import com.example.androidDeviceDetails.appInfo.models.AppsEntity
-import com.example.androidDeviceDetails.appInfo.models.AppsDao
+import com.example.androidDeviceDetails.models.appInfoModels.AppHistoryDao
+import com.example.androidDeviceDetails.models.appInfoModels.AppHistoryEntity
+import com.example.androidDeviceDetails.models.appInfoModels.AppsDao
+import com.example.androidDeviceDetails.models.appInfoModels.AppsEntity
+import com.example.androidDeviceDetails.models.batteryModels.AppEventDao
+import com.example.androidDeviceDetails.models.batteryModels.AppEventEntity
+import com.example.androidDeviceDetails.models.batteryModels.BatteryDao
+import com.example.androidDeviceDetails.models.batteryModels.BatteryEntity
 
 
 @Database(

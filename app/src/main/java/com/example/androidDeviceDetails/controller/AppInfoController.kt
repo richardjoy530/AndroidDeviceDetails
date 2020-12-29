@@ -1,10 +1,12 @@
-package com.example.androidDeviceDetails.appInfo
+package com.example.androidDeviceDetails.controller
 
 import android.content.Context
 import com.example.androidDeviceDetails.DeviceDetailsApplication
+import com.example.androidDeviceDetails.viewModel.AppInfoViewModel
+import com.example.androidDeviceDetails.cooker.AppInfoCooker
 import com.example.androidDeviceDetails.interfaces.IAppInfoCookedData
-import com.example.androidDeviceDetails.appInfo.models.AppInfoCookedData
-import com.example.androidDeviceDetails.appInfo.models.EventType
+import com.example.androidDeviceDetails.models.appInfoModels.AppInfoCookedData
+import com.example.androidDeviceDetails.models.appInfoModels.EventType
 import com.example.androidDeviceDetails.databinding.ActivityAppInfoBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -39,7 +41,7 @@ class AppInfoController(binding: ActivityAppInfoBinding, var context: Context) {
     ) {
         this.eventFilter = eventFilter
         GlobalScope.launch(Dispatchers.IO) {
-            AppStateCooker.createInstance()
+            AppInfoCooker.createInstance()
                 .getAppsBetween(startTime, endTime, appInfoData)
         }
     }

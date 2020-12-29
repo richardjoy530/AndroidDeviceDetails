@@ -15,9 +15,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
-import com.example.androidDeviceDetails.appInfo.AppInfoController
-import com.example.androidDeviceDetails.appInfo.AppInfoManager
-import com.example.androidDeviceDetails.appInfo.models.EventType
+import com.example.androidDeviceDetails.controller.AppInfoController
+import com.example.androidDeviceDetails.managers.AppInfoManager
+import com.example.androidDeviceDetails.models.appInfoModels.EventType
 import com.example.androidDeviceDetails.databinding.ActivityAppInfoBinding
 import com.example.androidDeviceDetails.services.CollectorService
 import com.example.androidDeviceDetails.utils.Utils

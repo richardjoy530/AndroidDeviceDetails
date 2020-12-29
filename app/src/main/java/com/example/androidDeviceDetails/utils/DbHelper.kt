@@ -1,8 +1,8 @@
-package com.example.androidDeviceDetails.appInfo.collectionHelper
+package com.example.androidDeviceDetails.utils
 
-import com.example.androidDeviceDetails.appInfo.models.AppDetails
-import com.example.androidDeviceDetails.appInfo.models.AppHistoryEntity
-import com.example.androidDeviceDetails.appInfo.models.AppsEntity
+import com.example.androidDeviceDetails.models.appInfoModels.AppDetails
+import com.example.androidDeviceDetails.models.appInfoModels.AppHistoryEntity
+import com.example.androidDeviceDetails.models.appInfoModels.AppsEntity
 import com.example.androidDeviceDetails.models.RoomDB
 
 object DbHelper {

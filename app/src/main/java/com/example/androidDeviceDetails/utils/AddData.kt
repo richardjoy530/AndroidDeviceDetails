@@ -1,10 +1,9 @@
-package com.example.androidDeviceDetails.appInfo.collectionHelper
+package com.example.androidDeviceDetails.utils
 
 import android.content.Context
-import com.example.androidDeviceDetails.appInfo.models.AppDetails
-import com.example.androidDeviceDetails.appInfo.models.EventType
+import com.example.androidDeviceDetails.models.appInfoModels.AppDetails
+import com.example.androidDeviceDetails.models.appInfoModels.EventType
 import com.example.androidDeviceDetails.models.RoomDB
-import com.example.androidDeviceDetails.utils.Utils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

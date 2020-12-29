@@ -1,4 +1,4 @@
-package com.example.androidDeviceDetails.appInfo
+package com.example.androidDeviceDetails.managers
 
 import android.content.Context
 import android.content.Intent

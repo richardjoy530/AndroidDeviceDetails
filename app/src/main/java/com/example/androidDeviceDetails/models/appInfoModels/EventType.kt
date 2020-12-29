@@ -1,4 +1,4 @@
-package com.example.androidDeviceDetails.appInfo.models
+package com.example.androidDeviceDetails.models.appInfoModels
 
 enum class EventType {
     APP_ENROLL,

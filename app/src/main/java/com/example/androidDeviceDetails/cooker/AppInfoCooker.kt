@@ -1,15 +1,15 @@
-package com.example.androidDeviceDetails.appInfo
+package com.example.androidDeviceDetails.cooker
 
 import com.example.androidDeviceDetails.interfaces.IAppInfoCookedData
-import com.example.androidDeviceDetails.appInfo.models.AppInfoCookedData
-import com.example.androidDeviceDetails.appInfo.models.EventType
+import com.example.androidDeviceDetails.models.appInfoModels.AppInfoCookedData
+import com.example.androidDeviceDetails.models.appInfoModels.EventType
 import com.example.androidDeviceDetails.models.RoomDB
 
-class AppStateCooker {
+class AppInfoCooker {
 
     companion object {
-        fun createInstance(): AppStateCooker {
-            return AppStateCooker()
+        fun createInstance(): AppInfoCooker {
+            return AppInfoCooker()
         }
     }
 
