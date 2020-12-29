@@ -32,6 +32,10 @@ class BatteryActivity : AppCompatActivity(), View.OnClickListener {
         batteryController.setCooker(offset = 0, reset = true, tillToday = true)
     }
 
+    companion object {
+        const val NAME = "battery"
+    }
+
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.leftArrow -> batteryController.setCooker(offset = -1)

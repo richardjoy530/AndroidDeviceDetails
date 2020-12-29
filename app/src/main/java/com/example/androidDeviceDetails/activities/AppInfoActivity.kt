@@ -44,6 +44,10 @@ class AppInfoActivity : AppCompatActivity() {
         return true
     }
 
+    companion object {
+        const val NAME = "appInfo"
+    }
+
     @SuppressLint("SetTextI18n")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val title = findViewById<TextView>(R.id.filter_text)

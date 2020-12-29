@@ -16,6 +16,10 @@ class NetworkUsageActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var networkUsageBinding: ActivityAppDataBinding
     private lateinit var networkUsageController: NetworkUsageController
 
+    companion object {
+        const val NAME = "network"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         networkUsageBinding = DataBindingUtil.setContentView(this, R.layout.activity_app_data)

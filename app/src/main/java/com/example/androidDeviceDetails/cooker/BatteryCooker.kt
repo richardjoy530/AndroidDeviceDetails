@@ -1,12 +1,14 @@
 package com.example.androidDeviceDetails.cooker
 
 import com.example.androidDeviceDetails.ICookingDone
+import com.example.androidDeviceDetails.base.BaseCooker
 import com.example.androidDeviceDetails.models.RoomDB
+import com.example.androidDeviceDetails.models.TimeInterval
 import com.example.androidDeviceDetails.models.batteryModels.BatteryAppEntry
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class BatteryCooker {
+class BatteryCooker : BaseCooker() {
     private var db: RoomDB = RoomDB.getDatabase()!!
 
     fun cookBatteryData(
@@ -42,6 +44,10 @@ class BatteryCooker {
                 callback.onData(appEntryList)
             } else callback.onNoData()
         }
+    }
+
+    override fun <T> cook(time: TimeInterval, callback: ICookingDone<T>) {
+        TODO("Not yet implemented")
     }
 }
 

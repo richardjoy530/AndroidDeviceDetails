@@ -1,12 +1,14 @@
 package com.example.androidDeviceDetails.cooker
 
 import com.example.androidDeviceDetails.ICookingDone
+import com.example.androidDeviceDetails.base.BaseCooker
 import com.example.androidDeviceDetails.models.RoomDB
+import com.example.androidDeviceDetails.models.TimeInterval
 import com.example.androidDeviceDetails.models.networkUsageModels.AppNetworkUsageEntity
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class NetworkUsageCooker {
+class NetworkUsageCooker : BaseCooker() {
     fun appDataCooker(
         callback: ICookingDone<AppNetworkUsageEntity>,
         startTime: Long,
@@ -43,6 +45,10 @@ class NetworkUsageCooker {
             } else callback.onNoData()
 
         }
+    }
+
+    override fun <T> cook(time: TimeInterval, callback: ICookingDone<T>) {
+        TODO("Not yet implemented")
     }
 
 }

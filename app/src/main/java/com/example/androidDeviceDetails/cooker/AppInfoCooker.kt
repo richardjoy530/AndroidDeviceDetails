@@ -1,11 +1,14 @@
 package com.example.androidDeviceDetails.cooker
 
+import com.example.androidDeviceDetails.ICookingDone
+import com.example.androidDeviceDetails.base.BaseCooker
 import com.example.androidDeviceDetails.interfaces.IAppInfoCookedData
 import com.example.androidDeviceDetails.models.RoomDB
+import com.example.androidDeviceDetails.models.TimeInterval
 import com.example.androidDeviceDetails.models.appInfoModels.AppInfoCookedData
 import com.example.androidDeviceDetails.models.appInfoModels.EventType
 
-class AppInfoCooker {
+class AppInfoCooker : BaseCooker() {
 
     companion object {
         fun createInstance(): AppInfoCooker {
@@ -80,5 +83,9 @@ class AppInfoCooker {
             }
             appInfoCookedData.onDataReceived(appList)
         }
+    }
+
+    override fun <T> cook(time: TimeInterval, callback: ICookingDone<T>) {
+        TODO("Not yet implemented")
     }
 }
