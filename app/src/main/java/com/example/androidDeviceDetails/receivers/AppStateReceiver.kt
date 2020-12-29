@@ -3,7 +3,7 @@ package com.example.androidDeviceDetails.receivers
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import com.example.androidDeviceDetails.utils.AddData
+import com.example.androidDeviceDetails.utils.AppInfoCollectionHelper
 
 class AppStateReceiver : BroadcastReceiver() {
 
@@ -13,13 +13,13 @@ class AppStateReceiver : BroadcastReceiver() {
 
         if (action == Intent.ACTION_PACKAGE_ADDED ) {
             if(!intent.getBooleanExtra(Intent.EXTRA_REPLACING, false))
-                AddData.appInstalled(context, packageName)
+                AppInfoCollectionHelper.appInstalled(context, packageName)
             else
-                AddData.appUpgraded(context, packageName)
+                AppInfoCollectionHelper.appUpgraded(context, packageName)
         }
 
         if (action == Intent.ACTION_PACKAGE_FULLY_REMOVED) {
-            AddData.appUninstalled(context, packageName)
+            AppInfoCollectionHelper.appUninstalled(context, packageName)
         }
     }
 

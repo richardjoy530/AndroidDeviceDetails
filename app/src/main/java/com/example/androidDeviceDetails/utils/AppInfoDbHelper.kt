@@ -5,7 +5,7 @@ import com.example.androidDeviceDetails.models.appInfoModels.AppHistoryEntity
 import com.example.androidDeviceDetails.models.appInfoModels.AppsEntity
 import com.example.androidDeviceDetails.models.RoomDB
 
-object DbHelper {
+object AppInfoDbHelper {
     fun writeToAppsDb(id: Int, packageName: String, appDetails: AppDetails, db: RoomDB) {
         db.appsDao().insertAll(
             AppsEntity(

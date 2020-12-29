@@ -8,7 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-object AddData {
+object AppInfoCollectionHelper {
 
     fun appInstalled(context: Context, packageName: String) {
         val latestAppDetails = Utils.getAppDetails(context, packageName)
@@ -16,9 +16,9 @@ object AddData {
         GlobalScope.launch(Dispatchers.IO) {
             var id = db.appsDao().getIdByName(packageName)
             if (id == 0) {
-                DbHelper.writeToAppsDb(0, packageName, latestAppDetails, db)
+                AppInfoDbHelper.writeToAppsDb(0, packageName, latestAppDetails, db)
                 id = db.appsDao().getIdByName(packageName)
-                DbHelper.writeToAppHistoryDb(
+                AppInfoDbHelper.writeToAppHistoryDb(
                     id,
                     EventType.APP_INSTALLED.ordinal,
                     latestAppDetails,
@@ -34,14 +34,14 @@ object AddData {
                     } else {
                         EventType.APP_INSTALLED.ordinal
                     }
-                DbHelper.writeToAppHistoryDb(
+                AppInfoDbHelper.writeToAppHistoryDb(
                     id,
                     event,
                     latestAppDetails,
                     db,
                     currentAppHistory.currentVersionCode
                 )
-                DbHelper.writeToAppsDb(id, packageName, latestAppDetails, db)
+                AppInfoDbHelper.writeToAppsDb(id, packageName, latestAppDetails, db)
             }
         }
     }
@@ -59,14 +59,14 @@ object AddData {
                     currentAppHistory.appTitle,
                     currentAppHistory.isSystemApp
                 )
-            DbHelper.writeToAppHistoryDb(
+            AppInfoDbHelper.writeToAppHistoryDb(
                 id,
                 EventType.APP_UNINSTALLED.ordinal,
                 appDetails,
                 db,
                 currentAppHistory.currentVersionCode
             )
-            DbHelper.writeToAppsDb(id, packageName, appDetails, db)
+            AppInfoDbHelper.writeToAppsDb(id, packageName, appDetails, db)
         }
     }
 
@@ -77,7 +77,7 @@ object AddData {
             val id = db.appsDao().getIdByName(packageName)
             val currentAppHistory = db.appsDao().getById(id)
             if (currentAppHistory.currentVersionCode < latestAppDetails.versionCode || currentAppHistory.appTitle != latestAppDetails.appTitle) {
-                DbHelper.writeToAppHistoryDb(
+                AppInfoDbHelper.writeToAppHistoryDb(
                     id,
                     EventType.APP_UPDATED.ordinal,
                     latestAppDetails,
