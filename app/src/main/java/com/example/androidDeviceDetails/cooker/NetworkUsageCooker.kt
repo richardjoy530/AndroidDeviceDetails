@@ -7,7 +7,7 @@ import com.example.androidDeviceDetails.models.TimeInterval
 import com.example.androidDeviceDetails.models.networkUsageModels.AppNetworkUsageEntity
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.util.ArrayList
+import java.util.*
 
 class NetworkUsageCooker : BaseCooker() {
 
@@ -40,7 +40,7 @@ class NetworkUsageCooker : BaseCooker() {
                         )
                     } else totalDataUsageList.add(it)
                 }
-                callback.onData(totalDataUsageList as ArrayList<T> )
+                callback.onDone(totalDataUsageList as ArrayList<T>)
             } else callback.onNoData()
 
         }

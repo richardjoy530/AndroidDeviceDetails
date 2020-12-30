@@ -78,7 +78,7 @@ class AppInfoCooker : BaseCooker() {
                 for (app in appList) {
                     app.packageName = db.appsDao().getPackageByID(app.appId)
                 }
-                callback.onData(appList as ArrayList<T>)
+                callback.onDone(appList as ArrayList<T>)
             }
         }
     }

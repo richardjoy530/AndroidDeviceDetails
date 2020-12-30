@@ -16,8 +16,7 @@ class AppController<T, MT>(dataType: String, binding: T, val context: Context) {
     }
 
     private val onCookingDone = object : ICookingDone<MT> {
-        override fun onNoData() = viewModel.onNoData()
-        override fun onData(outputList: ArrayList<MT>) =
+        override fun onDone(outputList: ArrayList<MT>) =
             viewModel.onData(outputList)
     }
 }
