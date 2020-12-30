@@ -73,7 +73,7 @@ class AppInfoCooker : BaseCooker() {
             }
 
             if (appList.isEmpty())
-                callback.onNoData()
+                callback.onDone(arrayListOf())
             else {
                 for (app in appList) {
                     app.packageName = db.appsDao().getPackageByID(app.appId)
