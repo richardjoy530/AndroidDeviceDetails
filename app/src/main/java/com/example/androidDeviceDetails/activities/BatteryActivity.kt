@@ -15,6 +15,7 @@ import com.example.androidDeviceDetails.controller.AppController
 import com.example.androidDeviceDetails.databinding.ActivityBatteryBinding
 import com.example.androidDeviceDetails.models.TimeInterval
 import com.example.androidDeviceDetails.models.batteryModels.BatteryAppEntry
+import com.example.androidDeviceDetails.utils.Utils
 import java.util.*
 
 class BatteryActivity : AppCompatActivity(), View.OnClickListener {
@@ -32,12 +33,12 @@ class BatteryActivity : AppCompatActivity(), View.OnClickListener {
         batteryBinding.apply {
             leftArrow.setOnClickListener(this@BatteryActivity)
             rightArrow.setOnClickListener(this@BatteryActivity)
-            description.setOnClickListener(this@BatteryActivity)
             today.setOnClickListener(this@BatteryActivity)
             batteryListView.setOnItemClickListener { parent, _, position, _ ->
                 redirectToAppInfo(parent, position)
             }
         }
+        batteryBinding.today.text = Utils.getDateString(calendar)
         batteryController.cook(
             TimeInterval(
                 calendar.timeInMillis,
@@ -63,6 +64,7 @@ class BatteryActivity : AppCompatActivity(), View.OnClickListener {
         when (v?.id) {
             R.id.leftArrow -> {
                 calendar.add(Calendar.DAY_OF_MONTH, -1)
+                batteryBinding.today.text = Utils.getDateString(calendar)
                 batteryController.cook(
                     TimeInterval(
                         calendar.timeInMillis,
@@ -74,6 +76,7 @@ class BatteryActivity : AppCompatActivity(), View.OnClickListener {
             R.id.rightArrow
             -> {
                 calendar.add(Calendar.DAY_OF_MONTH, 1)
+                batteryBinding.today.text = Utils.getDateString(calendar)
                 batteryController.cook(
                     TimeInterval(
                         calendar.timeInMillis,
@@ -98,6 +101,7 @@ class BatteryActivity : AppCompatActivity(), View.OnClickListener {
     private var datePickerListener =
         DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
             calendar.set(year, month, dayOfMonth)
+            batteryBinding.today.text = Utils.getDateString(calendar)
             batteryController.cook(
                 TimeInterval(
                     calendar.timeInMillis,

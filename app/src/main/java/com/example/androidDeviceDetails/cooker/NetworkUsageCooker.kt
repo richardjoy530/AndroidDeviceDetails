@@ -41,7 +41,7 @@ class NetworkUsageCooker : BaseCooker() {
                     } else totalDataUsageList.add(it)
                 }
                 callback.onDone(totalDataUsageList as ArrayList<T>)
-            } else callback.onNoData()
+            } else callback.onDone(arrayListOf())
 
         }
     }

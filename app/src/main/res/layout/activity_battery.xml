@@ -27,7 +27,7 @@
             android:background="@drawable/mode_selector_bg"
             android:paddingHorizontal="10dp"
             android:paddingVertical="5dp"
-            android:text="@string/till_today"
+            android:text="@string/day_wise"
             android:textAlignment="center"
             android:textColor="?attr/batteryTitle"
             app:layout_constraintEnd_toEndOf="parent"
@@ -36,7 +36,6 @@
 
         <LinearLayout
             android:id="@+id/battery_date_picker"
-            android:visibility="invisible"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"

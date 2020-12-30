@@ -30,7 +30,7 @@ class NetworkUsageController(
     }
 
     private val onCookingDone = object : ICookingDone<AppNetworkUsageEntity> {
-        override fun onNoData() = networkUsageViewModel.onNoData()
+//        override fun onNoData() = networkUsageViewModel.onNoData()
         override fun onDone(outputList: ArrayList<AppNetworkUsageEntity>) =
             networkUsageViewModel.onData(outputList)
     }
