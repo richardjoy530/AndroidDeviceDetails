@@ -4,7 +4,7 @@ import android.widget.ImageView
 import android.widget.TextView
 
 data class BatteryItemViewHolder(
-    var appNameView: TextView? = null,
-    var dropTextView: TextView? = null,
-    var appIconView: ImageView? = null,
+    var appNameView: TextView,
+    var dropTextView: TextView,
+    var appIconView: ImageView,
 )

@@ -21,17 +21,18 @@ class BatteryListAdapter(
         val holder: BatteryItemViewHolder
         if (convertView == null) {
             vi = layoutInflater.inflate(resource, null)
-            holder = BatteryItemViewHolder()
-            holder.appNameView = vi.findViewById(R.id.appName)
-            holder.dropTextView = vi.findViewById(R.id.dropText)
-            holder.appIconView = vi.findViewById(R.id.appIcon)
+            holder = BatteryItemViewHolder(
+                vi.findViewById(R.id.appName),
+                vi.findViewById(R.id.dropText),
+                vi.findViewById(R.id.appIcon)
+            )
             vi.tag = holder
         } else holder = vi?.tag as BatteryItemViewHolder
 
-        holder.appNameView?.text = Utils.getApplicationLabel(items[position].packageId)
+        holder.appNameView.text = Utils.getApplicationLabel(items[position].packageId)
         val text = "Dropped ${items[position].drop} %"
-        holder.dropTextView?.text = text
-        holder.appIconView?.setImageDrawable(Utils.getApplicationIcon(items[position].packageId))
+        holder.dropTextView.text = text
+        holder.appIconView.setImageDrawable(Utils.getApplicationIcon(items[position].packageId))
 
         return vi!!
     }

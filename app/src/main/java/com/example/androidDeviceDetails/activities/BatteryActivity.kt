@@ -47,10 +47,6 @@ class BatteryActivity : AppCompatActivity(), View.OnClickListener {
         )
     }
 
-    companion object {
-        const val NAME = "battery"
-    }
-
     private fun redirectToAppInfo(parent: AdapterView<*>, position: Int) {
         val adapter = parent.adapter as BatteryListAdapter
         val item = adapter.getItem(position)
@@ -73,8 +69,7 @@ class BatteryActivity : AppCompatActivity(), View.OnClickListener {
                 )
             }
 
-            R.id.rightArrow
-            -> {
+            R.id.rightArrow -> {
                 calendar.add(Calendar.DAY_OF_MONTH, 1)
                 batteryBinding.today.text = Utils.getDateString(calendar)
                 batteryController.cook(
@@ -95,7 +90,10 @@ class BatteryActivity : AppCompatActivity(), View.OnClickListener {
             calendar.get(Calendar.YEAR),
             calendar.get(Calendar.MONTH),
             calendar.get(Calendar.DAY_OF_MONTH)
-        ).show()
+        ).apply {
+            datePicker.maxDate = System.currentTimeMillis()
+            show()
+        }
     }
 
     private var datePickerListener =
@@ -109,5 +107,9 @@ class BatteryActivity : AppCompatActivity(), View.OnClickListener {
                 )
             )
         }
+
+    companion object {
+        const val NAME = "battery"
+    }
 }
 
