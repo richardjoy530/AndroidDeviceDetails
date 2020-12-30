@@ -10,7 +10,6 @@ import com.example.androidDeviceDetails.models.networkUsageModels.AppNetworkUsag
 import com.example.androidDeviceDetails.utils.Utils
 import java.text.DecimalFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class NetworkUsageViewModel(
@@ -43,18 +42,18 @@ class NetworkUsageViewModel(
         }
     }
 
-    override fun onNoData() {
-        networkUsageBinding.root.post {
-            networkUsageBinding.apply {
-                appDataListView.adapter = NetWorkUsageListAdapter(
-                    context,
-                    R.layout.appdata_tile,
-                    arrayListOf()
-                )
-                noData.isVisible = true
-            }
-        }
-    }
+//    override fun onNoData() {
+//        networkUsageBinding.root.post {
+//            networkUsageBinding.apply {
+//                appDataListView.adapter = NetWorkUsageListAdapter(
+//                    context,
+//                    R.layout.appdata_tile,
+//                    arrayListOf()
+//                )
+//                noData.isVisible = true
+//            }
+//        }
+//    }
 
     @Suppress("UNCHECKED_CAST")
     override fun <T> onData(outputList: ArrayList<T>) {

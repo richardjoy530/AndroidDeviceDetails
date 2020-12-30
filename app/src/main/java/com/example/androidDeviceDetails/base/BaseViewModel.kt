@@ -11,9 +11,7 @@ import com.example.androidDeviceDetails.viewModel.BatteryViewModel
 import com.example.androidDeviceDetails.viewModel.NetworkUsageViewModel
 
 abstract class BaseViewModel {
-    abstract fun onNoData()
     abstract fun <T> onData(outputList: ArrayList<T>)
-
     companion object {
         fun getViewModel(
             type: String,

@@ -11,15 +11,11 @@ import kotlinx.coroutines.launch
 class BatteryCooker : BaseCooker() {
     private var db: RoomDB = RoomDB.getDatabase()!!
 
-    fun cookBatteryData(
-        callback: ICookingDone<BatteryAppEntry>,
-        beginTime: Long,
-        endTime: Long = System.currentTimeMillis()
-    ) {
+    override fun <T> cook(time: TimeInterval, callback: ICookingDone<T>) {
         val appEntryList = arrayListOf<BatteryAppEntry>()
         GlobalScope.launch {
-            val appEventList = db.appEventDao().getAllBetween(beginTime, endTime)
-            val batteryList = db.batteryDao().getAllBetween(beginTime, endTime)
+            val appEventList = db.appEventDao().getAllBetween(time.startTime, time.endTime)
+            val batteryList = db.batteryDao().getAllBetween(time.startTime, time.endTime)
             if (batteryList.isNotEmpty() && appEventList.isNotEmpty()) {
                 val batteryIterator = batteryList.iterator()
                 var batteryInfo = batteryList.first()
@@ -41,13 +37,10 @@ class BatteryCooker : BaseCooker() {
                     previousApp = appEvent
                     previousBattery = batteryInfo
                 }
-                callback.onData(appEntryList)
-            } else callback.onNoData()
+                callback.onDone(appEntryList as ArrayList<T>)
+            } else callback.onDone(arrayListOf())
         }
     }
 
-    override fun <T> cook(time: TimeInterval, callback: ICookingDone<T>) {
-        TODO("Not yet implemented")
-    }
 }
 
