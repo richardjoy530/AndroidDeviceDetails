@@ -10,6 +10,7 @@
         android:id="@+id/filter_text"
         android:orderInCategory="100"
         android:title="All"
+        android:textAllCaps="false"
         app:showAsAction="ifRoom|withText"/>
 
     <item

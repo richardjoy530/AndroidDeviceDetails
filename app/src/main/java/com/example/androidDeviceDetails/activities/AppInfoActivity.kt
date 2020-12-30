@@ -35,7 +35,6 @@ class AppInfoActivity : AppCompatActivity() {
     private var startTime: Long = 0
     private var endTime: Long = 0
     private var startTimeFlag: Boolean = true
-    private var eventFilter = EventType.ALL_EVENTS.ordinal
     private lateinit var controller: AppController<ActivityAppInfoBinding,AppInfoCookedData>
 
     @SuppressLint("SimpleDateFormat")
@@ -55,30 +54,25 @@ class AppInfoActivity : AppCompatActivity() {
         val title = findViewById<TextView>(R.id.filter_text)
         when (item.itemId) {
             R.id.spinner_all -> {
-                eventFilter = EventType.ALL_EVENTS.ordinal
                 title.text = "All"
-                binding.statisticsContainer.tag = "4"
+                binding.statisticsContainer.tag = "${EventType.ALL_EVENTS.ordinal}"
             }
             R.id.spinner_enrolled -> {
-                eventFilter = EventType.APP_ENROLL.ordinal
                 title.text = "Enrolled"
-                binding.statisticsContainer.tag = "0"
+                binding.statisticsContainer.tag = "${EventType.APP_ENROLL.ordinal}"
 
             }
             R.id.spinner_installed -> {
-                eventFilter = EventType.APP_INSTALLED.ordinal
                 title.text = "Installed"
-                binding.statisticsContainer.tag = "1"
+                binding.statisticsContainer.tag = "${EventType.APP_INSTALLED.ordinal}"
             }
             R.id.spinner_updated -> {
-                eventFilter = EventType.APP_UPDATED.ordinal
                 title.text = "Updated"
-                binding.statisticsContainer.tag = "2"
+                binding.statisticsContainer.tag = "${EventType.APP_UPDATED.ordinal}"
             }
             R.id.spinner_uninstalled -> {
-                eventFilter = EventType.APP_UNINSTALLED.ordinal
                 title.text = "Uninstalled"
-                binding.statisticsContainer.tag = "3"
+                binding.statisticsContainer.tag = "${EventType.APP_UNINSTALLED.ordinal}"
             }
             R.id.filter_text -> {
             }
