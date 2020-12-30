@@ -121,7 +121,7 @@ object Utils {
         } catch (e: Exception) {
             ContextCompat.getDrawable(
                 DeviceDetailsApplication.instance,
-                R.drawable.ic_android_black_24dp
+                R.drawable.ic_baseline_android_24
             )!!
         }
     }
