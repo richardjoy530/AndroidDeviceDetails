@@ -18,7 +18,7 @@ class AppInfoListAdapter(
     private var resource: Int,
     private var items: List<AppInfoCookedData>
 ) : ArrayAdapter<AppInfoCookedData>(_context, resource, items) {
-    @SuppressLint("ViewHolder", "SetTextI18n")
+    @SuppressLint("SetTextI18n")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val layoutInflater = LayoutInflater.from(_context)
         var vi = convertView
