@@ -16,7 +16,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
 
-class AppDataUsageCollector(var context: Context) : BaseTimeCollector() {
+class NetworkUsageCollector(var context: Context) : BaseTimeCollector() {
 
     override lateinit var timer: Timer
 
@@ -26,8 +26,8 @@ class AppDataUsageCollector(var context: Context) : BaseTimeCollector() {
     private lateinit var networkStatsManager: NetworkStatsManager
 
     @RequiresApi(Build.VERSION_CODES.M)
-    private fun updateAppDataUsageDB() {
-        val appDataUsageList = arrayListOf<AppNetworkUsageEntity>()
+    fun updateNetworkDataUsageDB() {
+        val networkUsageList = arrayListOf<AppNetworkUsageEntity>()
         val networkStatsWifi = networkStatsManager.querySummary(
             NetworkCapabilities.TRANSPORT_WIFI,
             null, firstInstallTime, System.currentTimeMillis()
@@ -43,10 +43,10 @@ class AppDataUsageCollector(var context: Context) : BaseTimeCollector() {
                 networkStatsWifi.getNextBucket(bucket)
                 val packageName = context.packageManager.getNameForUid(bucket.uid)
                 if (packageName != null && packageName != "null")
-                    if (appDataUsageList.none { it.packageName == packageName })
-                        appDataUsageList.add(appDataUsageFactory(bucket, true))
+                    if (networkUsageList.none { it.packageName == packageName })
+                        networkUsageList.add(appNetworkUsageFactory(bucket, true))
                     else
-                        appDataUsageList.first {
+                        networkUsageList.first {
                             it.packageName == packageName
                         }.apply {
                             receivedDataWifi += bucket.rxBytes
@@ -57,10 +57,10 @@ class AppDataUsageCollector(var context: Context) : BaseTimeCollector() {
                 networkStatsMobileData.getNextBucket(bucket)
                 val packageName = context.packageManager.getNameForUid(bucket.uid)
                 if (packageName != null && packageName != "null")
-                    if (appDataUsageList.none { it.packageName == packageName })
-                        appDataUsageList.add(appDataUsageFactory(bucket, false))
+                    if (networkUsageList.none { it.packageName == packageName })
+                        networkUsageList.add(appNetworkUsageFactory(bucket, false))
                     else
-                        appDataUsageList.first {
+                        networkUsageList.first {
                             it.packageName == packageName
                         }.apply {
                             receivedDataMobile += bucket.rxBytes
@@ -68,11 +68,11 @@ class AppDataUsageCollector(var context: Context) : BaseTimeCollector() {
                         }
             }
         }
-        GlobalScope.launch { appDataUsageList.forEach { db.appNetworkUsageDao().insertAll(it) } }
+        GlobalScope.launch { networkUsageList.forEach { db.appNetworkUsageDao().insertAll(it) } }
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    private fun updateDeviceDataUsageDB() {
+    fun updateDeviceNetworkUsageDB() {
         var totalWifiDataRx = 0L
         var totalWifiDataTx = 0L
         var totalMobileDataRx = 0L
@@ -101,7 +101,7 @@ class AppDataUsageCollector(var context: Context) : BaseTimeCollector() {
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    private fun appDataUsageFactory(
+    private fun appNetworkUsageFactory(
         bucket: NetworkStats.Bucket,
         wifiEnable: Boolean = true
     ): AppNetworkUsageEntity {
