@@ -95,6 +95,7 @@ class AppInfoActivity : AppCompatActivity() {
         startTime = Utils.loadPreviousDayTime()
         endTime = System.currentTimeMillis()
         controller.cook(TimeInterval(startTime, endTime))
+        binding.indeterminateBar.isVisible = true
         binding.startdateView.text = simpleDateFormat.format(startTime)
         binding.enddateView.text = simpleDateFormat.format(endTime)
 
@@ -136,8 +137,10 @@ class AppInfoActivity : AppCompatActivity() {
             startTime = calendar.timeInMillis
             if (startTime < endTime || endTime == 0L) {
                 binding.startdateView.text = time
-                if (startTime != 0L && endTime != 0L)
+                if (startTime != 0L && endTime != 0L) {
                     controller.cook(TimeInterval(startTime, endTime))
+                    binding.indeterminateBar.isVisible = true
+                }
             } else {
                 Toast.makeText(
                     this,
@@ -149,8 +152,10 @@ class AppInfoActivity : AppCompatActivity() {
             endTime = calendar.timeInMillis
             if (startTime < endTime || startTime == 0L) {
                 binding.enddateView.text = time
-                if (startTime != 0L && endTime != 0L)
+                if (startTime != 0L && endTime != 0L) {
                     controller.cook(TimeInterval(startTime, endTime))
+                    binding.indeterminateBar.isVisible = true
+                }
             } else {
                 Toast.makeText(
                     this,
