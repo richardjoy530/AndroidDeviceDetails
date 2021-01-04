@@ -9,8 +9,8 @@ import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import com.example.androidDeviceDetails.R
-import com.example.androidDeviceDetails.managers.AppDataUsageCollector
 import com.example.androidDeviceDetails.managers.AppEventCollector
+import com.example.androidDeviceDetails.managers.NetworkUsageCollector
 import com.example.androidDeviceDetails.managers.SignalChangeListener
 import com.example.androidDeviceDetails.receivers.AppStateReceiver
 import com.example.androidDeviceDetails.receivers.BatteryReceiver
@@ -26,7 +26,7 @@ class CollectorService : Service() {
     private lateinit var mAppStateReceiver: AppStateReceiver
     private lateinit var mWifiReceiver: WifiReceiver
     private lateinit var mAppEventCollector: AppEventCollector
-    private lateinit var mAppDataUsageCollector: AppDataUsageCollector
+    private lateinit var mAppDataUsageCollector: NetworkUsageCollector
     private lateinit var mPhoneStateListener: SignalChangeListener
 
     override fun onBind(intent: Intent): IBinder {
@@ -40,7 +40,7 @@ class CollectorService : Service() {
         mAppStateReceiver = AppStateReceiver()
         mAppEventCollector = AppEventCollector(this)
         mPhoneStateListener = SignalChangeListener(this)
-        mAppDataUsageCollector = AppDataUsageCollector(this)
+        mAppDataUsageCollector = NetworkUsageCollector(this)
         pushNotification()
 
     }
