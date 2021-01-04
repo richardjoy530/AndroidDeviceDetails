@@ -130,8 +130,8 @@ class NetworkUsageCollector(var context: Context) : BaseTimeCollector() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             networkStatsManager =
                 context.getSystemService(AppCompatActivity.NETWORK_STATS_SERVICE) as NetworkStatsManager
-            updateAppDataUsageDB()
-            updateDeviceDataUsageDB()
+            updateDeviceNetworkUsageDB()
+            updateNetworkDataUsageDB()
         }
     }
 
