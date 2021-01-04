@@ -42,30 +42,34 @@ class NetworkUsageViewModel(
         }
     }
 
-//    override fun onNoData() {
-//        networkUsageBinding.root.post {
-//            networkUsageBinding.apply {
-//                appDataListView.adapter = NetWorkUsageListAdapter(
-//                    context,
-//                    R.layout.appdata_tile,
-//                    arrayListOf()
-//                )
-//                noData.isVisible = true
-//            }
-//        }
-//    }
+
 
     @Suppress("UNCHECKED_CAST")
     override fun <T> onData(outputList: ArrayList<T>) {
-        networkUsageBinding.root.post {
+        if(outputList.isNotEmpty()){
+            networkUsageBinding.root.post {
+                networkUsageBinding.apply {
+                    appDataListView.adapter = NetWorkUsageListAdapter(
+                        context,
+                        R.layout.appdata_tile,
+                        outputList as ArrayList<AppNetworkUsageEntity>
+                    )
+                    noData.isVisible = false
+                }
+            }
+        }
+        else{
+            networkUsageBinding.root.post {
             networkUsageBinding.apply {
                 appDataListView.adapter = NetWorkUsageListAdapter(
                     context,
                     R.layout.appdata_tile,
-                    outputList as ArrayList<AppNetworkUsageEntity>
+                    arrayListOf()
                 )
-                noData.isVisible = false
+                noData.isVisible = true
             }
         }
+        }
+
     }
 }
