@@ -15,7 +15,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.M)
-class AppDataUsageCollector(var context: Context) {
+class NetworkUsageCollector(var context: Context) {
     private val firstInstallTime =
         context.packageManager.getPackageInfo(context.packageName, 0).firstInstallTime
     val db = RoomDB.getDatabase()!!

@@ -14,7 +14,7 @@ import android.telephony.PhoneStateListener
 import android.telephony.TelephonyManager
 import androidx.core.app.NotificationCompat
 import com.example.androidDeviceDetails.R
-import com.example.androidDeviceDetails.managers.AppDataUsageCollector
+import com.example.androidDeviceDetails.managers.NetworkUsageCollector
 import com.example.androidDeviceDetails.managers.AppUsage
 import com.example.androidDeviceDetails.managers.SignalChangeListener
 import com.example.androidDeviceDetails.receivers.AppStateReceiver
@@ -81,7 +81,7 @@ class CollectorService : Service() {
             object : TimerTask() {
                 override fun run() {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        val appDataUsageCollector = AppDataUsageCollector(context)
+                        val appDataUsageCollector = NetworkUsageCollector(context)
                         appDataUsageCollector.updateAppDataUsageDB()
                         appDataUsageCollector.updateDeviceDataUsageDB()
 
