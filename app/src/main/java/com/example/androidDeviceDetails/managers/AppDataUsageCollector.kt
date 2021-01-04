@@ -8,21 +8,25 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import com.example.androidDeviceDetails.base.BaseTimeCollector
 import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.models.networkUsageModels.AppNetworkUsageEntity
 import com.example.androidDeviceDetails.models.networkUsageModels.DeviceNetworkUsageEntity
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.util.*
 
-@RequiresApi(Build.VERSION_CODES.M)
-class AppDataUsageCollector(var context: Context) {
+class AppDataUsageCollector(var context: Context) : BaseTimeCollector() {
+
+    override lateinit var timer: Timer
+
     private val firstInstallTime =
         context.packageManager.getPackageInfo(context.packageName, 0).firstInstallTime
     val db = RoomDB.getDatabase()!!
-    private val networkStatsManager =
-        context.getSystemService(AppCompatActivity.NETWORK_STATS_SERVICE) as NetworkStatsManager
+    private lateinit var networkStatsManager: NetworkStatsManager
 
-    fun updateAppDataUsageDB() {
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun updateAppDataUsageDB() {
         val appDataUsageList = arrayListOf<AppNetworkUsageEntity>()
         val networkStatsWifi = networkStatsManager.querySummary(
             NetworkCapabilities.TRANSPORT_WIFI,
@@ -67,7 +71,8 @@ class AppDataUsageCollector(var context: Context) {
         GlobalScope.launch { appDataUsageList.forEach { db.appNetworkUsageDao().insertAll(it) } }
     }
 
-    fun updateDeviceDataUsageDB() {
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun updateDeviceDataUsageDB() {
         var totalWifiDataRx = 0L
         var totalWifiDataTx = 0L
         var totalMobileDataRx = 0L
@@ -95,6 +100,7 @@ class AppDataUsageCollector(var context: Context) {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun appDataUsageFactory(
         bucket: NetworkStats.Bucket,
         wifiEnable: Boolean = true
@@ -118,6 +124,25 @@ class AppDataUsageCollector(var context: Context) {
                 bucket.rxBytes,
             )
 
+    }
+
+    override fun collect() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            networkStatsManager =
+                context.getSystemService(AppCompatActivity.NETWORK_STATS_SERVICE) as NetworkStatsManager
+            updateAppDataUsageDB()
+            updateDeviceDataUsageDB()
+        }
+    }
+
+    override fun runTimer(intervalInMinuets: Long) {
+        timer = Timer()
+        timer.scheduleAtFixedRate(
+            object : TimerTask() {
+                override fun run() = collect()
+            },
+            0, 1000 * 60 * intervalInMinuets
+        )
     }
 
 }

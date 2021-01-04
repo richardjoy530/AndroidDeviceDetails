@@ -1,17 +1,22 @@
 package com.example.androidDeviceDetails.managers
 
+import android.app.Service
 import android.content.Context
 import android.os.Build
 import android.telephony.*
 import android.util.Log
+import com.example.androidDeviceDetails.DeviceDetailsApplication
+import com.example.androidDeviceDetails.base.BaseEventCollector
 import com.example.androidDeviceDetails.models.CellularRaw
 import com.example.androidDeviceDetails.models.RoomDB
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class SignalChangeListener(private val context: Context) : PhoneStateListener() {
+class SignalChangeListener(private val context: Context) : PhoneStateListener(),
+    BaseEventCollector {
 
     private var signalDB = RoomDB.getDatabase()
+    private lateinit var mTelephonyManager: TelephonyManager
 
 
     override fun onSignalStrengthsChanged(signalStrength: SignalStrength) {
@@ -26,7 +31,7 @@ class SignalChangeListener(private val context: Context) : PhoneStateListener() 
         val wcdmaData: CellSignalStrengthWcdma
 
 
-        if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             if (signalStrength.cellSignalStrengths[0] is CellSignalStrengthLte) {
                 lteData = signalStrength.cellSignalStrengths[0] as CellSignalStrengthLte
                 strength = lteData.rsrp
@@ -99,8 +104,6 @@ class SignalChangeListener(private val context: Context) : PhoneStateListener() 
             } catch (e: Exception) {
             }
         }
-        Log.d("tagdata1", "data: $strength, $level,$asuLevel,$type")
-
         cellularRaw = CellularRaw(
             System.currentTimeMillis(), type, strength, level, asuLevel
         )
@@ -108,4 +111,12 @@ class SignalChangeListener(private val context: Context) : PhoneStateListener() 
             signalDB?.cellularDao()?.insertAll(cellularRaw)
         }
     }
+
+    override fun registerReceiver() {
+        mTelephonyManager =
+            DeviceDetailsApplication.instance.getSystemService(Service.TELEPHONY_SERVICE) as TelephonyManager
+        mTelephonyManager.listen(this, LISTEN_SIGNAL_STRENGTHS)
+    }
+
+    override fun unregisterReceiver() {}
 }

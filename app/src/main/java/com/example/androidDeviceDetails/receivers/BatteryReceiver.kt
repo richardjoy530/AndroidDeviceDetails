@@ -4,14 +4,20 @@ import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.BatteryManager
-import android.util.Log
+import com.example.androidDeviceDetails.DeviceDetailsApplication
+import com.example.androidDeviceDetails.base.BaseEventCollector
 import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.models.batteryModels.BatteryEntity
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class BatteryReceiver : BroadcastReceiver() {
+class BatteryReceiver : BaseEventCollector, BroadcastReceiver() {
+
+    init {
+        registerReceiver()
+    }
 
     @SuppressLint("UnsafeProtectedBroadcastReceiver")
     override fun onReceive(context: Context, intent: Intent) {
@@ -28,6 +34,17 @@ class BatteryReceiver : BroadcastReceiver() {
             intent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0),
         )
         GlobalScope.launch { db?.batteryDao()?.insertAll(batteryRaw) }
-        Log.d("BatteryReceiver", "onReceive(): Triggered ")
     }
+
+    override fun registerReceiver() {
+        DeviceDetailsApplication.instance.registerReceiver(
+            this,
+            IntentFilter(Intent.ACTION_BATTERY_CHANGED)
+        )
+    }
+
+    override fun unregisterReceiver() {
+        DeviceDetailsApplication.instance.unregisterReceiver(this)
+    }
+
 }
