@@ -104,7 +104,7 @@ class NetworkUsageCollector(var context: Context) {
         return if (wifiEnable)
             AppNetworkUsageEntity(
                 0,
-                timeNow.minus(timeNow.rem(60 * 1000)),
+                timeNow.minus(timeNow.rem(60 * 1000)), //To make resolution to minutes
                 packageName,
                 bucket.txBytes, 0L,
                 bucket.rxBytes, 0L
