@@ -16,13 +16,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.R
-import com.example.androidDeviceDetails.controller.AppController
+import com.example.androidDeviceDetails.controller.ActivityController
 import com.example.androidDeviceDetails.databinding.ActivityAppInfoBinding
 import com.example.androidDeviceDetails.managers.AppInfoManager
 import com.example.androidDeviceDetails.models.TimeInterval
 import com.example.androidDeviceDetails.models.appInfoModels.AppInfoCookedData
 import com.example.androidDeviceDetails.models.appInfoModels.EventType
-import com.example.androidDeviceDetails.services.CollectorService
+import com.example.androidDeviceDetails.services.AppService
 import com.example.androidDeviceDetails.utils.Utils
 import java.text.SimpleDateFormat
 import java.util.*
@@ -35,7 +35,7 @@ class AppInfoActivity : AppCompatActivity() {
     private var startTime: Long = 0
     private var endTime: Long = 0
     private var startTimeFlag: Boolean = true
-    private lateinit var controller: AppController<ActivityAppInfoBinding,AppInfoCookedData>
+    private lateinit var controller: ActivityController<ActivityAppInfoBinding, AppInfoCookedData>
 
     @SuppressLint("SimpleDateFormat")
     private val simpleDateFormat = SimpleDateFormat("HH:mm',' dd/MM/yyyy")
@@ -87,7 +87,7 @@ class AppInfoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_app_info)
-        controller = AppController(NAME,binding,this)
+        controller = ActivityController(NAME, binding, this)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.statisticsContainer.isVisible = false
         binding.appInfoListView.isEnabled = false
@@ -99,9 +99,9 @@ class AppInfoActivity : AppCompatActivity() {
         binding.enddateView.text = simpleDateFormat.format(endTime)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            this.startForegroundService(Intent(this, CollectorService::class.java))
+            this.startForegroundService(Intent(this, AppService::class.java))
         } else {
-            this.startService(Intent(this, CollectorService::class.java))
+            this.startService(Intent(this, AppService::class.java))
         }
 
         binding.startdateView.setOnClickListener {

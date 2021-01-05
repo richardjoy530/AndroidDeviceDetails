@@ -19,7 +19,7 @@ import java.util.*
 
 const val CHANNEL_ID = "androidDeviceDetails"
 
-class CollectorService : Service() {
+class AppService : Service() {
 
     private lateinit var timer: Timer
     private lateinit var mBatteryReceiver: BatteryReceiver
@@ -46,6 +46,7 @@ class CollectorService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+
         mAppEventCollector.runTimer(1)
         mAppDataUsageCollector.runTimer(1)
         return super.onStartCommand(intent, flags, startId)

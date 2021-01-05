@@ -8,8 +8,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.R
-import com.example.androidDeviceDetails.controller.AppController
-import com.example.androidDeviceDetails.controller.NetworkUsageController
+import com.example.androidDeviceDetails.controller.ActivityController
 import com.example.androidDeviceDetails.databinding.ActivityAppDataBinding
 import com.example.androidDeviceDetails.models.TimeInterval
 import com.example.androidDeviceDetails.models.networkUsageModels.AppNetworkUsageEntity
@@ -17,7 +16,7 @@ import java.util.*
 
 class NetworkUsageActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var networkUsageBinding: ActivityAppDataBinding
-    private lateinit var networkUsageController: AppController<ActivityAppDataBinding,AppNetworkUsageEntity>
+    private lateinit var networkUsageController: ActivityController<ActivityAppDataBinding, AppNetworkUsageEntity>
     private lateinit var startCalendar: Calendar
     private lateinit var endCalendar: Calendar
 
@@ -29,8 +28,8 @@ class NetworkUsageActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         networkUsageBinding = DataBindingUtil.setContentView(this, R.layout.activity_app_data)
-        networkUsageController = AppController(NAME,networkUsageBinding,this)
-        startCalendar= Calendar.getInstance()
+        networkUsageController = ActivityController(NAME, networkUsageBinding, this)
+        startCalendar = Calendar.getInstance()
         startCalendar.set(Calendar.HOUR,0)
         startCalendar.set(Calendar.MINUTE,0)
         endCalendar= Calendar.getInstance()
