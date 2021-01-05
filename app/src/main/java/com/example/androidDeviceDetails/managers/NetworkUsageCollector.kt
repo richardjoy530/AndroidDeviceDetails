@@ -8,20 +8,24 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import com.example.androidDeviceDetails.base.BaseTimeCollector
 import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.models.networkUsageModels.AppNetworkUsageEntity
 import com.example.androidDeviceDetails.models.networkUsageModels.DeviceNetworkUsageEntity
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.util.*
 
-@RequiresApi(Build.VERSION_CODES.M)
-class NetworkUsageCollector(var context: Context) {
+class NetworkUsageCollector(var context: Context) : BaseTimeCollector() {
+
+    override lateinit var timer: Timer
+
     private val firstInstallTime =
         context.packageManager.getPackageInfo(context.packageName, 0).firstInstallTime
     val db = RoomDB.getDatabase()!!
-    private val networkStatsManager =
-        context.getSystemService(AppCompatActivity.NETWORK_STATS_SERVICE) as NetworkStatsManager
+    private lateinit var networkStatsManager: NetworkStatsManager
 
+    @RequiresApi(Build.VERSION_CODES.M)
     fun updateNetworkDataUsageDB() {
         val networkUsageList = arrayListOf<AppNetworkUsageEntity>()
         val networkStatsWifi = networkStatsManager.querySummary(
@@ -67,6 +71,7 @@ class NetworkUsageCollector(var context: Context) {
         GlobalScope.launch { networkUsageList.forEach { db.appNetworkUsageDao().insertAll(it) } }
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     fun updateDeviceNetworkUsageDB() {
         var totalWifiDataRx = 0L
         var totalWifiDataTx = 0L
@@ -95,6 +100,7 @@ class NetworkUsageCollector(var context: Context) {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun appNetworkUsageFactory(
         bucket: NetworkStats.Bucket,
         wifiEnable: Boolean = true
@@ -118,6 +124,25 @@ class NetworkUsageCollector(var context: Context) {
                 bucket.rxBytes,
             )
 
+    }
+
+    override fun collect() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            networkStatsManager =
+                context.getSystemService(AppCompatActivity.NETWORK_STATS_SERVICE) as NetworkStatsManager
+            updateDeviceNetworkUsageDB()
+            updateNetworkDataUsageDB()
+        }
+    }
+
+    override fun runTimer(intervalInMinuets: Long) {
+        timer = Timer()
+        timer.scheduleAtFixedRate(
+            object : TimerTask() {
+                override fun run() = collect()
+            },
+            0, 1000 * 60 * intervalInMinuets
+        )
     }
 
 }
