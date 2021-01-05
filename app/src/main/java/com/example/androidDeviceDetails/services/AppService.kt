@@ -9,12 +9,7 @@ import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import com.example.androidDeviceDetails.R
-import com.example.androidDeviceDetails.managers.AppEventCollector
-import com.example.androidDeviceDetails.managers.NetworkUsageCollector
-import com.example.androidDeviceDetails.managers.SignalChangeListener
-import com.example.androidDeviceDetails.receivers.AppStateReceiver
-import com.example.androidDeviceDetails.receivers.BatteryReceiver
-import com.example.androidDeviceDetails.receivers.WifiReceiver
+import com.example.androidDeviceDetails.controller.ApplicationController
 import java.util.*
 
 const val CHANNEL_ID = "androidDeviceDetails"
@@ -22,12 +17,7 @@ const val CHANNEL_ID = "androidDeviceDetails"
 class AppService : Service() {
 
     private lateinit var timer: Timer
-    private lateinit var mBatteryReceiver: BatteryReceiver
-    private lateinit var mAppStateReceiver: AppStateReceiver
-    private lateinit var mWifiReceiver: WifiReceiver
-    private lateinit var mAppEventCollector: AppEventCollector
-    private lateinit var mAppDataUsageCollector: NetworkUsageCollector
-    private lateinit var mPhoneStateListener: SignalChangeListener
+    private lateinit var appController : ApplicationController
 
     override fun onBind(intent: Intent): IBinder {
         TODO("Return the communication channel to the service.")
@@ -35,28 +25,21 @@ class AppService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        mBatteryReceiver = BatteryReceiver()
-        mWifiReceiver = WifiReceiver()
-        mAppStateReceiver = AppStateReceiver()
-        mAppEventCollector = AppEventCollector(this)
-        mPhoneStateListener = SignalChangeListener(this)
-        mAppDataUsageCollector = NetworkUsageCollector(this)
+        appController = ApplicationController()
         pushNotification()
-
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-
-        mAppEventCollector.runTimer(1)
-        mAppDataUsageCollector.runTimer(1)
+        appController.mAppEventCollector.runTimer(1)
+        appController.mAppDataUsageCollector.runTimer(1)
         return super.onStartCommand(intent, flags, startId)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        mBatteryReceiver.unregisterReceiver()
-        mWifiReceiver.unregisterReceiver()
-        mAppStateReceiver.unregisterReceiver()
+        appController.mBatteryReceiver.stop()
+        appController.mWifiReceiver.stop()
+        appController.mAppStateReceiver.stop()
         timer.cancel()
         stopSelf()
     }

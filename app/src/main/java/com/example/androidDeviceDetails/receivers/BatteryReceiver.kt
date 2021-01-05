@@ -11,6 +11,7 @@ import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.models.batteryModels.BatteryEntity
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.util.*
 
 class BatteryReceiver : BaseCollector() {
 
@@ -22,11 +23,11 @@ class BatteryReceiver : BaseCollector() {
             val batteryRaw = BatteryEntity(
                 System.currentTimeMillis(),
                 intent?.getIntExtra(BatteryManager.EXTRA_LEVEL, 0),
-                intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, 0),
-                intent.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, 0) / 10,
-                intent.getIntExtra(BatteryManager.EXTRA_HEALTH, 0),
+                intent?.getIntExtra(BatteryManager.EXTRA_PLUGGED, 0),
+                intent?.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, 0)?.div(10),
+                intent?.getIntExtra(BatteryManager.EXTRA_HEALTH, 0),
                 batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CHARGE_COUNTER),
-                intent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0),
+                intent?.getIntExtra(BatteryManager.EXTRA_LEVEL, 0),
             )
             GlobalScope.launch { db?.batteryDao()?.insertAll(batteryRaw) }
         }
@@ -35,6 +36,10 @@ class BatteryReceiver : BaseCollector() {
     init {
         start()
     }
+
+    override var timer: Timer
+        get() = TODO("Not yet implemented")
+        set(value) {}
 
     override fun start() {
         DeviceDetailsApplication.instance.registerReceiver(
@@ -49,6 +54,10 @@ class BatteryReceiver : BaseCollector() {
 
     override fun stop() {
         DeviceDetailsApplication.instance.unregisterReceiver(Temp)
+    }
+
+    override fun runTimer(intervalInMinuets: Long) {
+        TODO("Not yet implemented")
     }
 
 }

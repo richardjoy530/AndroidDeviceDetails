@@ -10,7 +10,9 @@ abstract class BaseTimeCollector {
 
 
 abstract class BaseCollector {
+    abstract var timer: Timer
     abstract fun start()
     abstract fun collect()
     abstract fun stop()
+    abstract fun runTimer(intervalInMinuets: Long)
 }
