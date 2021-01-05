@@ -8,12 +8,10 @@ import android.telephony.PhoneStateListener.LISTEN_SIGNAL_STRENGTHS
 import android.util.Log
 import com.example.androidDeviceDetails.DeviceDetailsApplication
 import com.example.androidDeviceDetails.base.BaseCollector
-import com.example.androidDeviceDetails.base.BaseEventCollector
 import com.example.androidDeviceDetails.models.CellularRaw
 import com.example.androidDeviceDetails.models.RoomDB
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.util.*
 
 class SignalChangeListener(private val context: Context) : BaseCollector() {
 
@@ -114,10 +112,6 @@ class SignalChangeListener(private val context: Context) : BaseCollector() {
         }
     }
 
-    override var timer: Timer
-        get() = TODO("Not yet implemented")
-        set(value) {}
-
     override fun start() {
         mTelephonyManager =
             DeviceDetailsApplication.instance.getSystemService(Service.TELEPHONY_SERVICE) as TelephonyManager
@@ -125,14 +119,9 @@ class SignalChangeListener(private val context: Context) : BaseCollector() {
     }
 
     override fun collect() {
-        TODO("Not yet implemented")
     }
 
     override fun stop() {
-        TODO("Not yet implemented")
     }
 
-    override fun runTimer(intervalInMinuets: Long) {
-        TODO("Not yet implemented")
-    }
 }

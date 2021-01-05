@@ -6,9 +6,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import com.example.androidDeviceDetails.DeviceDetailsApplication
 import com.example.androidDeviceDetails.base.BaseCollector
-import com.example.androidDeviceDetails.base.BaseEventCollector
 import com.example.androidDeviceDetails.utils.AppInfoCollectionHelper
-import java.util.*
 
 class AppStateReceiver : BaseCollector() {
 
@@ -34,10 +32,6 @@ class AppStateReceiver : BaseCollector() {
         start()
     }
 
-    override var timer: Timer
-        get() = TODO("Not yet implemented")
-        set(value) {}
-
     override fun start() {
         val filter = IntentFilter()
         filter.addAction(Intent.ACTION_PACKAGE_ADDED)
@@ -47,15 +41,10 @@ class AppStateReceiver : BaseCollector() {
     }
 
     override fun collect() {
-        TODO("Not yet implemented")
     }
 
     override fun stop() {
         DeviceDetailsApplication.instance.unregisterReceiver(Temp)
-    }
-
-    override fun runTimer(intervalInMinuets: Long) {
-        TODO("Not yet implemented")
     }
 
 }

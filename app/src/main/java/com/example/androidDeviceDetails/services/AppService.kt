@@ -10,13 +10,11 @@ import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.controller.ApplicationController
-import java.util.*
 
 const val CHANNEL_ID = "androidDeviceDetails"
 
 class AppService : Service() {
 
-    private lateinit var timer: Timer
     private lateinit var appController : ApplicationController
 
     override fun onBind(intent: Intent): IBinder {
@@ -30,8 +28,7 @@ class AppService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        appController.mAppEventCollector.runTimer(1)
-        appController.mAppDataUsageCollector.runTimer(1)
+        appController.runTimer(1)
         return super.onStartCommand(intent, flags, startId)
     }
 
@@ -40,7 +37,7 @@ class AppService : Service() {
         appController.mBatteryReceiver.stop()
         appController.mWifiReceiver.stop()
         appController.mAppStateReceiver.stop()
-        timer.cancel()
+        appController.timer.cancel()
         stopSelf()
     }
 

@@ -37,10 +37,6 @@ class BatteryReceiver : BaseCollector() {
         start()
     }
 
-    override var timer: Timer
-        get() = TODO("Not yet implemented")
-        set(value) {}
-
     override fun start() {
         DeviceDetailsApplication.instance.registerReceiver(
             Temp,
@@ -49,15 +45,10 @@ class BatteryReceiver : BaseCollector() {
     }
 
     override fun collect() {
-        TODO("Not yet implemented")
     }
 
     override fun stop() {
         DeviceDetailsApplication.instance.unregisterReceiver(Temp)
-    }
-
-    override fun runTimer(intervalInMinuets: Long) {
-        TODO("Not yet implemented")
     }
 
 }

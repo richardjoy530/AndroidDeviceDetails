@@ -9,10 +9,8 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.androidDeviceDetails.DeviceDetailsApplication
 import com.example.androidDeviceDetails.base.BaseCollector
-import com.example.androidDeviceDetails.base.BaseEventCollector
 import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.models.WifiRaw
-import java.util.*
 
 class WifiReceiver : BaseCollector() {
     private var signalDB = RoomDB.getDatabase()!!
@@ -53,10 +51,6 @@ class WifiReceiver : BaseCollector() {
         }
     }
 
-    override var timer: Timer
-        get() = TODO("Not yet implemented")
-        set(value) {}
-
     override fun start() {
         val intentWifi = IntentFilter()
         intentWifi.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)
@@ -64,14 +58,9 @@ class WifiReceiver : BaseCollector() {
     }
 
     override fun collect() {
-        TODO("Not yet implemented")
     }
 
     override fun stop() {
         DeviceDetailsApplication.instance.unregisterReceiver(temp)
-    }
-
-    override fun runTimer(intervalInMinuets: Long) {
-        TODO("Not yet implemented")
     }
 }
