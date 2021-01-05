@@ -18,7 +18,7 @@ class AppInfoViewModel(private val binding: ActivityAppInfoBinding, val context:
     @Suppress("UNCHECKED_CAST")
     override fun <T> onData(outputList: ArrayList<T>) {
         val appList = outputList as ArrayList<AppInfoCookedData>
-
+        AppInfoManager.appList = appList
         if (appList.isEmpty()) {
             binding.root.post {
                 binding.appInfoListView.adapter = null

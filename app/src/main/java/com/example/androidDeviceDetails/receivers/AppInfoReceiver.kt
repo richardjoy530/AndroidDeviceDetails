@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.Intent
 import com.example.androidDeviceDetails.utils.AppInfoCollectionHelper
 
-class AppStateReceiver : BroadcastReceiver() {
+class AppInfoReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         val action = intent.action

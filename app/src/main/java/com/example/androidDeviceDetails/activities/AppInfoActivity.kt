@@ -3,8 +3,6 @@ package com.example.androidDeviceDetails.activities
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.view.Menu
@@ -22,8 +20,8 @@ import com.example.androidDeviceDetails.managers.AppInfoManager
 import com.example.androidDeviceDetails.models.TimeInterval
 import com.example.androidDeviceDetails.models.appInfoModels.AppInfoCookedData
 import com.example.androidDeviceDetails.models.appInfoModels.EventType
-import com.example.androidDeviceDetails.services.CollectorService
 import com.example.androidDeviceDetails.utils.Utils
+import com.example.androidDeviceDetails.viewModel.AppInfoViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -35,7 +33,8 @@ class AppInfoActivity : AppCompatActivity() {
     private var startTime: Long = 0
     private var endTime: Long = 0
     private var startTimeFlag: Boolean = true
-    private lateinit var controller: AppController<ActivityAppInfoBinding,AppInfoCookedData>
+    private lateinit var controller: AppController<ActivityAppInfoBinding, AppInfoCookedData>
+    private lateinit var viewModel : AppInfoViewModel
 
     @SuppressLint("SimpleDateFormat")
     private val simpleDateFormat = SimpleDateFormat("HH:mm',' dd/MM/yyyy")
@@ -79,7 +78,7 @@ class AppInfoActivity : AppCompatActivity() {
             else -> super.onSupportNavigateUp()
         }
         if (startTime != 0L && endTime != 0L) {
-            controller.cook(TimeInterval(startTime, endTime))
+            viewModel.onData(AppInfoManager.appList)
         }
         return true
     }
@@ -87,23 +86,15 @@ class AppInfoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_app_info)
-        controller = AppController(NAME,binding,this)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        binding.statisticsContainer.isVisible = false
+        viewModel = AppInfoViewModel(binding, this)
+        controller = AppController(NAME, binding, this)
+//        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.appInfoListView.isEnabled = false
-
         startTime = Utils.loadPreviousDayTime()
         endTime = System.currentTimeMillis()
-        controller.cook(TimeInterval(startTime, endTime))
-        binding.indeterminateBar.isVisible = true
+        cook(TimeInterval(startTime, endTime))
         binding.startdateView.text = simpleDateFormat.format(startTime)
         binding.enddateView.text = simpleDateFormat.format(endTime)
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            this.startForegroundService(Intent(this, CollectorService::class.java))
-        } else {
-            this.startService(Intent(this, CollectorService::class.java))
-        }
 
         binding.startdateView.setOnClickListener {
             startTimeFlag = true
@@ -115,7 +106,6 @@ class AppInfoActivity : AppCompatActivity() {
             }
             datePickerDialog.show()
         }
-
         binding.enddateView.setOnClickListener {
             startTimeFlag = false
             val datePickerDialog = getCalendarDialog()
@@ -137,10 +127,9 @@ class AppInfoActivity : AppCompatActivity() {
             startTime = calendar.timeInMillis
             if (startTime < endTime || endTime == 0L) {
                 binding.startdateView.text = time
-                if (startTime != 0L && endTime != 0L) {
-                    controller.cook(TimeInterval(startTime, endTime))
-                    binding.indeterminateBar.isVisible = true
-                }
+                if (startTime != 0L && endTime != 0L)
+                    cook(TimeInterval(startTime, endTime))
+
             } else {
                 Toast.makeText(
                     this,
@@ -152,10 +141,9 @@ class AppInfoActivity : AppCompatActivity() {
             endTime = calendar.timeInMillis
             if (startTime < endTime || startTime == 0L) {
                 binding.enddateView.text = time
-                if (startTime != 0L && endTime != 0L) {
-                    controller.cook(TimeInterval(startTime, endTime))
-                    binding.indeterminateBar.isVisible = true
-                }
+                if (startTime != 0L && endTime != 0L)
+                    cook(TimeInterval(startTime, endTime))
+
             } else {
                 Toast.makeText(
                     this,
@@ -197,6 +185,11 @@ class AppInfoActivity : AppCompatActivity() {
 
     fun deleteApp(view: View) {
         AppInfoManager.deleteApp(view, packageManager, this)
+    }
+
+    private fun cook(timeInterval: TimeInterval) {
+        controller.cook(timeInterval)
+        binding.indeterminateBar.isVisible = true
     }
 
 }

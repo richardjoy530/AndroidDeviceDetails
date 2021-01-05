@@ -17,7 +17,7 @@ import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.managers.NetworkUsageCollector
 import com.example.androidDeviceDetails.managers.AppUsage
 import com.example.androidDeviceDetails.managers.SignalChangeListener
-import com.example.androidDeviceDetails.receivers.AppStateReceiver
+import com.example.androidDeviceDetails.receivers.AppInfoReceiver
 import com.example.androidDeviceDetails.receivers.BatteryReceiver
 import com.example.androidDeviceDetails.receivers.WifiReceiver
 import java.util.*
@@ -45,7 +45,7 @@ class CollectorService : Service() {
         mTelephonyManager = getSystemService(TELEPHONY_SERVICE) as TelephonyManager
 
 
-        mAppStateReceiver = AppStateReceiver()
+        mAppStateReceiver = AppInfoReceiver()
         val filter = IntentFilter()
         filter.addAction(Intent.ACTION_PACKAGE_ADDED)
         filter.addAction(Intent.ACTION_PACKAGE_FULLY_REMOVED)
