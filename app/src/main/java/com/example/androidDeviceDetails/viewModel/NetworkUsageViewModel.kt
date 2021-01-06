@@ -14,8 +14,6 @@ class NetworkUsageViewModel(
     private val networkUsageBinding: ActivityAppDataBinding,
     val context: Context
 ) : BaseViewModel() {
-
-
     @Suppress("UNCHECKED_CAST")
     override fun <T> onData(outputList: ArrayList<T>) {
         if (outputList.isNotEmpty()) {

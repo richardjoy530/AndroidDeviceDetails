@@ -9,13 +9,13 @@ import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import com.example.androidDeviceDetails.R
-import com.example.androidDeviceDetails.controller.  ApplicationController
+import com.example.androidDeviceDetails.controller.ApplicationController
 
 const val CHANNEL_ID = "androidDeviceDetails"
 
 class AppService : Service() {
 
-    private lateinit var appController : ApplicationController
+    private lateinit var appController: ApplicationController
 
     override fun onBind(intent: Intent): IBinder {
         TODO("Return the communication channel to the service.")
