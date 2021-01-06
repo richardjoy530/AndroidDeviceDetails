@@ -17,10 +17,6 @@ class ActivityController<T, MT>(dataType: String, binding: T, val context: Conte
     private var viewModel: BaseViewModel = BaseViewModel.getViewModel(dataType, binding, context)
     private var startCalendar: Calendar = Calendar.getInstance()
     private var endCalendar: Calendar=Calendar.getInstance()
-    init {
-        startCalendar.set(Calendar.HOUR, 0)
-        startCalendar.set(Calendar.MINUTE, 0)
-    }
 
 
     fun cook(timeInterval: TimeInterval) {
@@ -122,5 +118,11 @@ class ActivityController<T, MT>(dataType: String, binding: T, val context: Conte
             viewModel.updateTextViews(startCalendar,endCalendar,dateTimePickerView!!)
         }
 
+    fun apply(){
+        startCalendar.set(Calendar.SECOND, 0)
+        endCalendar.set(Calendar.SECOND, 0)
+        startCalendar.set(Calendar.MILLISECOND, 0)
+        endCalendar.set(Calendar.MILLISECOND, 0)
+    }
 }
 
