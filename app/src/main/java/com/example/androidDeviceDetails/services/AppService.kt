@@ -9,7 +9,7 @@ import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import com.example.androidDeviceDetails.R
-import com.example.androidDeviceDetails.controller.ApplicationController
+import com.example.androidDeviceDetails.controller.  ApplicationController
 
 const val CHANNEL_ID = "androidDeviceDetails"
 

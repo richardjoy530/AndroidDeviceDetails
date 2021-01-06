@@ -15,7 +15,7 @@ import com.example.androidDeviceDetails.models.WifiRaw
 class WifiReceiver : BaseCollector() {
     private var signalDB = RoomDB.getDatabase()!!
 
-    object temp : BroadcastReceiver(){
+    object broadcastReceiver : BroadcastReceiver(){
         override fun onReceive(context: Context, intent: Intent) {
             val wifiRaw: WifiRaw
             var level = 0
@@ -54,13 +54,13 @@ class WifiReceiver : BaseCollector() {
     override fun start() {
         val intentWifi = IntentFilter()
         intentWifi.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)
-        DeviceDetailsApplication.instance.registerReceiver(temp, intentWifi)
+        DeviceDetailsApplication.instance.registerReceiver(broadcastReceiver, intentWifi)
     }
 
     override fun collect() {
     }
 
     override fun stop() {
-        DeviceDetailsApplication.instance.unregisterReceiver(temp)
+        DeviceDetailsApplication.instance.unregisterReceiver(broadcastReceiver)
     }
 }

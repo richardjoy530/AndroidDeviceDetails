@@ -15,7 +15,7 @@ import java.util.*
 
 class BatteryReceiver : BaseCollector() {
 
-    object Temp : BroadcastReceiver() {
+    object broadcastReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             val batteryManager: BatteryManager =
                 context?.getSystemService(Context.BATTERY_SERVICE) as BatteryManager
@@ -39,7 +39,7 @@ class BatteryReceiver : BaseCollector() {
 
     override fun start() {
         DeviceDetailsApplication.instance.registerReceiver(
-            Temp,
+            broadcastReceiver,
             IntentFilter(Intent.ACTION_BATTERY_CHANGED)
         )
     }
@@ -48,7 +48,7 @@ class BatteryReceiver : BaseCollector() {
     }
 
     override fun stop() {
-        DeviceDetailsApplication.instance.unregisterReceiver(Temp)
+        DeviceDetailsApplication.instance.unregisterReceiver(broadcastReceiver)
     }
 
 }

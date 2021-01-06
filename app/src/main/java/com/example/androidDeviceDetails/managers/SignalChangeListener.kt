@@ -17,7 +17,7 @@ class SignalChangeListener(private val context: Context) : BaseCollector() {
 
     private var signalDB = RoomDB.getDatabase()
     private lateinit var mTelephonyManager: TelephonyManager
-    object temp : PhoneStateListener(){
+    object phoneStateListner : PhoneStateListener(){
         override fun onSignalStrengthsChanged(signalStrength: SignalStrength) {
             val cellularRaw: CellularRaw
             var level = 0
@@ -115,7 +115,7 @@ class SignalChangeListener(private val context: Context) : BaseCollector() {
     override fun start() {
         mTelephonyManager =
             DeviceDetailsApplication.instance.getSystemService(Service.TELEPHONY_SERVICE) as TelephonyManager
-        mTelephonyManager.listen(temp, LISTEN_SIGNAL_STRENGTHS)
+        mTelephonyManager.listen(phoneStateListner, LISTEN_SIGNAL_STRENGTHS)
     }
 
     override fun collect() {

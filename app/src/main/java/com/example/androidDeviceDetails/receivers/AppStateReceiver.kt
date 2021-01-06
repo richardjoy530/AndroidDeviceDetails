@@ -10,7 +10,7 @@ import com.example.androidDeviceDetails.utils.AppInfoCollectionHelper
 
 class AppStateReceiver : BaseCollector() {
 
-    object Temp : BroadcastReceiver() {
+    object broadcastReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             val action = intent.action
             val packageName = intent.data?.schemeSpecificPart ?: "not found"
@@ -37,14 +37,14 @@ class AppStateReceiver : BaseCollector() {
         filter.addAction(Intent.ACTION_PACKAGE_ADDED)
         filter.addAction(Intent.ACTION_PACKAGE_FULLY_REMOVED)
         filter.addDataScheme("package")
-        DeviceDetailsApplication.instance.registerReceiver(Temp, filter)
+        DeviceDetailsApplication.instance.registerReceiver(broadcastReceiver, filter)
     }
 
     override fun collect() {
     }
 
     override fun stop() {
-        DeviceDetailsApplication.instance.unregisterReceiver(Temp)
+        DeviceDetailsApplication.instance.unregisterReceiver(broadcastReceiver)
     }
 
 }
