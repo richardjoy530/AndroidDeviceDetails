@@ -22,17 +22,11 @@ import java.util.*
 
 class AppInfoActivity : AppCompatActivity(), View.OnClickListener {
 
-    private val calendar: Calendar = Calendar.getInstance()
     private lateinit var binding: ActivityAppInfoBinding
     private var startTime: Long = 0
     private var endTime: Long = 0
-
-    //    private var startTimeFlag: Boolean = true
     private lateinit var controller: ActivityController<ActivityAppInfoBinding, AppInfoCookedData>
 
-
-    @SuppressLint("SimpleDateFormat")
-//    private val simpleDateFormat = SimpleDateFormat("HH:mm',' dd/MM/yyyy")
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.app_info_menu, menu)
