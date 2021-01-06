@@ -4,13 +4,14 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.text.format.DateFormat
+import android.view.View
 import com.example.androidDeviceDetails.ICookingDone
 import com.example.androidDeviceDetails.base.BaseCooker
 import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.models.TimeInterval
 import java.util.*
 
-class ActivityController<T, MT>(dataType: String, binding: T, val context: Context) {
+class ActivityController<T, MT>(dataType: String, binding: T, val context: Context,dateTimePickerView: View?=null) {
 
     private var cooker: BaseCooker = BaseCooker.getCooker(dataType)
     private var viewModel: BaseViewModel = BaseViewModel.getViewModel(dataType, binding, context)
@@ -49,6 +50,8 @@ class ActivityController<T, MT>(dataType: String, binding: T, val context: Conte
                     endCalendar.timeInMillis
                 )
             )
+
+           viewModel.updateTextViews(startCalendar,endCalendar,dateTimePickerView!!)
         }
     fun setStartDate(context: Context) {
         val day = startCalendar.get(Calendar.DAY_OF_MONTH)
@@ -71,6 +74,7 @@ class ActivityController<T, MT>(dataType: String, binding: T, val context: Conte
                     endCalendar.timeInMillis
                 )
             )
+            viewModel.updateTextViews(startCalendar,endCalendar,dateTimePickerView!!)
         }
     fun setEndTime(context: Context) {
         val hour = startCalendar.get(Calendar.HOUR)
@@ -90,6 +94,7 @@ class ActivityController<T, MT>(dataType: String, binding: T, val context: Conte
                 endCalendar.timeInMillis
             )
         )
+        viewModel.updateTextViews(startCalendar,endCalendar,dateTimePickerView!!)
     }
 
     fun setEndDate(context: Context) {
@@ -114,6 +119,7 @@ class ActivityController<T, MT>(dataType: String, binding: T, val context: Conte
                     endCalendar.timeInMillis
                 )
             )
+            viewModel.updateTextViews(startCalendar,endCalendar,dateTimePickerView!!)
         }
 
 }

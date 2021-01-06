@@ -26,16 +26,16 @@ class NetworkUsageActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         networkUsageBinding = DataBindingUtil.setContentView(this, R.layout.activity_app_data)
-        networkUsageController = ActivityController(NAME, networkUsageBinding, this)
+        networkUsageController = ActivityController(NAME, networkUsageBinding, this,networkUsageBinding.dateTimePickerLayout)
         startCalendar = Calendar.getInstance()
         startCalendar.set(Calendar.HOUR, 0)
         startCalendar.set(Calendar.MINUTE, 0)
         endCalendar = Calendar.getInstance()
         networkUsageBinding.apply {
-            constraintLayout.findViewById<TextView>(R.id.startTime).setOnClickListener(this@NetworkUsageActivity)
-            constraintLayout.findViewById<TextView>(R.id.startDate).setOnClickListener(this@NetworkUsageActivity)
-            constraintLayout.findViewById<TextView>(R.id.endTime).setOnClickListener(this@NetworkUsageActivity)
-            constraintLayout.findViewById<TextView>(R.id.endDate).setOnClickListener(this@NetworkUsageActivity)
+            dateTimePickerLayout.findViewById<TextView>(R.id.startTime).setOnClickListener(this@NetworkUsageActivity)
+            dateTimePickerLayout.findViewById<TextView>(R.id.startDate).setOnClickListener(this@NetworkUsageActivity)
+            dateTimePickerLayout.findViewById<TextView>(R.id.endTime).setOnClickListener(this@NetworkUsageActivity)
+            dateTimePickerLayout.findViewById<TextView>(R.id.endDate).setOnClickListener(this@NetworkUsageActivity)
         }
         startCalendar.add(Calendar.DAY_OF_MONTH, -1)
         networkUsageController.cook(
