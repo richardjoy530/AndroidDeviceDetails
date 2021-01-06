@@ -18,7 +18,6 @@ class NetworkUsageActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var startCalendar: Calendar
     private lateinit var endCalendar: Calendar
 
-
     companion object {
         const val NAME = "network"
     }
