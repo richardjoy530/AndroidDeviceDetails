@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.controller.ActivityController
+import com.example.androidDeviceDetails.controller.AppController
 import com.example.androidDeviceDetails.databinding.ActivityAppDataBinding
 import com.example.androidDeviceDetails.models.TimeInterval
 import com.example.androidDeviceDetails.models.networkUsageModels.AppNetworkUsageEntity
