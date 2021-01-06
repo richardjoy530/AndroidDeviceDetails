@@ -37,6 +37,7 @@ class NetworkUsageActivity : AppCompatActivity(), View.OnClickListener {
             dateTimePickerLayout.findViewById<TextView>(R.id.endDate).setOnClickListener(this@NetworkUsageActivity)
         }
         startCalendar.add(Calendar.DAY_OF_MONTH, -1)
+        networkUsageController.showInitialData()
         networkUsageController.cook(
             TimeInterval(
                 startCalendar.timeInMillis,
