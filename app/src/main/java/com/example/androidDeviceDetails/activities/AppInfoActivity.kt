@@ -74,8 +74,13 @@ class AppInfoActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_app_info)
-        controller = ActivityController(NAME, binding, this, binding.dateTimePickerLayout)
-//        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        controller = ActivityController(
+            NAME,
+            binding,
+            this,
+            binding.dateTimePickerLayout,
+            supportFragmentManager
+        )
         binding.appInfoListView.isEnabled = false
         startTime = Utils.loadPreviousDayTime()
         endTime = System.currentTimeMillis()
