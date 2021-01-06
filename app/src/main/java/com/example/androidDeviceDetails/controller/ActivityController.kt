@@ -148,6 +148,7 @@ class ActivityController<T, MT>(
         endCalendar.set(Calendar.SECOND, 0)
         startCalendar.set(Calendar.MILLISECOND, 0)
         endCalendar.set(Calendar.MILLISECOND, 0)
+        validateTimeInterval()
     }
 
     fun showInitialData(){
