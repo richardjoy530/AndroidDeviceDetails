@@ -1,6 +1,7 @@
 package com.example.androidDeviceDetails.viewModel
 
 import android.content.Context
+import android.widget.TextView
 import androidx.core.view.isVisible
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.adapters.NetWorkUsageListAdapter
@@ -34,11 +35,11 @@ class NetworkUsageViewModel(
         endDate += endCalendar.get(Calendar.YEAR)
 
         networkUsageBinding.apply {
-            this.startTime.text = startTime
-            this.startDate.text = startDate
-            this.endTime.text = endTime
-            this.endDate.text = endDate
-            this.startAMPM.text = if (startCalendar.get(Calendar.AM_PM) == 0) "am" else "pm"
+            this.constraintLayout.findViewById<TextView>(R.id.startTime).text = startTime
+            this.constraintLayout.findViewById<TextView>(R.id.startDate).text = startDate
+            this.constraintLayout.findViewById<TextView>(R.id.endTime).text = endTime
+            this.constraintLayout.findViewById<TextView>(R.id.endDate).text = endDate
+            //this.startAMPM.text = if (startCalendar.get(Calendar.AM_PM) == 0) "am" else "pm"
         }
     }
 
