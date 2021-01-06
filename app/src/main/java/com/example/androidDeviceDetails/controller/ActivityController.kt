@@ -5,19 +5,30 @@ import android.app.TimePickerDialog
 import android.content.Context
 import android.text.format.DateFormat
 import android.view.View
+import android.widget.Toast
 import com.example.androidDeviceDetails.ICookingDone
 import com.example.androidDeviceDetails.base.BaseCooker
 import com.example.androidDeviceDetails.base.BaseViewModel
+import com.example.androidDeviceDetails.managers.AppInfoManager
 import com.example.androidDeviceDetails.models.TimeInterval
 import java.util.*
 
-class ActivityController<T, MT>(dataType: String, binding: T, val context: Context,dateTimePickerView: View?=null) {
+class ActivityController<T, MT>(
+    dataType: String,
+    binding: T,
+    var context: Context,
+    private val dateTimePickerView: View? = null
+) {
 
     private var cooker: BaseCooker = BaseCooker.getCooker(dataType)
     private var viewModel: BaseViewModel = BaseViewModel.getViewModel(dataType, binding, context)
     private var startCalendar: Calendar = Calendar.getInstance()
-    private var endCalendar: Calendar=Calendar.getInstance()
+    private var endCalendar: Calendar = Calendar.getInstance()
 
+    init {
+        startCalendar.set(Calendar.HOUR, 0)
+        startCalendar.set(Calendar.MINUTE, 0)
+    }
 
     fun cook(timeInterval: TimeInterval) {
         cooker.cook(timeInterval, onCookingDone)
@@ -36,31 +47,29 @@ class ActivityController<T, MT>(dataType: String, binding: T, val context: Conte
             DateFormat.is24HourFormat(context)
         ).show()
     }
+
     private val startTimePickerListener =
         TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
             startCalendar[Calendar.HOUR_OF_DAY] = hourOfDay
             startCalendar[Calendar.MINUTE] = minute
-            cook(
-                TimeInterval(
-                    startCalendar.timeInMillis,
-                    endCalendar.timeInMillis
-                )
-            )
-
-           viewModel.updateTextViews(startCalendar,endCalendar,dateTimePickerView!!)
+            validateTimeInterval()
         }
+
     fun setStartDate(context: Context) {
         val day = startCalendar.get(Calendar.DAY_OF_MONTH)
         val month = startCalendar.get(Calendar.MONTH)
         val year = startCalendar.get(Calendar.YEAR)
-        DatePickerDialog(
+        val startDatePicker = DatePickerDialog(
             context,
             startDatePickerListener,
             year,
             month,
             day
-        ).show()
+        )
+        startDatePicker.datePicker.maxDate = endCalendar.timeInMillis
+        startDatePicker.show()
     }
+
     private var startDatePickerListener =
         DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
             startCalendar.set(year, month, dayOfMonth)
@@ -70,8 +79,9 @@ class ActivityController<T, MT>(dataType: String, binding: T, val context: Conte
                     endCalendar.timeInMillis
                 )
             )
-            viewModel.updateTextViews(startCalendar,endCalendar,dateTimePickerView!!)
+            viewModel.updateTextViews(startCalendar, endCalendar, dateTimePickerView!!)
         }
+
     fun setEndTime(context: Context) {
         val hour = startCalendar.get(Calendar.HOUR)
         val minute = startCalendar.get(Calendar.MINUTE)
@@ -84,45 +94,64 @@ class ActivityController<T, MT>(dataType: String, binding: T, val context: Conte
     private val endTimePickerListener = TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
         endCalendar[Calendar.HOUR_OF_DAY] = hourOfDay
         endCalendar[Calendar.MINUTE] = minute
-        cook(
-            TimeInterval(
-                startCalendar.timeInMillis,
-                endCalendar.timeInMillis
-            )
-        )
-        viewModel.updateTextViews(startCalendar,endCalendar,dateTimePickerView!!)
+        validateTimeInterval()
     }
 
     fun setEndDate(context: Context) {
         val day = endCalendar.get(Calendar.DAY_OF_MONTH)
         val month = endCalendar.get(Calendar.MONTH)
         val year = endCalendar.get(Calendar.YEAR)
-        DatePickerDialog(
+        val endDatePicker = DatePickerDialog(
             context,
             endDatePickerListener,
             year,
             month,
             day
-        ).show()
+        )
+        endDatePicker.datePicker.minDate = startCalendar.timeInMillis
+        endDatePicker.datePicker.maxDate = System.currentTimeMillis()
+        endDatePicker.show()
     }
 
     private var endDatePickerListener =
         DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
             endCalendar.set(year, month, dayOfMonth)
-          cook(
+            cook(
                 TimeInterval(
                     startCalendar.timeInMillis,
                     endCalendar.timeInMillis
                 )
             )
-            viewModel.updateTextViews(startCalendar,endCalendar,dateTimePickerView!!)
+            viewModel.updateTextViews(startCalendar, endCalendar, dateTimePickerView!!)
         }
 
-    fun apply(){
+    private fun validateTimeInterval() {
+        if (startCalendar.timeInMillis < endCalendar.timeInMillis) {
+            cook(
+                TimeInterval(
+                    startCalendar.timeInMillis,
+                    endCalendar.timeInMillis
+                )
+            )
+            viewModel.updateTextViews(startCalendar, endCalendar, dateTimePickerView!!)
+        } else {
+            Toast.makeText(
+                context,
+                "Enter valid time interval",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    fun apply() {
         startCalendar.set(Calendar.SECOND, 0)
         endCalendar.set(Calendar.SECOND, 0)
         startCalendar.set(Calendar.MILLISECOND, 0)
         endCalendar.set(Calendar.MILLISECOND, 0)
+    }
+
+    fun filterData() {
+        viewModel.onData(AppInfoManager.appList)
     }
 }
 
