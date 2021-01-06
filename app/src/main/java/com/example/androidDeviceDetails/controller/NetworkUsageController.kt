@@ -19,7 +19,7 @@ class NetworkUsageController(
     val endCalendar: Calendar = Calendar.getInstance()
     private val networkUsageViewModel = NetworkUsageViewModel(networkUsageBinding,context)
     fun setCooker() {
-        networkUsageViewModel.updateTextViews(startCalendar, endCalendar)
+        //networkUsageViewModel.updateTextViews(startCalendar, endCalendar)
         startCalendar.set(Calendar.SECOND, 0)
         endCalendar.set(Calendar.SECOND, 0)
         startCalendar.set(Calendar.MILLISECOND, 0)

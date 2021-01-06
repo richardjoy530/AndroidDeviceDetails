@@ -4,21 +4,24 @@ import android.app.usage.UsageEvents
 import android.app.usage.UsageStatsManager
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
+import com.example.androidDeviceDetails.base.BaseCollector
 import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.models.batteryModels.AppEventEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class AppUsage(context: Context) {
-
+class AppEventCollector(context: Context) : BaseCollector() {
     private var usageStatsManager: UsageStatsManager =
         context.getSystemService(AppCompatActivity.USAGE_STATS_SERVICE) as UsageStatsManager
 
-    fun updateAppUsageDB(minutesAgo: Long) {
+    override fun start() {
+    }
+
+    override fun collect() {
         val db = RoomDB.getDatabase()!!
         val events = usageStatsManager.queryEvents(
-            System.currentTimeMillis() - minutesAgo * 60 * 1000,
+            System.currentTimeMillis() - 1 * 60 * 1000,
             System.currentTimeMillis()
         )
         while (events.hasNextEvent()) {
@@ -32,5 +35,8 @@ class AppUsage(context: Context) {
                 GlobalScope.launch(Dispatchers.IO) { db.appEventDao().insertAll(appUsageData) }
             }
         }
+    }
+
+    override fun stop() {
     }
 }
