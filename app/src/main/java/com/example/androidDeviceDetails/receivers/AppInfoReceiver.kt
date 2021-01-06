@@ -8,7 +8,7 @@ import com.example.androidDeviceDetails.DeviceDetailsApplication
 import com.example.androidDeviceDetails.base.BaseCollector
 import com.example.androidDeviceDetails.utils.AppInfoCollectionHelper
 
-class AppStateReceiver : BaseCollector() {
+class AppInfoReceiver : BaseCollector() {
 
     object broadcastReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
