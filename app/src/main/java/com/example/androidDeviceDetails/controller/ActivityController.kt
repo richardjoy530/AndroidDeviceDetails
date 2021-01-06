@@ -150,6 +150,10 @@ class ActivityController<T, MT>(
         endCalendar.set(Calendar.MILLISECOND, 0)
     }
 
+    fun showInitialData(){
+        viewModel.updateTextViews(startCalendar, endCalendar, dateTimePickerView!!)
+    }
+
     fun filterData() {
         viewModel.onData(AppInfoManager.appList)
     }

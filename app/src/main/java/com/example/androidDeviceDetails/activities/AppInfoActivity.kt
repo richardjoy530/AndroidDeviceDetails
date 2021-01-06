@@ -27,7 +27,6 @@ class AppInfoActivity : AppCompatActivity(), View.OnClickListener {
     private var endTime: Long = 0
     private lateinit var controller: ActivityController<ActivityAppInfoBinding, AppInfoCookedData>
 
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.app_info_menu, menu)
         return true
@@ -91,7 +90,6 @@ class AppInfoActivity : AppCompatActivity(), View.OnClickListener {
             dateTimePickerLayout.findViewById<TextView>(R.id.endDate)
                 .setOnClickListener(this@AppInfoActivity)
         }
-
     }
 
     fun deleteApp(view: View) {
@@ -99,6 +97,7 @@ class AppInfoActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun cook(timeInterval: TimeInterval) {
+        controller.showInitialData()
         controller.cook(timeInterval)
         binding.indeterminateBar.isVisible = true
     }
