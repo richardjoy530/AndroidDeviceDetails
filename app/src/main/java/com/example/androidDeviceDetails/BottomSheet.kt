@@ -17,6 +17,7 @@ class BottomSheet(private var onApply: () -> Unit) : BottomSheetDialogFragment()
         v = inflater.inflate(R.layout.bottom_sheet, container, false)
         v?.setOnClickListener {
             onApply.invoke()
+            this.onStop()
         }
         return v
     }
