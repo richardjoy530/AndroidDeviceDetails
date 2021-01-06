@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.adapters.BatteryListAdapter
-import com.example.androidDeviceDetails.controller.AppController
+import com.example.androidDeviceDetails.controller.ActivityController
 import com.example.androidDeviceDetails.databinding.ActivityBatteryBinding
 import com.example.androidDeviceDetails.models.TimeInterval
 import com.example.androidDeviceDetails.models.batteryModels.BatteryAppEntry
@@ -21,7 +21,7 @@ import java.util.*
 class BatteryActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var batteryBinding: ActivityBatteryBinding
-    private lateinit var batteryController: AppController<ActivityBatteryBinding, BatteryAppEntry>
+    private lateinit var batteryController: ActivityController<ActivityBatteryBinding, BatteryAppEntry>
     private var calendar = Calendar.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,7 +29,7 @@ class BatteryActivity : AppCompatActivity(), View.OnClickListener {
         batteryBinding = DataBindingUtil.setContentView(this, R.layout.activity_battery)
         calendar.set(Calendar.HOUR, 0)
         calendar.set(Calendar.MINUTE, 0)
-        batteryController = AppController(NAME, batteryBinding, this)
+        batteryController = ActivityController(NAME, batteryBinding, this)
         batteryBinding.apply {
             leftArrow.setOnClickListener(this@BatteryActivity)
             rightArrow.setOnClickListener(this@BatteryActivity)
