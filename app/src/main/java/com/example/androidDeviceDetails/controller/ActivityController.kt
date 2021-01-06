@@ -6,6 +6,8 @@ import android.content.Context
 import android.text.format.DateFormat
 import android.view.View
 import android.widget.Toast
+import androidx.fragment.app.FragmentManager
+import com.example.androidDeviceDetails.BottomSheet
 import com.example.androidDeviceDetails.ICookingDone
 import com.example.androidDeviceDetails.base.BaseCooker
 import com.example.androidDeviceDetails.base.BaseViewModel
@@ -17,7 +19,8 @@ class ActivityController<T, MT>(
     dataType: String,
     binding: T,
     var context: Context,
-    private val dateTimePickerView: View? = null
+    private val dateTimePickerView: View? = null,
+    val supportFragmentManager: FragmentManager
 ) {
 
     private var cooker: BaseCooker = BaseCooker.getCooker(dataType)
@@ -25,19 +28,29 @@ class ActivityController<T, MT>(
     private var startCalendar: Calendar = Calendar.getInstance()
     private var endCalendar: Calendar = Calendar.getInstance()
 
+    private val onCookingDone = object : ICookingDone<MT> {
+        override fun onDone(outputList: ArrayList<MT>) =
+            viewModel.onData(outputList)
+    }
+
     init {
         startCalendar.set(Calendar.HOUR, 0)
         startCalendar.set(Calendar.MINUTE, 0)
+        startCalendar.add(Calendar.DAY_OF_MONTH, -1)
+        showInitialData()
+        cook(
+            TimeInterval(
+                startCalendar.timeInMillis,
+                endCalendar.timeInMillis
+            )
+        )
     }
 
     fun cook(timeInterval: TimeInterval) {
         cooker.cook(timeInterval, onCookingDone)
     }
 
-    private val onCookingDone = object : ICookingDone<MT> {
-        override fun onDone(outputList: ArrayList<MT>) =
-            viewModel.onData(outputList)
-    }
+
 
     fun setStartTime(context: Context) {
         val hour = startCalendar.get(Calendar.HOUR)
@@ -73,13 +86,7 @@ class ActivityController<T, MT>(
     private var startDatePickerListener =
         DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
             startCalendar.set(year, month, dayOfMonth)
-            cook(
-                TimeInterval(
-                    startCalendar.timeInMillis,
-                    endCalendar.timeInMillis
-                )
-            )
-            viewModel.updateTextViews(startCalendar, endCalendar, dateTimePickerView!!)
+            validateTimeInterval()
         }
 
     fun setEndTime(context: Context) {
@@ -116,23 +123,12 @@ class ActivityController<T, MT>(
     private var endDatePickerListener =
         DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
             endCalendar.set(year, month, dayOfMonth)
-            cook(
-                TimeInterval(
-                    startCalendar.timeInMillis,
-                    endCalendar.timeInMillis
-                )
-            )
-            viewModel.updateTextViews(startCalendar, endCalendar, dateTimePickerView!!)
+            validateTimeInterval()
         }
 
     private fun validateTimeInterval() {
         if (startCalendar.timeInMillis < endCalendar.timeInMillis) {
-            cook(
-                TimeInterval(
-                    startCalendar.timeInMillis,
-                    endCalendar.timeInMillis
-                )
-            )
+            BottomSheet(onApply = { apply() }).show(supportFragmentManager, "Apply")
             viewModel.updateTextViews(startCalendar, endCalendar, dateTimePickerView!!)
         } else {
             Toast.makeText(
@@ -143,15 +139,20 @@ class ActivityController<T, MT>(
         }
     }
 
-    fun apply() {
+    private fun apply() {
         startCalendar.set(Calendar.SECOND, 0)
         endCalendar.set(Calendar.SECOND, 0)
         startCalendar.set(Calendar.MILLISECOND, 0)
         endCalendar.set(Calendar.MILLISECOND, 0)
-        validateTimeInterval()
+        cook(
+            TimeInterval(
+                startCalendar.timeInMillis,
+                endCalendar.timeInMillis
+            )
+        )
     }
 
-    fun showInitialData(){
+    fun showInitialData() {
         viewModel.updateTextViews(startCalendar, endCalendar, dateTimePickerView!!)
     }
 
