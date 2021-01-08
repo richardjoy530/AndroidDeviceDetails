@@ -5,12 +5,12 @@ import com.example.androidDeviceDetails.managers.AppEventCollector
 import com.example.androidDeviceDetails.managers.NetworkUsageCollector
 import com.example.androidDeviceDetails.managers.SignalChangeListener
 import com.example.androidDeviceDetails.receivers.AppInfoReceiver
-import com.example.androidDeviceDetails.receivers.BatteryReceiver
+import com.example.androidDeviceDetails.receivers.BatteryCollector
 import com.example.androidDeviceDetails.receivers.WifiReceiver
 import java.util.*
 
 class ApplicationController {
-    var mBatteryReceiver: BatteryReceiver
+    var mBatteryCollector: BatteryCollector
     var mAppStateReceiver: AppInfoReceiver
     var mWifiReceiver: WifiReceiver
     var mAppEventCollector: AppEventCollector
@@ -19,7 +19,7 @@ class ApplicationController {
     lateinit var timer: Timer
 
     init{
-        mBatteryReceiver = BatteryReceiver()
+        mBatteryCollector = BatteryCollector()
         mWifiReceiver = WifiReceiver()
         mAppStateReceiver = AppInfoReceiver()
         mAppEventCollector = AppEventCollector(DeviceDetailsApplication.instance)

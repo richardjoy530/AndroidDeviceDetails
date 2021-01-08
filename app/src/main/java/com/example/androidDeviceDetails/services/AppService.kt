@@ -35,7 +35,7 @@ class AppService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
-        appController.mBatteryReceiver.stop()
+        appController.mBatteryCollector.stop()
         appController.mWifiReceiver.stop()
         appController.mAppStateReceiver.stop()
         appController.timer.cancel()
