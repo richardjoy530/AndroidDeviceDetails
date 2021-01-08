@@ -37,7 +37,7 @@ class AppService : Service() {
         super.onDestroy()
         appController.mBatteryReceiver.stop()
         appController.mWifiReceiver.stop()
-        appController.mAppStateReceiver.stop()
+        appController.mAppStateCollector.stop()
         appController.timer.cancel()
         stopSelf()
     }
