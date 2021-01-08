@@ -7,11 +7,10 @@ import androidx.room.PrimaryKey
 import com.example.androidDeviceDetails.cooker.NetworkUsageCooker
 import com.example.androidDeviceDetails.managers.NetworkUsageCollector
 import com.example.androidDeviceDetails.models.RoomDB
-import com.example.androidDeviceDetails.viewModel.NetworkUsageViewModel
 
 /**
  * A data class used by [NetworkUsageCollector] to collect the network usage details and
- * write into the [RoomDB.appNetworkUsageDao] also used by [NetworkUsageCooker] and [NetworkUsageViewModel].
+ * write into the [RoomDB.appNetworkUsageDao] also used by [NetworkUsageCooker].
  * @param rowId unique id for each entry
  * @param timeStamp Time of the record
  * @param packageName Name of the package.
