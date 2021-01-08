@@ -12,6 +12,15 @@ import java.util.*
 class NetworkUsageCooker : BaseCooker() {
 
     @Suppress("UNCHECKED_CAST")
+    /**
+     * Cook data for Network Usage from the collected data available in the Database for the
+     * requested time interval.
+     *>
+     * Overrides [cook] in [BaseCooker]
+     * >
+     * @param time A data class object that contains start time and end time.
+     * @param callback A callback that accepts the cooked list once the cooking is done.
+     */
     override fun <T> cook(time: TimePeriod, callback: ICookingDone<T>) {
         val db = RoomDB.getDatabase()?.appNetworkUsageDao()!!
         GlobalScope.launch {

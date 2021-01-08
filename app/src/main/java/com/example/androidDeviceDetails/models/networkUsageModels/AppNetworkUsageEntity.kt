@@ -1,9 +1,24 @@
 package com.example.androidDeviceDetails.models.networkUsageModels
 
+import android.net.NetworkCapabilities
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.androidDeviceDetails.cooker.NetworkUsageCooker
+import com.example.androidDeviceDetails.managers.NetworkUsageCollector
+import com.example.androidDeviceDetails.models.RoomDB
 
+/**
+ * A data class used by [NetworkUsageCollector] to collect the network usage details and
+ * write into the [RoomDB.appNetworkUsageDao] also used by [NetworkUsageCooker].
+ * @param rowId unique id for each entry
+ * @param timeStamp Time of the record
+ * @param packageName Name of the package.
+ * @param transferredDataWifi Amount of data transferred through WIFI- [NetworkCapabilities.TRANSPORT_WIFI].
+ * @param transferredDataMobile Amount of data transferred through Cellular Data- [NetworkCapabilities.TRANSPORT_CELLULAR].
+ * @param receivedDataWifi Amount of data received through WIFI- [NetworkCapabilities.TRANSPORT_WIFI].
+ * @param receivedDataMobile Amount of data received through Cellular Data- [NetworkCapabilities.TRANSPORT_CELLULAR].
+ */
 @Entity
 data class AppNetworkUsageEntity(
     @PrimaryKey(autoGenerate = true) val rowId: Int,
