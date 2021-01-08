@@ -1,11 +1,11 @@
 package com.example.androidDeviceDetails.controller
 
 import com.example.androidDeviceDetails.DeviceDetailsApplication
-import com.example.androidDeviceDetails.managers.AppEventCollector
-import com.example.androidDeviceDetails.managers.NetworkUsageCollector
-import com.example.androidDeviceDetails.managers.SignalChangeListener
+import com.example.androidDeviceDetails.collectors.AppEventCollector
+import com.example.androidDeviceDetails.collectors.BatteryCollector
+import com.example.androidDeviceDetails.collectors.NetworkUsageCollector
+import com.example.androidDeviceDetails.collectors.SignalChangeListener
 import com.example.androidDeviceDetails.receivers.AppInfoReceiver
-import com.example.androidDeviceDetails.receivers.BatteryCollector
 import com.example.androidDeviceDetails.receivers.WifiReceiver
 import java.util.*
 
@@ -22,7 +22,7 @@ class ApplicationController {
         mBatteryCollector = BatteryCollector()
         mWifiReceiver = WifiReceiver()
         mAppStateReceiver = AppInfoReceiver()
-        mAppEventCollector = AppEventCollector(DeviceDetailsApplication.instance)
+        mAppEventCollector = AppEventCollector()
         mPhoneStateListener = SignalChangeListener(DeviceDetailsApplication.instance)
         mAppDataUsageCollector = NetworkUsageCollector(DeviceDetailsApplication.instance)
     }

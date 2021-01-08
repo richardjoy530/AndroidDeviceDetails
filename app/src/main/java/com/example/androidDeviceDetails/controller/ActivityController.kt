@@ -4,7 +4,6 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.widget.Toast
-import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
 import androidx.viewbinding.ViewBinding
 import com.example.androidDeviceDetails.BottomSheet
@@ -12,7 +11,6 @@ import com.example.androidDeviceDetails.base.BaseCooker
 import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.databinding.DateTimePickerBinding
 import com.example.androidDeviceDetails.interfaces.ICookingDone
-import com.example.androidDeviceDetails.managers.AppInfoManager
 import com.example.androidDeviceDetails.models.TimePeriod
 import com.example.androidDeviceDetails.utils.Utils
 import java.util.*

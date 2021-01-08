@@ -1,4 +1,4 @@
-package com.example.androidDeviceDetails.receivers
+package com.example.androidDeviceDetails.collectors
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -7,9 +7,9 @@ import android.content.IntentFilter
 import android.os.BatteryManager
 import com.example.androidDeviceDetails.DeviceDetailsApplication
 import com.example.androidDeviceDetails.base.BaseCollector
+import com.example.androidDeviceDetails.collectors.BatteryCollector.BatteryReceiver
 import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.models.batteryModels.BatteryEntity
-import com.example.androidDeviceDetails.receivers.BatteryCollector.BatteryReceiver
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -62,7 +62,7 @@ class BatteryCollector : BaseCollector() {
     }
 
     /**
-     * Registers the [BatteryReceiver]
+     * Registers the [BatteryReceiver] with [Intent.ACTION_BATTERY_CHANGED].
      **/
     override fun start() {
         DeviceDetailsApplication.instance.registerReceiver(
@@ -74,7 +74,7 @@ class BatteryCollector : BaseCollector() {
     override fun collect() {}
 
     /**
-     * Unregisters the [BatteryReceiver]
+     * Unregisters the [BatteryReceiver].
      **/
     override fun stop() {
         DeviceDetailsApplication.instance.unregisterReceiver(BatteryReceiver)

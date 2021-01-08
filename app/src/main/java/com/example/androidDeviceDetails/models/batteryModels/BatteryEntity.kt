@@ -4,9 +4,9 @@ import android.os.BatteryManager
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.androidDeviceDetails.collectors.BatteryCollector
 import com.example.androidDeviceDetails.cooker.BatteryCooker
 import com.example.androidDeviceDetails.models.RoomDB
-import com.example.androidDeviceDetails.receivers.BatteryCollector
 
 /**
  * A data class used by the [BatteryCollector] to record a battery event and
@@ -25,8 +25,11 @@ import com.example.androidDeviceDetails.receivers.BatteryCollector
  * [BatteryManager.BATTERY_HEALTH_OVER_VOLTAGE],
  * [BatteryManager.BATTERY_HEALTH_UNSPECIFIED_FAILURE],
  * [BatteryManager.BATTERY_HEALTH_UNKNOWN]
- * @param estimatedCapacity Battery capacity in mAH
+ * @param estimatedCapacity Battery capacity in mAh
  * @param estimatedAccuracy Currently it is the same as [level]
+ *
+ *  @see [RoomDB]
+ *  @see[BatteryDao]
  **/
 @Entity
 data class BatteryEntity(
