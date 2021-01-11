@@ -8,7 +8,6 @@ import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import com.example.androidDeviceDetails.LocationActivity
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.services.AppService
 import com.example.androidDeviceDetails.utils.PrefManager
