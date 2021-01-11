@@ -11,7 +11,7 @@ import com.example.androidDeviceDetails.viewModel.NetworkUsageViewModel
 
 /**
  * A data class used by [NetworkUsageCollector] to collect the network usage details and
- * write into the [RoomDB.appNetworkUsageDao] also used by [NetworkUsageCooker].
+ * write into the [RoomDB.appNetworkUsageDao] also used by [NetworkUsageCooker] and [NetworkUsageViewModel].
  * @param rowId unique id for each entry
  * @param timeStamp Time of the record
  * @param packageName Name of the package.
