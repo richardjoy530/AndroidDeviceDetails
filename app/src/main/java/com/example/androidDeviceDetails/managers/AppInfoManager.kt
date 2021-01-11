@@ -16,6 +16,12 @@ object AppInfoManager {
 
     var appList = arrayListOf<AppInfoCookedData>()
 
+    /**
+     * Calculates and assigns the height of the list view
+     *
+     * @param [listView] App list
+     * @param [size] Number of elements in app list
+     */
     fun justifyListViewHeightBasedOnChildren(listView: ListView, size: Int) {
         val adapter: ListAdapter = listView.adapter ?: return
         val vg: ViewGroup = listView
@@ -29,6 +35,13 @@ object AppInfoManager {
         listView.requestLayout()
     }
 
+    /**
+     * Uninstalls the app
+     *
+     * @param [view] List view element
+     * @param [packageManager] Package manager
+     * @param context Context
+     */
     fun deleteApp(view: View, packageManager: PackageManager, context: Context) {
         val packageName = view.tag as String
         if (Utils.isPackageInstalled(packageName, packageManager)) {

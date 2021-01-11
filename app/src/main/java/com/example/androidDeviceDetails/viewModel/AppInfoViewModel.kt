@@ -12,11 +12,21 @@ import com.example.androidDeviceDetails.models.appInfoModels.AppInfoCookedData
 import com.example.androidDeviceDetails.models.appInfoModels.EventType
 import kotlin.math.ceil
 
+/**
+ * Implements [BaseViewModel]
+ */
 class AppInfoViewModel(private val binding: ActivityAppInfoBinding, val context: Context) :
     BaseViewModel() {
     companion object{
         var eventFilter = 0
     }
+
+    /**
+     * Displays provided data on UI
+     *
+     * Overrides : [onData] in [BaseViewModel]
+     * @param [outputList] list of cooked data
+     */
     @Suppress("UNCHECKED_CAST")
     override fun <T> onData(outputList: ArrayList<T>) {
         val appList = outputList as ArrayList<AppInfoCookedData>
@@ -96,6 +106,12 @@ class AppInfoViewModel(private val binding: ActivityAppInfoBinding, val context:
         }
     }
 
+    /**
+     * Filters [AppInfoManager.appList] based on given filter type
+     *
+     * Overrides : [onData] in [BaseViewModel]
+     * @param [type] Type of filter
+     */
     override fun filter(type:Int) {
         eventFilter = type
         onData(AppInfoManager.appList)
