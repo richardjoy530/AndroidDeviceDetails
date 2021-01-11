@@ -57,9 +57,6 @@ class AppInfoCollector : BaseCollector() {
         DeviceDetailsApplication.instance.registerReceiver(AppInfoReceiver, filter)
     }
 
-    override fun collect() {
-    }
-
     /**
      * Unregisters the [AppInfoReceiver]
      */
