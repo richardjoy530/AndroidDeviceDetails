@@ -9,7 +9,7 @@ import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.models.networkUsageModels.AppNetworkUsageEntity
 import com.example.androidDeviceDetails.utils.Utils
 
-class NetWorkUsageListAdapter(//TODO complete NetworkUsageListAdapter
+class NetWorkUsageListAdapter(
     private var _context: Context,
     private var resource: Int,
     private var items: ArrayList<AppNetworkUsageEntity>
