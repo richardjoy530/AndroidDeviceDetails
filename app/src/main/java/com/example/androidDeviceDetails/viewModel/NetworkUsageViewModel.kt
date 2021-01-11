@@ -12,16 +12,14 @@ import java.util.*
 /**
  * Implements [BaseViewModel]
  */
-class NetworkUsageViewModel(
+class NetworkUsageViewModel(// TODO Complete NetworkUsageViewModel documentation
     private val networkUsageBinding: ActivityAppDataBinding,
     val context: Context
 ) : BaseViewModel() {
     /**
      * Overrides [onData] in [BaseViewModel]
      *
-     * Display provided data on UI.
-     *
-     * @param outputList List of cooked data.
+     * @param outputList The cooked list that needs to be displayed.
      */
     @Suppress("UNCHECKED_CAST")
     override fun <T> onData(outputList: ArrayList<T>) {
