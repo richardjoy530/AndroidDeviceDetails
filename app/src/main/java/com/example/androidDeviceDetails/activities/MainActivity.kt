@@ -5,11 +5,12 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.LocationActivity
 import com.example.androidDeviceDetails.R
+import com.example.androidDeviceDetails.databinding.ActivityMainBinding
 import com.example.androidDeviceDetails.services.AppService
 import com.example.androidDeviceDetails.utils.PrefManager
 import com.example.androidDeviceDetails.utils.Utils
@@ -19,13 +20,11 @@ val permissions: Array<String> =
     arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_PHONE_STATE)
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
-    private lateinit var toLocationActivityButton: Button
-    private lateinit var appInfoButton: Button
-    private lateinit var batteryInfoButton: Button
-    private lateinit var appDataButton: Button
+
+    private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         requestPermissions()
         if (!PrefManager.createInstance(this).getBoolean(PrefManager.INITIAL_LAUNCH, false)
         ) {
@@ -33,22 +32,18 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             PrefManager.createInstance(this)
                 .putBoolean(PrefManager.INITIAL_LAUNCH, true)
         }
-        init()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
             startForegroundService(Intent(this, AppService::class.java))
         else startService(Intent(this, AppService::class.java))
+        binding.apply {
+            binding.appInfo.button.setOnClickListener(this@MainActivity)
+            binding.batteryInfo.button.setOnClickListener(this@MainActivity)
+            binding.toLocationActivity.button.setOnClickListener(this@MainActivity)
+            binding.appData.button.setOnClickListener(this@MainActivity)
+            binding.signal.button.setOnClickListener(this@MainActivity)
+        }
     }
 
-    private fun init() {
-        toLocationActivityButton = findViewById(R.id.toLocationActivity)
-        toLocationActivityButton.setOnClickListener(this)
-        appInfoButton = findViewById(R.id.appInfo)
-        batteryInfoButton = findViewById(R.id.batteryInfo)
-        appInfoButton.setOnClickListener(this)
-        batteryInfoButton.setOnClickListener(this)
-        appDataButton = findViewById(R.id.appData)
-        appDataButton.setOnClickListener(this)
-    }
 
     override fun onClick(v: View?) {
         when (v?.id) {
