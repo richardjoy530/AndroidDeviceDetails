@@ -22,7 +22,7 @@ class AppInfoViewModel(private val binding: ActivityAppInfoBinding, val context:
     }
 
     /**
-     * Displays provided data on UI
+     * Displays provided data on UI as List view and a donut chart
      *
      * Overrides : [onData] in [BaseViewModel]
      * @param [outputList] list of cooked data
