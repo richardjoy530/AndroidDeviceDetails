@@ -6,7 +6,7 @@ import com.example.androidDeviceDetails.collectors.BatteryCollector
 import com.example.androidDeviceDetails.collectors.NetworkUsageCollector
 import com.example.androidDeviceDetails.collectors.SignalChangeListener
 import com.example.androidDeviceDetails.managers.AppEventCollector
-import com.example.androidDeviceDetails.receivers.AppInfoCollector
+import com.example.androidDeviceDetails.collectors.AppInfoCollector
 import com.example.androidDeviceDetails.receivers.WifiReceiver
 import java.util.*
 
