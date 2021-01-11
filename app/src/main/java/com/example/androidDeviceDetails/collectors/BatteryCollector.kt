@@ -71,8 +71,6 @@ class BatteryCollector : BaseCollector() {
         )
     }
 
-    override fun collect() {}
-
     /**
      * Unregisters the [BatteryReceiver].
      **/
