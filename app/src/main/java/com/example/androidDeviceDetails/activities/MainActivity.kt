@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        supportActionBar?.hide()
         requestPermissions()
         if (!PrefManager.createInstance(this).getBoolean(PrefManager.INITIAL_LAUNCH, false)
         ) {
