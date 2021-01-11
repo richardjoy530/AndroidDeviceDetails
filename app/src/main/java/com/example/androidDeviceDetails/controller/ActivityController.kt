@@ -33,8 +33,8 @@ class ActivityController<T>(
 
     private val onCookingDone = object : ICookingDone<T> {
         override fun onDone(outputList: ArrayList<T>) {
-            viewModel.isLoading(dateTimePickerView,false)
-            viewModel.onData(outputList)
+            viewModel.isLoading(dateTimePickerView, false)
+            viewModel.onDone(outputList)
         }
     }
 

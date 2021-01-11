@@ -18,7 +18,7 @@ class AppInfoViewModel(private val binding: ActivityAppInfoBinding, val context:
         var eventFilter = 0
     }
     @Suppress("UNCHECKED_CAST")
-    override fun <T> onData(outputList: ArrayList<T>) {
+    override fun <T> onDone(outputList: ArrayList<T>) {
         val appList = outputList as ArrayList<AppInfoCookedData>
         AppInfoManager.appList = appList
         if (appList.isEmpty()) {
@@ -98,6 +98,6 @@ class AppInfoViewModel(private val binding: ActivityAppInfoBinding, val context:
 
     override fun filter(type:Int) {
         eventFilter = type
-        onData(AppInfoManager.appList)
+        onDone(AppInfoManager.appList)
     }
 }
