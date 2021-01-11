@@ -9,11 +9,18 @@ import com.example.androidDeviceDetails.databinding.ActivityAppDataBinding
 import com.example.androidDeviceDetails.models.networkUsageModels.AppNetworkUsageEntity
 import java.util.*
 
-
-class NetworkUsageViewModel(
+/**
+ * Implements [BaseViewModel]
+ */
+class NetworkUsageViewModel(// TODO Complete NetworkUsageViewModel documentation
     private val networkUsageBinding: ActivityAppDataBinding,
     val context: Context
 ) : BaseViewModel() {
+    /**
+     * Overrides [onData] in [BaseViewModel]
+     *
+     * @param outputList The cooked list that needs to be displayed.
+     */
     @Suppress("UNCHECKED_CAST")
     override fun <T> onData(outputList: ArrayList<T>) {
         if (outputList.isNotEmpty()) {
