@@ -6,8 +6,8 @@ import com.example.androidDeviceDetails.DeviceDetailsApplication
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.adapters.AppInfoListAdapter
 import com.example.androidDeviceDetails.base.BaseViewModel
+import com.example.androidDeviceDetails.collectors.AppInfoManager
 import com.example.androidDeviceDetails.databinding.ActivityAppInfoBinding
-import com.example.androidDeviceDetails.managers.AppInfoManager
 import com.example.androidDeviceDetails.models.appInfoModels.AppInfoCookedData
 import com.example.androidDeviceDetails.models.appInfoModels.EventType
 import kotlin.math.ceil
@@ -28,7 +28,7 @@ class AppInfoViewModel(private val binding: ActivityAppInfoBinding, val context:
      * @param [outputList] list of cooked data
      */
     @Suppress("UNCHECKED_CAST")
-    override fun <T> onData(outputList: ArrayList<T>) {
+    override fun <T> onDone(outputList: ArrayList<T>) {
         val appList = outputList as ArrayList<AppInfoCookedData>
         AppInfoManager.appList = appList
         if (appList.isEmpty()) {
@@ -114,6 +114,6 @@ class AppInfoViewModel(private val binding: ActivityAppInfoBinding, val context:
      */
     override fun filter(type:Int) {
         eventFilter = type
-        onData(AppInfoManager.appList)
+        onDone(AppInfoManager.appList)
     }
 }

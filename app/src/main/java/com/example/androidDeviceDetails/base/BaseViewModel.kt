@@ -15,7 +15,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 abstract class BaseViewModel {
-    abstract fun <T> onData(outputList: ArrayList<T>)
+    abstract fun <T> onDone(outputList: ArrayList<T>)
 
     companion object {
         fun getViewModel(

@@ -1,4 +1,4 @@
-package com.example.androidDeviceDetails
+package com.example.androidDeviceDetails.activities
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -15,6 +15,8 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.androidDeviceDetails.LocationCounter
+import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.models.CountModel
 import com.example.androidDeviceDetails.models.LocationModel
 import com.example.androidDeviceDetails.models.RoomDB
