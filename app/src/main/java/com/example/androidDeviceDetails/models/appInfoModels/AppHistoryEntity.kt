@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey
 
 @Entity
 @ForeignKey(entity = AppsEntity::class, parentColumns = ["uid"], childColumns = ["appId"])
+
 data class AppHistoryEntity(
     @PrimaryKey(autoGenerate = true) val rowId: Int,
     @ColumnInfo val appId: Int,

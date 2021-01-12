@@ -8,12 +8,23 @@ import com.example.androidDeviceDetails.models.batteryModels.BatteryAppEntry
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
+/**
+ * Implements [BaseCooker]. A cooker class for handling the logic for cooking for battery data.
+ **/
 class BatteryCooker : BaseCooker() {
-    private var db: RoomDB = RoomDB.getDatabase()!!
 
+    /**
+     * Cook data for App Info from the collected data available in the [RoomDB.appEventDao] and [RoomDB.batteryDao] table for
+     * the requested time interval.
+     * >
+     * Overrides : [cook] in [BaseCooker]
+     * @param time data class object that contains start time and end time.
+     * @param callback A callback that accepts the cooked list once cooking is done
+     */
     override fun <T> cook(time: TimePeriod, callback: ICookingDone<T>) {
         val appEntryList = arrayListOf<BatteryAppEntry>()
         GlobalScope.launch {
+            val db: RoomDB = RoomDB.getDatabase()!!
             val appEventList = db.appEventDao().getAllBetween(time.startTime, time.endTime)
             val batteryList = db.batteryDao().getAllBetween(time.startTime, time.endTime)
             if (batteryList.isNotEmpty() && appEventList.isNotEmpty()) {

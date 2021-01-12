@@ -1,4 +1,4 @@
-package com.example.androidDeviceDetails.managers
+package com.example.androidDeviceDetails.collectors
 
 import android.app.Service
 import android.content.Context
@@ -116,9 +116,6 @@ class SignalChangeListener(private val context: Context) : BaseCollector() {
         mTelephonyManager =
             DeviceDetailsApplication.instance.getSystemService(Service.TELEPHONY_SERVICE) as TelephonyManager
         mTelephonyManager.listen(phoneStateListner, LISTEN_SIGNAL_STRENGTHS)
-    }
-
-    override fun collect() {
     }
 
     override fun stop() {
