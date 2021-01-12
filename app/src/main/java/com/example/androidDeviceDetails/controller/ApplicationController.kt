@@ -6,7 +6,7 @@ import com.example.androidDeviceDetails.collectors.BatteryCollector
 import com.example.androidDeviceDetails.collectors.NetworkUsageCollector
 import com.example.androidDeviceDetails.collectors.SignalChangeListener
 import com.example.androidDeviceDetails.managers.AppEventCollector
-import com.example.androidDeviceDetails.receivers.AppInfoReceiver
+import com.example.androidDeviceDetails.collectors.AppInfoCollector
 import com.example.androidDeviceDetails.receivers.WifiReceiver
 import java.util.*
 
@@ -15,7 +15,7 @@ class ApplicationController {
     var instanceMap: MutableMap<String, BaseCollector> = mutableMapOf(
         "BatteryReceiver" to BatteryCollector(),
         "WifiReceiver" to WifiReceiver(),
-        "AppStateReceiver" to AppInfoReceiver(),
+        "AppStateReceiver" to AppInfoCollector(),
         "AppEventCollector" to AppEventCollector(DeviceDetailsApplication.instance),
         "SignalChangeListener" to SignalChangeListener(DeviceDetailsApplication.instance),
         "NetworkUsageCollector" to NetworkUsageCollector(DeviceDetailsApplication.instance)

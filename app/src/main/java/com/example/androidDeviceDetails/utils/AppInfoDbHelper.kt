@@ -1,11 +1,12 @@
 package com.example.androidDeviceDetails.utils
 
 import com.example.androidDeviceDetails.models.RoomDB
-import com.example.androidDeviceDetails.models.appInfoModels.AppDetails
-import com.example.androidDeviceDetails.models.appInfoModels.AppHistoryEntity
-import com.example.androidDeviceDetails.models.appInfoModels.AppsEntity
+import com.example.androidDeviceDetails.models.appInfoModels.*
 
 object AppInfoDbHelper {
+    /**
+     * Writes the given data as [AppsEntity] into [AppsDao]
+     */
     fun writeToAppsDb(id: Int, packageName: String, appDetails: AppDetails, db: RoomDB) {
         db.appsDao().insertAll(
             AppsEntity(
@@ -20,6 +21,9 @@ object AppInfoDbHelper {
         )
     }
 
+    /**
+     * Writes the given data as [AppHistoryEntity] into [AppHistoryDao]
+     */
     fun writeToAppHistoryDb(
         id: Int,
         eventType: Int,

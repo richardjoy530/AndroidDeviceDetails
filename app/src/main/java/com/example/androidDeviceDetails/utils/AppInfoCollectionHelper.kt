@@ -2,14 +2,24 @@ package com.example.androidDeviceDetails.utils
 
 import android.content.Context
 import com.example.androidDeviceDetails.models.RoomDB
-import com.example.androidDeviceDetails.models.appInfoModels.AppDetails
-import com.example.androidDeviceDetails.models.appInfoModels.EventType
+import com.example.androidDeviceDetails.models.appInfoModels.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
+/**
+ * Events are made into [AppsEntity] and [AppHistoryEntity] and inserted into
+ * [AppsDao] and [AppHistoryDao]
+ *
+ */
 object AppInfoCollectionHelper {
-
+    /**
+     * Updates  [AppsDao] and [AppHistoryDao] databases with events [EventType.APP_INSTALLED]
+     * or [EventType.APP_UPDATED]
+     *
+     * @param context Event context
+     * @param packageName Package name of the app
+     */
     fun appInstalled(context: Context, packageName: String) {
         val latestAppDetails = Utils.getAppDetails(context, packageName)
         val db = RoomDB.getDatabase(context)!!
@@ -46,6 +56,11 @@ object AppInfoCollectionHelper {
         }
     }
 
+    /**
+     * Updates  [AppsDao] and [AppHistoryDao] databases with event [EventType.APP_UNINSTALLED]
+     * @param context Event context
+     * @param packageName Package name of the app
+     */
     fun appUninstalled(context: Context, packageName: String) {
         val db = RoomDB.getDatabase(context)!!
         GlobalScope.launch(Dispatchers.IO) {
@@ -70,6 +85,13 @@ object AppInfoCollectionHelper {
         }
     }
 
+    /**
+     * Updates  [AppsDao] and [AppHistoryDao] databases with events [EventType.APP_INSTALLED]
+     * or [EventType.APP_UPDATED]
+     *
+     * @param context Event context
+     * @param packageName Package name of the app
+     */
     fun appUpgraded(context: Context, packageName: String) {
         val db = RoomDB.getDatabase(context)!!
         GlobalScope.launch(Dispatchers.IO) {
