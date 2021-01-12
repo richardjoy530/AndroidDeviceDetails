@@ -1,4 +1,4 @@
-package com.example.androidDeviceDetails.managers
+package com.example.androidDeviceDetails.collectors
 
 import android.app.usage.NetworkStats
 import android.app.usage.NetworkStatsManager
@@ -143,9 +143,6 @@ class NetworkUsageCollector(var context: Context) : BaseCollector() {
 
     }
 
-    override fun start() {
-    }
-
     /**
      *
      * Calls [updateDeviceNetworkUsageDB] function and [updateNetworkDataUsageDB] function.
@@ -159,7 +156,5 @@ class NetworkUsageCollector(var context: Context) : BaseCollector() {
         }
     }
 
-    override fun stop() {
-    }
 
 }

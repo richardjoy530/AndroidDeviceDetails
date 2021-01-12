@@ -4,8 +4,8 @@ import android.net.NetworkCapabilities
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.androidDeviceDetails.collectors.NetworkUsageCollector
 import com.example.androidDeviceDetails.cooker.NetworkUsageCooker
-import com.example.androidDeviceDetails.managers.NetworkUsageCollector
 import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.viewModel.NetworkUsageViewModel
 
