@@ -17,7 +17,7 @@ import kotlin.math.ceil
  */
 class AppInfoViewModel(private val binding: ActivityAppInfoBinding, val context: Context) :
     BaseViewModel() {
-    companion object{
+    companion object {
         var eventFilter = 0
     }
 
@@ -112,7 +112,7 @@ class AppInfoViewModel(private val binding: ActivityAppInfoBinding, val context:
      * Overrides : [onData] in [BaseViewModel]
      * @param [type] Type of filter
      */
-    override fun filter(type:Int) {
+    override fun filter(type: Int) {
         eventFilter = type
         onDone(AppInfoManager.appList)
     }
