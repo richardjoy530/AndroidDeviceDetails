@@ -7,16 +7,13 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.R
+import com.example.androidDeviceDetails.collectors.AppInfoManager
 import com.example.androidDeviceDetails.controller.ActivityController
 import com.example.androidDeviceDetails.databinding.ActivityAppInfoBinding
-import com.example.androidDeviceDetails.managers.AppInfoManager
-import com.example.androidDeviceDetails.models.TimePeriod
 import com.example.androidDeviceDetails.models.appInfoModels.AppInfoCookedData
 import com.example.androidDeviceDetails.models.appInfoModels.EventType
-import com.example.androidDeviceDetails.utils.Utils
 import java.util.*
 
 

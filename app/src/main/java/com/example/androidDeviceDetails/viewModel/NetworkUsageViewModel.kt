@@ -9,13 +9,22 @@ import com.example.androidDeviceDetails.databinding.ActivityAppDataBinding
 import com.example.androidDeviceDetails.models.networkUsageModels.AppNetworkUsageEntity
 import java.util.*
 
-
+/**
+ * Implements [BaseViewModel]
+ */
 class NetworkUsageViewModel(
     private val networkUsageBinding: ActivityAppDataBinding,
     val context: Context
 ) : BaseViewModel() {
+    /**
+     * Overrides [onData] in [BaseViewModel]
+     *
+     * Display provided data on UI.
+     *
+     * @param outputList List of cooked data.
+     */
     @Suppress("UNCHECKED_CAST")
-    override fun <T> onData(outputList: ArrayList<T>) {
+    override fun <T> onDone(outputList: ArrayList<T>) {
         if (outputList.isNotEmpty()) {
             networkUsageBinding.root.post {
                 networkUsageBinding.apply {

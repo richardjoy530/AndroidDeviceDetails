@@ -1,4 +1,4 @@
-package com.example.androidDeviceDetails.receivers
+package com.example.androidDeviceDetails.collectors
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -7,15 +7,39 @@ import android.content.IntentFilter
 import android.os.BatteryManager
 import com.example.androidDeviceDetails.DeviceDetailsApplication
 import com.example.androidDeviceDetails.base.BaseCollector
+import com.example.androidDeviceDetails.collectors.BatteryCollector.BatteryReceiver
 import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.models.batteryModels.BatteryEntity
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.util.*
 
-class BatteryReceiver : BaseCollector() {
 
-    object broadcastReceiver : BroadcastReceiver() {
+/**
+ *  Implements [BaseCollector].
+ *  An event based collector which collects the battery usage data.
+ *  Contains a [BroadcastReceiver] : [BatteryReceiver] which is registered on
+ *  initialization of this class.
+ *  This broadcast requires [android.Manifest.permission.BATTERY_STATS] permission.
+ **/
+class BatteryCollector : BaseCollector() {
+
+    /**
+     * A [BroadcastReceiver] which gets notified from [Intent.ACTION_BATTERY_CHANGED]
+     **/
+    object BatteryReceiver : BroadcastReceiver() {
+
+        /**
+         *  Receiver which gets notified when a battery event is occurred.
+         *  Broadcast Action:
+         *  [android.os.BatteryManager.EXTRA_LEVEL],
+         *  [android.os.BatteryManager.EXTRA_PLUGGED],
+         *  [android.os.BatteryManager.EXTRA_TEMPERATURE],
+         *  [android.os.BatteryManager.EXTRA_HEALTH],
+         *  [android.os.BatteryManager.EXTRA_LEVEL],
+         *  [android.os.BatteryManager.BATTERY_PROPERTY_CHARGE_COUNTER],
+         *  These events are made into a [BatteryEntity] and saved into the [RoomDB.batteryDao]
+         *  This broadcast requires [android.Manifest.permission.BATTERY_STATS] permission.
+         **/
         override fun onReceive(context: Context?, intent: Intent?) {
             val batteryManager: BatteryManager =
                 context?.getSystemService(Context.BATTERY_SERVICE) as BatteryManager
@@ -37,18 +61,21 @@ class BatteryReceiver : BaseCollector() {
         start()
     }
 
+    /**
+     * Registers the [BatteryReceiver] with [Intent.ACTION_BATTERY_CHANGED].
+     **/
     override fun start() {
         DeviceDetailsApplication.instance.registerReceiver(
-            broadcastReceiver,
+            BatteryReceiver,
             IntentFilter(Intent.ACTION_BATTERY_CHANGED)
         )
     }
 
-    override fun collect() {
-    }
-
+    /**
+     * Unregisters the [BatteryReceiver].
+     **/
     override fun stop() {
-        DeviceDetailsApplication.instance.unregisterReceiver(broadcastReceiver)
+        DeviceDetailsApplication.instance.unregisterReceiver(BatteryReceiver)
     }
 
 }
