@@ -15,6 +15,14 @@ import com.example.androidDeviceDetails.models.networkUsageModels.DeviceNetworkU
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
+
+/**
+ * Implements [BaseCollector].
+ *
+ * A time based collector which collects the network usage of individual apps
+ * and the whole device.
+ *
+ */
 class NetworkUsageCollector(var context: Context) : BaseCollector() {
 
     private val firstInstallTime =
@@ -22,6 +30,13 @@ class NetworkUsageCollector(var context: Context) : BaseCollector() {
     val db = RoomDB.getDatabase()!!
     private lateinit var networkStatsManager: NetworkStatsManager
 
+    /**
+     * Collect Network Usage data for each app using [NetworkStatsManager.querySummary]
+     * which requires [android.Manifest.permission.PACKAGE_USAGE_STATS],
+     * store it as a List<[AppNetworkUsageEntity]>
+     * and writes into [RoomDB.appNetworkUsageDao].
+     *
+     */
     @RequiresApi(Build.VERSION_CODES.M)
     fun updateNetworkDataUsageDB() {
         val networkUsageList = arrayListOf<AppNetworkUsageEntity>()
@@ -68,6 +83,11 @@ class NetworkUsageCollector(var context: Context) : BaseCollector() {
         GlobalScope.launch { networkUsageList.forEach { db.appNetworkUsageDao().insertAll(it) } }
     }
 
+    /**
+     *  Collect Network Usage data for the device using [NetworkStatsManager.querySummaryForDevice]
+     *  which requires [android.Manifest.permission.PACKAGE_USAGE_STATS] permission and
+     *  writes into [RoomDB.deviceNetworkUsageDao].
+     */
     @RequiresApi(Build.VERSION_CODES.M)
     fun updateDeviceNetworkUsageDB() {
         var totalWifiDataRx = 0L
@@ -123,6 +143,10 @@ class NetworkUsageCollector(var context: Context) : BaseCollector() {
 
     }
 
+    /**
+     *
+     * Calls [updateDeviceNetworkUsageDB] function and [updateNetworkDataUsageDB] function.
+     */
     override fun collect() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             networkStatsManager =
@@ -131,5 +155,6 @@ class NetworkUsageCollector(var context: Context) : BaseCollector() {
             updateNetworkDataUsageDB()
         }
     }
+
 
 }
