@@ -4,9 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.analytics.collectors.SignalChangeCollector
 import com.example.analytics.collectors.WifiCollector
-import com.example.analytics.cooker.SignalCooker
 import com.example.analytics.models.database.RoomDB
-import com.example.analytics.viewModel.SignalViewModel
 
 /**
  * A data class used by the [WifiCollector] and [SignalChangeCollector] to record wifi and cellular

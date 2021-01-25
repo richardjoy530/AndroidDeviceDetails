@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.BatteryManager
-import com.example.analytics.DeviceDetailsApplication
 import com.example.analytics.base.BaseCollector
 import com.example.analytics.collectors.BatteryCollector.BatteryReceiver
 import com.example.analytics.models.database.BatteryRaw
@@ -21,7 +20,7 @@ import kotlinx.coroutines.launch
  *  initialization of this class.
  *  This broadcast requires [android.Manifest.permission.BATTERY_STATS] permission.
  **/
-class BatteryCollector : BaseCollector() {
+class BatteryCollector(var context: Context) : BaseCollector() {
 
     /**
      * A [BroadcastReceiver] which gets notified from [Intent.ACTION_BATTERY_CHANGED]
@@ -48,10 +47,8 @@ class BatteryCollector : BaseCollector() {
                 System.currentTimeMillis(),
                 intent?.getIntExtra(BatteryManager.EXTRA_LEVEL, 0),
                 intent?.getIntExtra(BatteryManager.EXTRA_PLUGGED, 0),
-                intent?.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, 0)?.div(10),
                 intent?.getIntExtra(BatteryManager.EXTRA_HEALTH, 0),
                 batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CHARGE_COUNTER),
-                intent?.getIntExtra(BatteryManager.EXTRA_LEVEL, 0),
             )
             GlobalScope.launch { db?.batteryDao()?.insert(batteryRaw) }
         }
@@ -61,7 +58,7 @@ class BatteryCollector : BaseCollector() {
      * Registers the [BatteryReceiver] with [Intent.ACTION_BATTERY_CHANGED].
      **/
     override fun start() {
-        DeviceDetailsApplication.instance.registerReceiver(
+        context.registerReceiver(
             BatteryReceiver, IntentFilter(Intent.ACTION_BATTERY_CHANGED)
         )
     }
@@ -69,6 +66,6 @@ class BatteryCollector : BaseCollector() {
     /**
      * Unregisters the [BatteryReceiver].
      **/
-    override fun stop() = DeviceDetailsApplication.instance.unregisterReceiver(BatteryReceiver)
+    override fun stop() = context.unregisterReceiver(BatteryReceiver)
 
 }

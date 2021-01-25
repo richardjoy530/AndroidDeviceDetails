@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/pieChartLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -111,7 +112,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="2dp"
                 android:text="Enroll : "
-                android:textColor="?attr/batteryTitle"> test</TextView>
+                android:textColor="?attr/batteryTitle">test</TextView>
 
             <TextView
                 android:id="@+id/enroll_count"
@@ -119,7 +120,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="2dp"
-                android:textColor="?attr/batteryTitle">test</TextView>
+                android:textColor="?attr/batteryTitle">test
+            </TextView>
         </LinearLayout>
 
         <LinearLayout
@@ -181,7 +183,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="2dp"
-                android:textColor="?attr/batteryTitle">test</TextView>
+                android:textColor="?attr/batteryTitle">test
+            </TextView>
         </LinearLayout>
 
         <LinearLayout
@@ -212,7 +215,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="2dp"
-                android:textColor="?attr/batteryTitle">test</TextView>
+                android:textColor="?attr/batteryTitle">test
+            </TextView>
         </LinearLayout>
     </LinearLayout>
 

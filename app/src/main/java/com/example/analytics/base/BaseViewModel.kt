@@ -3,8 +3,14 @@ package com.example.analytics.base
 import android.content.Context
 import androidx.core.view.isVisible
 import com.example.analytics.databinding.*
-import com.example.analytics.ui.*
-import com.example.analytics.viewModel.*
+import com.example.analytics.ui.AppInfoActivity
+import com.example.analytics.ui.BatteryActivity
+import com.example.analytics.ui.MainActivity
+import com.example.analytics.ui.NetworkUsageActivity
+import com.example.analytics.viewModel.AppInfoViewModel
+import com.example.analytics.viewModel.BatteryViewModel
+import com.example.analytics.viewModel.MainActivityViewModel
+import com.example.analytics.viewModel.NetworkUsageViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -17,10 +23,6 @@ abstract class BaseViewModel {
                 MainActivity.NAME -> MainActivityViewModel(binding as ActivityMainBinding, context)
                 BatteryActivity.NAME -> BatteryViewModel(binding as ActivityBatteryBinding, context)
                 AppInfoActivity.NAME -> AppInfoViewModel(binding as ActivityAppInfoBinding, context)
-                SignalActivity.NAME -> SignalViewModel(binding as ActivitySignalBinding, context)
-                LocationActivity.NAME -> LocationViewModel(
-                    binding as ActivityLocationBinding, context
-                )
                 NetworkUsageActivity.NAME -> NetworkUsageViewModel(
                     binding as ActivityAppDataBinding, context
                 )

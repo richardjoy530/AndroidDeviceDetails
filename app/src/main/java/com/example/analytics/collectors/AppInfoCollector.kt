@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import com.example.analytics.DeviceDetailsApplication
 import com.example.analytics.base.BaseCollector
 import com.example.analytics.utils.AppInfoCollectionHelper
 
@@ -12,7 +11,7 @@ import com.example.analytics.utils.AppInfoCollectionHelper
  * Implements [BaseCollector]
  * An event based collector which collects the App Install, Uninstall and Update information.
  */
-class AppInfoCollector : BaseCollector() {
+class AppInfoCollector(var context: Context) : BaseCollector() {
 
     object AppInfoReceiver : BroadcastReceiver() {
         /**
@@ -48,15 +47,13 @@ class AppInfoCollector : BaseCollector() {
         filter.addAction(Intent.ACTION_PACKAGE_ADDED)
         filter.addAction(Intent.ACTION_PACKAGE_FULLY_REMOVED)
         filter.addDataScheme("package")
-        DeviceDetailsApplication.instance.registerReceiver(AppInfoReceiver, filter)
+        context.registerReceiver(AppInfoReceiver, filter)
     }
 
     /**
      * Unregisters the [AppInfoReceiver]
      */
-    override fun stop() {
-        DeviceDetailsApplication.instance.unregisterReceiver(AppInfoReceiver)
-    }
+    override fun stop() = context.unregisterReceiver(AppInfoReceiver)
 
 }
 

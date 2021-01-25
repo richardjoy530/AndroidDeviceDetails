@@ -7,7 +7,6 @@ import com.example.analytics.databinding.ActivityMainBinding
 import com.example.analytics.models.battery.BatteryAppEntry
 import com.example.analytics.models.database.AppInfoRaw
 import com.example.analytics.models.database.DeviceNetworkUsageRaw
-import com.example.analytics.models.location.LocationDisplayModel
 import com.example.analytics.models.signal.SignalRaw
 import com.example.analytics.utils.Utils
 import kotlin.math.ceil
@@ -20,7 +19,6 @@ class MainActivityViewModel(private val binding: ActivityMainBinding, val contex
         val appInfoList = arrayListOf<AppInfoRaw>()
         val batteryList = arrayListOf<BatteryAppEntry>()
         val dataUsageList = arrayListOf<DeviceNetworkUsageRaw>()
-        val locationList = arrayListOf<LocationDisplayModel>()
         val signalList = arrayListOf<SignalRaw>()
         try {
             for (i in 0 until outputList.size) {
@@ -28,7 +26,6 @@ class MainActivityViewModel(private val binding: ActivityMainBinding, val contex
                     is AppInfoRaw -> appInfoList.add(outputList[i] as AppInfoRaw)
                     is BatteryAppEntry -> batteryList.add(outputList[i] as BatteryAppEntry)
                     is DeviceNetworkUsageRaw -> dataUsageList.add(outputList[i] as DeviceNetworkUsageRaw)
-                    is LocationDisplayModel -> locationList.add(outputList[i] as LocationDisplayModel)
                     is SignalRaw -> signalList.add(outputList[i] as SignalRaw)
                 }
             }
@@ -39,7 +36,6 @@ class MainActivityViewModel(private val binding: ActivityMainBinding, val contex
             if (appInfoList.isNotEmpty()) updateAppInfoCard(appInfoList)
             if (batteryList.isNotEmpty()) updateBatteryCard(batteryList)
             if (dataUsageList.isNotEmpty()) updateDeviceNetworkUsageCard(dataUsageList)
-            if (locationList.isNotEmpty()) updateLocationDataCard(locationList)
             if (signalList.isNotEmpty()) updateSignalDataCard(signalList)
         }
     }
@@ -95,10 +91,6 @@ class MainActivityViewModel(private val binding: ActivityMainBinding, val contex
             Utils.getFileSize(outputList.first().transferredDataMobile + outputList.first().transferredDataMobile)
         binding.networkUsage.progressbarFirst.progress = wifiDataProgress + cellularDataProgress
         binding.networkUsage.progressbarSecond.progress = cellularDataProgress
-    }
-
-    private fun updateLocationDataCard(outputList: ArrayList<LocationDisplayModel>) {
-        binding.locationInfo.mainValue.text = outputList.size.toString()
     }
 
     private fun updateSignalDataCard(outputList: ArrayList<SignalRaw>) {

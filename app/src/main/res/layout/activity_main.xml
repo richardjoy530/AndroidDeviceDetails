@@ -1,48 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:paddingTop="16dp"
         android:id="@+id/pullToRefresh"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="?attr/mainBackground">
+        android:background="?attr/mainBackground"
+        android:paddingTop="16dp"
+        app:layout_constraintTop_toTopOf="parent">
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <include
                     android:id="@+id/appInfo"
                     layout="@layout/main_activity_chart_card"
+                    app:iconSource='@{@drawable/ic_twotone_system_update_24}'
                     app:label1='@{"System Apps : "}'
                     app:label2='@{"User Apps : "}'
-                    app:title='@{@string/app_info}'
-                    app:iconSource='@{@drawable/ic_twotone_system_update_24}'>
-                </include>
+                    app:title='@{@string/app_info}'></include>
+
                 <include
                     android:id="@+id/batteryInfo"
-                    layout="@layout/main_activity_battery_tile">
-                </include>
+                    layout="@layout/main_activity_battery_tile"></include>
+
                 <include
                     android:id="@+id/networkUsage"
                     layout="@layout/main_activity_chart_card"
+                    app:iconSource='@{@drawable/ic_round_data_usage_24}'
                     app:label1='@{"Wifi Data : "}'
                     app:label2='@{"Cellular Data : "}'
-                    app:title='@{@string/network_usage}'
-                    app:iconSource='@{@drawable/ic_round_data_usage_24}'>
-                </include>
+                    app:title='@{@string/network_usage}'></include>
+
                 <include
                     android:id="@+id/signalData"
-                    layout="@layout/main_activity_signal_tile">
-                </include>
+                    layout="@layout/main_activity_signal_tile"></include>
+
                 <include
                     android:id="@+id/locationInfo"
-                    layout="@layout/main_activity_location_tile">
-                </include>
+                    layout="@layout/main_activity_location_tile"></include>
             </LinearLayout>
         </ScrollView>
 

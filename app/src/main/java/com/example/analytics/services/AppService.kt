@@ -24,7 +24,7 @@ class AppService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        appController = ApplicationController()
+        appController = ApplicationController(this)
         for (receivers in appController.instanceMap.values) {
             receivers.start()
         }

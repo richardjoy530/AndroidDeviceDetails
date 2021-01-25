@@ -1,34 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <data>
+
         <variable
             name="title"
             type="String" />
+
         <variable
             name="iconSource"
             type="android.graphics.drawable.Drawable" />
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_margin="10dp"
         android:background="@drawable/button_background"
         android:backgroundTint="?attr/mainButtonBg"
-        android:layout_margin="10dp"
+        android:orientation="horizontal"
         android:paddingTop="15dp"
         android:paddingBottom="15dp">
+
         <ImageView
             android:id="@+id/icon"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginStart="20dp"
             android:src="@{iconSource}"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
-        </ImageView>
+            app:layout_constraintTop_toTopOf="parent"></ImageView>
 
         <TextView
             android:layout_width="wrap_content"
@@ -37,9 +41,9 @@
 
             android:text="@{title}"
             android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintTop_toTopOf="parent">
 
 
         </TextView>
@@ -51,7 +55,7 @@
             android:layout_marginEnd="12dp"
             android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
             app:layout_constraintBottom_toBottomOf="parent"
-           app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
         </ImageView>

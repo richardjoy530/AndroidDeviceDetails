@@ -79,16 +79,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when (v!!) {
-            binding.locationInfo.cardView ->
-                startActivity(Intent(this, LocationActivity::class.java))
             binding.batteryInfo.cardView ->
                 startActivity(Intent(this, BatteryActivity::class.java))
             binding.appInfo.cardView ->
                 startActivity(Intent(this, AppInfoActivity::class.java))
             binding.networkUsage.cardView ->
                 startActivity(Intent(this, NetworkUsageActivity::class.java))
-            binding.signalData.cardView ->
-                startActivity(Intent(this, SignalActivity::class.java))
         }
     }
 }

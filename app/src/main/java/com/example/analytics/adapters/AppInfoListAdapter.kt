@@ -72,7 +72,7 @@ class AppInfoListAdapter(
                 )
                 vi.tag = holder
             } else holder = vi?.tag as AppInfoItemViewHolder
-            holder = setAppInfoHolder(holder,position)
+            holder = setAppInfoHolder(holder, position)
         }
         return vi!!
     }
@@ -114,7 +114,10 @@ class AppInfoListAdapter(
     }
 
     @SuppressLint("SetTextI18n")
-    private fun setAppInfoHolder(holder: AppInfoItemViewHolder, position: Int): AppInfoItemViewHolder{
+    private fun setAppInfoHolder(
+        holder: AppInfoItemViewHolder,
+        position: Int
+    ): AppInfoItemViewHolder {
         holder.appNameView.text = items[position].appName
         holder.versionCodeTextView.text =
             "Version Code : " + items[position].versionCode.toString()

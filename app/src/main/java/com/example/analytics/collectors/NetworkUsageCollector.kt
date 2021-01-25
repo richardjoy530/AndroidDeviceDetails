@@ -73,7 +73,11 @@ class NetworkUsageCollector(var context: Context) : BaseCollector() {
         GlobalScope.launch { db.appNetworkUsageDao().insertList(networkUsageList) }
     }
 
-    private fun fillList(bucket: NetworkStats.Bucket, networkUsageList: ArrayList<AppNetworkUsageRaw>, isWifi: Boolean): ArrayList<AppNetworkUsageRaw> {
+    private fun fillList(
+        bucket: NetworkStats.Bucket,
+        networkUsageList: ArrayList<AppNetworkUsageRaw>,
+        isWifi: Boolean
+    ): ArrayList<AppNetworkUsageRaw> {
         val packageName = context.packageManager.getNameForUid(bucket.uid)
         if (packageName != null && packageName != "null")
             if (networkUsageList.none { it.packageName == packageName })

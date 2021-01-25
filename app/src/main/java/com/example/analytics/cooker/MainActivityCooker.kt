@@ -7,8 +7,6 @@ import com.example.analytics.models.battery.BatteryAppEntry
 import com.example.analytics.models.database.AppInfoRaw
 import com.example.analytics.models.database.DeviceNetworkUsageRaw
 import com.example.analytics.models.database.RoomDB
-import com.example.analytics.models.location.LocationModel
-import com.example.analytics.models.signal.SignalRaw
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -31,9 +29,7 @@ class MainActivityCooker : BaseCooker() {
                 } as ArrayList<AppInfoRaw>
                 )
         }
-        SignalCooker().cook(time, subCallback as ICookingDone<SignalRaw>)
         BatteryCooker().cook(time, subCallback as ICookingDone<BatteryAppEntry>)
         DeviceNetworkUsageCooker().cook(time, subCallback as ICookingDone<DeviceNetworkUsageRaw>)
-        LocationCooker().cook(time, subCallback as ICookingDone<LocationModel>)
     }
 }

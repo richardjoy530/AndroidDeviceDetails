@@ -10,8 +10,8 @@
         android:background="?attr/mainBackground">
 
         <include
-            layout="@layout/date_time_picker"
             android:id="@+id/picker_binding"
+            layout="@layout/date_time_picker"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
