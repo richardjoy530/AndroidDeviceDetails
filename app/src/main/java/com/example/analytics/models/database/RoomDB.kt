@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.analytics.DeviceDetailsApplication
+import com.example.analytics.Analytics
 import com.example.analytics.models.signal.SignalDao
 import com.example.analytics.models.signal.SignalRaw
 
@@ -24,7 +24,7 @@ abstract class RoomDB : RoomDatabase() {
 
     companion object {
         private var INSTANCE: RoomDB? = null
-        fun getDatabase(context: Context = DeviceDetailsApplication.instance): RoomDB? {
+        fun getDatabase(context: Context = Analytics.instance): RoomDB? {
             if (INSTANCE == null) {
                 synchronized(RoomDB::class) {
                     INSTANCE = Room.databaseBuilder(

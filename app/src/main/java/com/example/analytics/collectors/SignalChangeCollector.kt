@@ -5,7 +5,7 @@ import android.os.Build
 import android.telephony.*
 import android.telephony.PhoneStateListener.LISTEN_NONE
 import android.telephony.PhoneStateListener.LISTEN_SIGNAL_STRENGTHS
-import com.example.analytics.DeviceDetailsApplication
+import com.example.analytics.Analytics
 import com.example.analytics.base.BaseCollector
 import com.example.analytics.collectors.SignalChangeCollector.SignalChangeListener
 import com.example.analytics.models.database.RoomDB
@@ -24,7 +24,7 @@ import kotlinx.coroutines.launch
 class SignalChangeCollector : BaseCollector() {
 
     private var mTelephonyManager: TelephonyManager =
-        DeviceDetailsApplication.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+        Analytics.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
 
     /**
      * A [PhoneStateListener] which gets notified from [LISTEN_SIGNAL_STRENGTHS]
@@ -80,7 +80,7 @@ class SignalChangeCollector : BaseCollector() {
             } else {
                 try {
                     val telephonyManager =
-                        DeviceDetailsApplication.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+                        Analytics.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
                     when (val cellInfo = telephonyManager.allCellInfo[0]) {
                         is CellInfoLte -> {
                             type = "LTE"

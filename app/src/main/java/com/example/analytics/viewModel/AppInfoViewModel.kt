@@ -1,7 +1,7 @@
 package com.example.analytics.viewModel
 
 import android.content.Context
-import com.example.analytics.DeviceDetailsApplication
+import com.example.analytics.Analytics
 import com.example.analytics.R
 import com.example.analytics.adapters.AppInfoListAdapter
 import com.example.analytics.base.BaseViewModel
@@ -36,7 +36,7 @@ class AppInfoViewModel(private val binding: ActivityAppInfoBinding, val context:
         }
         filteredList = filteredList.sortedBy { it.appName }.toMutableList()
         if (appList.isNotEmpty()) filteredList.add(0, appList[0])
-        filteredList.removeAll { it.packageName == DeviceDetailsApplication.instance.packageName }
+        filteredList.removeAll { it.packageName == Analytics.instance.packageName }
         binding.root.post {
             binding.appInfoListView.adapter =
                 AppInfoListAdapter(context, R.layout.appinfo_tile, filteredList, appList)

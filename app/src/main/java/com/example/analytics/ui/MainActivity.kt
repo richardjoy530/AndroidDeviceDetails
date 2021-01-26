@@ -46,7 +46,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             binding.appInfo.cardView.setOnClickListener(this@MainActivity)
             binding.batteryInfo.cardView.setOnClickListener(this@MainActivity)
             binding.networkUsage.cardView.setOnClickListener(this@MainActivity)
-            binding.locationInfo.cardView.setOnClickListener(this@MainActivity)
             binding.signalData.cardView.setOnClickListener(this@MainActivity)
         }
 

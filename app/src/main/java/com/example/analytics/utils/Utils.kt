@@ -12,7 +12,7 @@ import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import com.example.analytics.DeviceDetailsApplication
+import com.example.analytics.Analytics
 import com.example.analytics.R
 import com.example.analytics.models.appInfo.AppDetails
 import com.example.analytics.models.appInfo.EventType
@@ -69,7 +69,7 @@ object Utils {
     }
 
     fun getApplicationLabel(packageName: String): String {
-        val packageManager = DeviceDetailsApplication.instance.packageManager
+        val packageManager = Analytics.instance.packageManager
         return try {
             val info = packageManager.getApplicationInfo(
                 packageName,
@@ -91,10 +91,10 @@ object Utils {
 
     fun getApplicationIcon(packageName: String): Drawable {
         return try {
-            DeviceDetailsApplication.instance.packageManager.getApplicationIcon(packageName)
+            Analytics.instance.packageManager.getApplicationIcon(packageName)
         } catch (e: Exception) {
             ContextCompat.getDrawable(
-                DeviceDetailsApplication.instance,
+                Analytics.instance,
                 R.drawable.ic_baseline_android_24
             )!!
         }

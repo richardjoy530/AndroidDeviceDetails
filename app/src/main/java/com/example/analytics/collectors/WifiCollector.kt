@@ -6,7 +6,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.net.wifi.WifiManager
 import androidx.appcompat.app.AppCompatActivity
-import com.example.analytics.DeviceDetailsApplication
+import com.example.analytics.Analytics
 import com.example.analytics.base.BaseCollector
 import com.example.analytics.collectors.WifiCollector.WifiReceiver
 import com.example.analytics.models.database.RoomDB
@@ -88,7 +88,7 @@ class WifiCollector : BaseCollector() {
         val filter = IntentFilter()
         filter.addAction(WifiManager.RSSI_CHANGED_ACTION)
         filter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)
-        DeviceDetailsApplication.instance.registerReceiver(
+        Analytics.instance.registerReceiver(
             WifiReceiver,
             filter
         )
@@ -98,6 +98,6 @@ class WifiCollector : BaseCollector() {
      * Unregisters the [WifiCollector].
      **/
     override fun stop() {
-        DeviceDetailsApplication.instance.unregisterReceiver(WifiReceiver)
+        Analytics.instance.unregisterReceiver(WifiReceiver)
     }
 }

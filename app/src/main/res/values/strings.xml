@@ -1,7 +1,7 @@
 <resources>
     <string name="location_data">Location Data</string>
     <string name="signal_data">Signal Data</string>
-    <string name="app_name">AndroidDeviceDetails</string>
+    <string name="app_name">Analytics</string>
     <string name="latitude">Latitude</string>
     <string name="longitude">longitude</string>
     <string name="save_to_database">Save to Database</string>
@@ -65,4 +65,15 @@
     <string name="battery_drop_smallest_first">Battery Drop (smallest first)</string>
     <string name="package_name_a_to_z">Package Name (A to Z)</string>
     <string name="package_name_z_to_a">Package Name (Z to A)</string>
+    <string name="user_apps">User apps:&#160;</string>
+    <string name="_20">20</string>
+    <string name="more">more</string>
+    <string name="system_apps">System apps:&#160;</string>
+    <string name="_percent">%</string>
+    <string name="used">Used</string>
+    <string name="frequent_apps">Frequent apps</string>
+    <string name="_346_5_mb">346.5 MB</string>
+    <string name="_24_mb">24 MB</string>
+    <string name="signal_strength">Signal Strength</string>
+    <string name="cellular">Cellular</string>
 </resources>

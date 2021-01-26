@@ -23,9 +23,9 @@
         <item name="TimeDateBackground">#E1E1E1</item>
         <item name="iconTint">@color/gray_600</item>
         <item name="bottomSheetDialogColor">#EAEAEA</item>
-        <item name="android:actionOverflowButtonStyle">@style/MyActionButtonOverflow</item>
+<!--        <item name="android:actionOverflowButtonStyle">@style/MyActionButtonOverflow</item>-->
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/mainBackground</item>
+        <!--        <item name="android:statusBarColor">?attr/mainBackground</item>-->
         <!-- Customize your theme here. -->
     </style>
 </resources>
