@@ -6,11 +6,11 @@ import com.example.analytics.base.BaseViewModel
 import com.example.analytics.databinding.ActivityMainBinding
 import com.example.analytics.models.battery.BatteryAppEntry
 import com.example.analytics.models.database.AppInfoRaw
+import com.example.analytics.models.database.AppNetworkUsageRaw
 import com.example.analytics.models.database.DeviceNetworkUsageRaw
 import com.example.analytics.models.signal.SignalRaw
 import com.example.analytics.utils.Utils
 import kotlin.math.ceil
-import kotlin.math.pow
 
 class MainActivityViewModel(private val binding: ActivityMainBinding, val context: Context) :
     BaseViewModel() {
@@ -18,18 +18,21 @@ class MainActivityViewModel(private val binding: ActivityMainBinding, val contex
         val appInfoList = arrayListOf<AppInfoRaw>()
         val batteryList = arrayListOf<BatteryAppEntry>()
         val dataUsageList = arrayListOf<DeviceNetworkUsageRaw>()
+        val appDataUsageList = arrayListOf<AppNetworkUsageRaw>()
         val signalList = arrayListOf<SignalRaw>()
         for (i in 0 until outputList.size)
             when (outputList[i]) {
                 is AppInfoRaw -> appInfoList.add(outputList[i] as AppInfoRaw)
                 is BatteryAppEntry -> batteryList.add(outputList[i] as BatteryAppEntry)
                 is DeviceNetworkUsageRaw -> dataUsageList.add(outputList[i] as DeviceNetworkUsageRaw)
+                is AppNetworkUsageRaw -> appDataUsageList.add(outputList[i] as AppNetworkUsageRaw)
                 is SignalRaw -> signalList.add(outputList[i] as SignalRaw)
             }
         binding.root.post {
             if (appInfoList.isNotEmpty()) updateAppInfoCard(appInfoList)
             if (batteryList.isNotEmpty()) updateBatteryCard(batteryList)
             if (dataUsageList.isNotEmpty()) updateDeviceNetworkUsageCard(dataUsageList)
+            if (appDataUsageList.isNotEmpty()) updateAppDataUsageCard(appDataUsageList)
             if (signalList.isNotEmpty()) updateSignalDataCard(signalList)
         }
     }
@@ -70,22 +73,34 @@ class MainActivityViewModel(private val binding: ActivityMainBinding, val contex
     }
 
     private fun updateDeviceNetworkUsageCard(outputList: ArrayList<DeviceNetworkUsageRaw>) {
-        val wifiData =
-            (outputList.first().transferredDataWifi + outputList.first().receivedDataWifi) /
-                    1024.0.pow(2.toDouble())
-        val cellularData =
-            (outputList.first().transferredDataMobile + outputList.first().transferredDataMobile) /
-                    1024.0.pow(2.toDouble())
-        val total = wifiData + cellularData
-        val wifiDataProgress = graphCalculator(wifiData.toInt(), total.toInt())
-        val cellularDataProgress = graphCalculator(cellularData.toInt(), total.toInt())
         binding.networkUsage.label1Value.text =
             Utils.getFileSize(outputList.first().transferredDataWifi + outputList.first().receivedDataWifi)
         binding.networkUsage.label2Value.text =
             Utils.getFileSize(outputList.first().transferredDataMobile + outputList.first().transferredDataMobile)
-        binding.networkUsage.progressbarFirst.progress = wifiDataProgress + cellularDataProgress
-        binding.networkUsage.progressbarSecond.progress = cellularDataProgress
     }
+
+    private fun updateAppDataUsageCard(outputList: ArrayList<AppNetworkUsageRaw>) {
+        outputList.sortByDescending { getFullUsageData(it) }
+        if (outputList.size > 2) {
+            binding.networkUsage.app3.text = Utils.getFileSize(getFullUsageData(outputList[2]))
+            binding.networkUsage.app3.visibility = VISIBLE
+            binding.networkUsage.app3Icon.visibility = VISIBLE
+            binding.networkUsage.app3Icon.setImageDrawable(Utils.getApplicationIcon(outputList[2].packageName))
+        }
+        if (outputList.size > 1) {
+            binding.networkUsage.app2.text = Utils.getFileSize(getFullUsageData(outputList[1]))
+            binding.networkUsage.app2.visibility = VISIBLE
+            binding.networkUsage.app2Icon.visibility = VISIBLE
+            binding.networkUsage.app2Icon.setImageDrawable(Utils.getApplicationIcon(outputList[1].packageName))
+        }
+        if (outputList.size > 0) {
+            binding.networkUsage.app1.text = Utils.getFileSize(getFullUsageData(outputList[0]))
+            binding.networkUsage.app1.visibility = VISIBLE
+            binding.networkUsage.app1Icon.visibility = VISIBLE
+            binding.networkUsage.app1Icon.setImageDrawable(Utils.getApplicationIcon(outputList[0].packageName))
+        }
+    }
+
 
     private fun updateSignalDataCard(outputList: ArrayList<SignalRaw>) {
         binding.signalData.pointerCellularSpeedometer.speedTo(50F, 1000)
@@ -94,4 +109,9 @@ class MainActivityViewModel(private val binding: ActivityMainBinding, val contex
 
     private fun graphCalculator(dataSize: Int, total: Int) =
         ceil(((dataSize).toDouble().div(total).times(100))).toInt()
+
+    private fun getFullUsageData(app: AppNetworkUsageRaw) =
+        app.receivedDataMobile + app.receivedDataWifi + app.transferredDataMobile + app.transferredDataWifi
+
+
 }

@@ -24,29 +24,25 @@
                     android:id="@+id/appInfo"
                     layout="@layout/main_activity_app_info_tile"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp" />
+                    android:layout_height="wrap_content" />
 
                 <include
                     android:id="@+id/batteryInfo"
                     layout="@layout/main_activity_battery_tile"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp" />
+                    android:layout_height="wrap_content" />
 
                 <include
                     android:id="@+id/networkUsage"
                     layout="@layout/main_activity_network_usage_tile"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp" />
+                    android:layout_height="wrap_content" />
 
                 <include
                     android:id="@+id/signalData"
                     layout="@layout/main_activity_signal_tile"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp" />
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
 

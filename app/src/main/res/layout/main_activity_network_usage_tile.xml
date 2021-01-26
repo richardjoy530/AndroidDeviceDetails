@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto">
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -42,57 +43,26 @@
                     card_view:layout_constraintEnd_toEndOf="parent"
                     card_view:layout_constraintTop_toTopOf="parent" />
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/usingProgressBar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:padding="14dp"
+                    android:paddingVertical="14dp"
                     card_view:layout_constraintBottom_toBottomOf="parent"
                     card_view:layout_constraintEnd_toEndOf="parent"
                     card_view:layout_constraintStart_toStartOf="parent"
                     card_view:layout_constraintTop_toBottomOf="@id/cardTitle">
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/pieChart"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-                        <!-- ProgressBar that represents a total of 100% -->
-                        <ProgressBar
-                            android:id="@+id/progressbarFirst"
-                            style="?android:attr/progressBarStyleHorizontal"
-                            android:layout_width="80dp"
-                            android:layout_height="80dp"
-                            android:indeterminate="false"
-                            android:max="100"
-                            android:progress="100"
-                            android:progressDrawable="@drawable/stats_progressbar_first"
-                            card_view:layout_constraintBottom_toBottomOf="parent"
-                            card_view:layout_constraintEnd_toEndOf="parent"
-                            card_view:layout_constraintStart_toStartOf="parent"
-                            card_view:layout_constraintTop_toTopOf="parent" />
-                        <!-- ProgressBar that represents a chart slice, where "android:progress" is the % value of the slice -->
-                        <ProgressBar
-                            android:id="@+id/progressbarSecond"
-                            style="?android:attr/progressBarStyleHorizontal"
-                            android:layout_width="80dp"
-                            android:layout_height="80dp"
-                            android:indeterminate="false"
-                            android:max="100"
-                            android:progress="75"
-                            android:progressDrawable="@drawable/stats_progressbar_second"
-                            card_view:layout_constraintBottom_toBottomOf="parent"
-                            card_view:layout_constraintEnd_toEndOf="parent"
-                            card_view:layout_constraintStart_toStartOf="parent"
-                            card_view:layout_constraintTop_toTopOf="parent" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
                     <LinearLayout
+                        android:id="@+id/linearLayout2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="20dp"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        card_view:layout_constraintBottom_toBottomOf="parent"
+                        card_view:layout_constraintEnd_toStartOf="@id/topApps"
+                        card_view:layout_constraintStart_toStartOf="parent"
+                        card_view:layout_constraintTop_toTopOf="parent">
 
                         <TextView
                             android:id="@+id/label_1_value"
@@ -122,7 +92,94 @@
 
                     </LinearLayout>
 
-                </LinearLayout>
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/topApps"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        card_view:layout_constraintBottom_toBottomOf="parent"
+                        card_view:layout_constraintEnd_toEndOf="parent"
+                        card_view:layout_constraintStart_toEndOf="@id/linearLayout2"
+                        card_view:layout_constraintTop_toTopOf="parent">
+
+                        <ImageView
+                            android:id="@+id/app1Icon"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:contentDescription="@string/frequent_apps"
+                            android:src="@drawable/ic_launcher_background"
+                            card_view:layout_constraintBottom_toTopOf="@id/app1"
+                            card_view:layout_constraintEnd_toStartOf="@id/app2Icon"
+                            card_view:layout_constraintStart_toStartOf="parent"
+                            card_view:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/app1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/_574_mb"
+                            android:textSize="8sp"
+                            android:textStyle="bold"
+                            card_view:layout_constraintBottom_toBottomOf="parent"
+                            card_view:layout_constraintEnd_toEndOf="@id/app1Icon"
+                            card_view:layout_constraintStart_toStartOf="@id/app1Icon"
+                            card_view:layout_constraintTop_toBottomOf="@id/app1Icon"
+                            tools:ignore="SmallSp" />
+
+                        <ImageView
+                            android:id="@+id/app2Icon"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginHorizontal="20dp"
+                            android:contentDescription="@string/frequent_apps"
+                            android:src="@drawable/ic_launcher_background"
+                            card_view:layout_constraintBottom_toTopOf="@id/app2"
+                            card_view:layout_constraintEnd_toStartOf="@id/app3Icon"
+                            card_view:layout_constraintStart_toEndOf="@id/app1Icon"
+                            card_view:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/app2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/_24_mb"
+                            android:textSize="8sp"
+                            android:textStyle="bold"
+                            card_view:layout_constraintBottom_toBottomOf="parent"
+                            card_view:layout_constraintEnd_toEndOf="@id/app2Icon"
+                            card_view:layout_constraintStart_toStartOf="@id/app2Icon"
+                            card_view:layout_constraintTop_toBottomOf="@id/app2Icon"
+                            tools:ignore="SmallSp" />
+
+                        <ImageView
+                            android:id="@+id/app3Icon"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:contentDescription="@string/frequent_apps"
+                            android:src="@drawable/ic_launcher_background"
+                            card_view:layout_constraintBottom_toTopOf="@id/app3"
+                            card_view:layout_constraintEnd_toEndOf="parent"
+                            card_view:layout_constraintStart_toEndOf="@id/app2Icon"
+                            card_view:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/app3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/_67_8_kb"
+                            android:textSize="8sp"
+                            android:textStyle="bold"
+                            card_view:layout_constraintBottom_toBottomOf="parent"
+                            card_view:layout_constraintEnd_toEndOf="@id/app3Icon"
+                            card_view:layout_constraintStart_toStartOf="@id/app3Icon"
+                            card_view:layout_constraintTop_toBottomOf="@id/app3Icon"
+                            tools:ignore="SmallSp" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

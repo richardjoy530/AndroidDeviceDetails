@@ -5,6 +5,7 @@ import com.example.analytics.interfaces.ICookingDone
 import com.example.analytics.models.TimePeriod
 import com.example.analytics.models.battery.BatteryAppEntry
 import com.example.analytics.models.database.AppInfoRaw
+import com.example.analytics.models.database.AppNetworkUsageRaw
 import com.example.analytics.models.database.DeviceNetworkUsageRaw
 import com.example.analytics.models.database.RoomDB
 import kotlinx.coroutines.Dispatchers
@@ -31,5 +32,6 @@ class MainActivityCooker : BaseCooker() {
         }
         BatteryCooker().cook(time, subCallback as ICookingDone<BatteryAppEntry>)
         DeviceNetworkUsageCooker().cook(time, subCallback as ICookingDone<DeviceNetworkUsageRaw>)
+        AppNetworkUsageCooker().cook(time, subCallback as ICookingDone<AppNetworkUsageRaw>)
     }
 }
