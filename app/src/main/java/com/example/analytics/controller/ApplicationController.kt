@@ -3,7 +3,6 @@ package com.example.analytics.controller
 import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
-import com.example.analytics.base.BaseCollector
 import com.example.analytics.collectors.AppEventCollector
 import com.example.analytics.collectors.AppInfoCollector
 import com.example.analytics.collectors.BatteryCollector
@@ -14,13 +13,13 @@ class ApplicationController(context: Context) {
     lateinit var timer: Timer
 
     @RequiresApi(Build.VERSION_CODES.M)
-    var instanceMap: MutableMap<String, BaseCollector> = mutableMapOf(
-        "BatteryReceiver" to BatteryCollector(context),
-//        "WifiReceiver" to WifiCollector(),
-        "AppStateReceiver" to AppInfoCollector(context),
-        "AppEventCollector" to AppEventCollector(context),
-//        "SignalChangeListener" to SignalChangeCollector(),
-        "NetworkUsageCollector" to NetworkUsageCollector(context),
+    var collectors = arrayListOf(
+        BatteryCollector(context),
+//        WifiCollector(),
+        AppInfoCollector(context),
+        AppEventCollector(context),
+//        SignalChangeCollector(),
+        NetworkUsageCollector(context),
     )
 
     fun runTimer(intervalInMinuets: Long) {
@@ -28,7 +27,7 @@ class ApplicationController(context: Context) {
         timer.scheduleAtFixedRate(
             object : TimerTask() {
                 override fun run() {
-                    for (collector in instanceMap.values) {
+                    for (collector in collectors) {
                         collector.collect()
                     }
                 }

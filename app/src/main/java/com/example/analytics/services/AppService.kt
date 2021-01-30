@@ -25,13 +25,13 @@ class AppService : Service() {
     override fun onCreate() {
         super.onCreate()
         appController = ApplicationController(this)
-        for (receivers in appController.instanceMap.values) receivers.start()
+        for (receivers in appController.collectors) receivers.start()
         appController.runTimer(Utils.COLLECTION_INTERVAL)
         pushNotification()
     }
 
     override fun onDestroy() {
-        for (receivers in appController.instanceMap.values) receivers.stop()
+        for (receivers in appController.collectors) receivers.stop()
         appController.timer.cancel()
         stopSelf()
         super.onDestroy()
