@@ -2,55 +2,55 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.AppInfoActivity"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_width="match_parent">
+    tools:context=".ui.AppInfoActivity">
 
     <item
         android:id="@+id/filter_text"
         android:orderInCategory="100"
-        android:title="All"
         android:textAllCaps="false"
-        app:showAsAction="ifRoom|withText"/>
+        android:title="All"
+        app:showAsAction="ifRoom|withText" />
 
     <item
         android:id="@+id/spinner_all"
-        app:actionViewClass="android.widget.Spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAlignment="textEnd"
         android:layout_marginTop="10dp"
-        android:title="All" />
+        android:textAlignment="textEnd"
+        android:title="All"
+        app:actionViewClass="android.widget.Spinner" />
     <item
         android:id="@+id/spinner_enrolled"
-        app:actionViewClass="android.widget.Spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAlignment="textEnd"
         android:layout_marginTop="10dp"
-        android:title="Enrolled" />
+        android:textAlignment="textEnd"
+        android:title="Enrolled"
+        app:actionViewClass="android.widget.Spinner" />
     <item
         android:id="@+id/spinner_installed"
-        app:actionViewClass="android.widget.Spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAlignment="textEnd"
         android:layout_marginTop="10dp"
-        android:title="Installed" />
+        android:textAlignment="textEnd"
+        android:title="Installed"
+        app:actionViewClass="android.widget.Spinner" />
     <item
         android:id="@+id/spinner_updated"
-        app:actionViewClass="android.widget.Spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAlignment="textEnd"
         android:layout_marginTop="10dp"
-        android:title="Updated" />
+        android:textAlignment="textEnd"
+        android:title="Updated"
+        app:actionViewClass="android.widget.Spinner" />
     <item
         android:id="@+id/spinner_uninstalled"
-        app:actionViewClass="android.widget.Spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAlignment="textEnd"
         android:layout_marginTop="10dp"
-        android:title="Uninstalled" />
+        android:textAlignment="textEnd"
+        android:title="Uninstalled"
+        app:actionViewClass="android.widget.Spinner" />
 </menu>

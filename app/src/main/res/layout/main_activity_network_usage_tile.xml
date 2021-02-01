@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            card_view:cardBackgroundColor="?attr/cardBackground"
+            card_view:cardCornerRadius="20dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="14dp">
+
+                <TextView
+                    android:id="@+id/cardTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="4dp"
+                    android:text="@string/network_usage"
+                    android:textColor="?attr/batteryTitle"
+                    android:textSize="20sp"
+                    card_view:drawableStartCompat="@drawable/ic_round_data_usage_24"
+                    card_view:drawableTint="#83b899"
+                    card_view:layout_constraintStart_toStartOf="parent"
+                    card_view:layout_constraintTop_toTopOf="parent" />
+
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_baseline_keyboard_arrow_right_24"
+                    android:backgroundTint="#83b899"
+                    android:contentDescription="@string/more"
+                    card_view:layout_constraintEnd_toEndOf="parent"
+                    card_view:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/usingProgressBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingVertical="14dp"
+                    card_view:layout_constraintBottom_toBottomOf="parent"
+                    card_view:layout_constraintEnd_toEndOf="parent"
+                    card_view:layout_constraintStart_toStartOf="parent"
+                    card_view:layout_constraintTop_toBottomOf="@id/cardTitle">
+
+                    <LinearLayout
+                        android:id="@+id/linearLayout2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        card_view:layout_constraintBottom_toBottomOf="parent"
+                        card_view:layout_constraintEnd_toStartOf="@id/topApps"
+                        card_view:layout_constraintStart_toStartOf="parent"
+                        card_view:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/label_1_value"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawablePadding="6dp"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="@string/_346_5_mb"
+                            android:textColor="?attr/progressbarFirst"
+                            android:textStyle="bold"
+                            card_view:drawableLeftCompat="@drawable/ic_round_network_wifi_24"
+                            card_view:drawableTint="#AD98D3" />
+
+                        <TextView
+                            android:id="@+id/label_2_value"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawablePadding="6dp"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="@string/_24_mb"
+                            android:textColor="?attr/progressbarSecond"
+                            android:textStyle="bold"
+                            card_view:drawableLeftCompat="@drawable/ic_round_network_cell_24"
+                            card_view:drawableTint="#ECCD71" />
+
+                    </LinearLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/topApps"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        card_view:layout_constraintBottom_toBottomOf="parent"
+                        card_view:layout_constraintEnd_toEndOf="parent"
+                        card_view:layout_constraintStart_toEndOf="@id/linearLayout2"
+                        card_view:layout_constraintTop_toTopOf="parent">
+
+                        <ImageView
+                            android:id="@+id/app1Icon"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:contentDescription="@string/frequent_apps"
+                            android:src="@drawable/ic_launcher_background"
+                            card_view:layout_constraintBottom_toTopOf="@id/app1"
+                            card_view:layout_constraintEnd_toStartOf="@id/app2Icon"
+                            card_view:layout_constraintStart_toStartOf="parent"
+                            card_view:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/app1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/_574_mb"
+                            android:textSize="8sp"
+                            android:textStyle="bold"
+                            card_view:layout_constraintBottom_toBottomOf="parent"
+                            card_view:layout_constraintEnd_toEndOf="@id/app1Icon"
+                            card_view:layout_constraintStart_toStartOf="@id/app1Icon"
+                            card_view:layout_constraintTop_toBottomOf="@id/app1Icon"
+                            tools:ignore="SmallSp" />
+
+                        <ImageView
+                            android:id="@+id/app2Icon"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginHorizontal="20dp"
+                            android:contentDescription="@string/frequent_apps"
+                            android:src="@drawable/ic_launcher_background"
+                            card_view:layout_constraintBottom_toTopOf="@id/app2"
+                            card_view:layout_constraintEnd_toStartOf="@id/app3Icon"
+                            card_view:layout_constraintStart_toEndOf="@id/app1Icon"
+                            card_view:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/app2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/_24_mb"
+                            android:textSize="8sp"
+                            android:textStyle="bold"
+                            card_view:layout_constraintBottom_toBottomOf="parent"
+                            card_view:layout_constraintEnd_toEndOf="@id/app2Icon"
+                            card_view:layout_constraintStart_toStartOf="@id/app2Icon"
+                            card_view:layout_constraintTop_toBottomOf="@id/app2Icon"
+                            tools:ignore="SmallSp" />
+
+                        <ImageView
+                            android:id="@+id/app3Icon"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:contentDescription="@string/frequent_apps"
+                            android:src="@drawable/ic_launcher_background"
+                            card_view:layout_constraintBottom_toTopOf="@id/app3"
+                            card_view:layout_constraintEnd_toEndOf="parent"
+                            card_view:layout_constraintStart_toEndOf="@id/app2Icon"
+                            card_view:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/app3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/_67_8_kb"
+                            android:textSize="8sp"
+                            android:textStyle="bold"
+                            card_view:layout_constraintBottom_toBottomOf="parent"
+                            card_view:layout_constraintEnd_toEndOf="@id/app3Icon"
+                            card_view:layout_constraintStart_toStartOf="@id/app3Icon"
+                            card_view:layout_constraintTop_toBottomOf="@id/app3Icon"
+                            tools:ignore="SmallSp" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </RelativeLayout>
+
+</layout>

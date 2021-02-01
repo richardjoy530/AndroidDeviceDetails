@@ -6,8 +6,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MainActivity"
-        android:background="?attr/mainBackground">
+        android:background="?attr/mainBackground"
+        tools:context=".MainActivity">
 
         <LinearLayout
             android:id="@+id/container"

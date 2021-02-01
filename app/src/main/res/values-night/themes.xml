@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Theme.AndroidDeviceDetails" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
@@ -21,9 +21,9 @@
         <item name="colorOnSecondary">@color/black</item>
         <item name="TimeDateBackground">@color/black</item>
         <item name="iconTint">@color/white</item>
-        <item name="android:actionOverflowButtonStyle">@style/MyActionButtonOverflow</item>
+        <!--        <item name="android:actionOverflowButtonStyle">@style/MyActionButtonOverflow</item>-->
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/mainBackground</item>
+        <!--        <item name="android:statusBarColor" tools:targetApi="l">?attr/mainBackground</item>-->
         <!-- Customize your theme here. -->
     </style>
 </resources>

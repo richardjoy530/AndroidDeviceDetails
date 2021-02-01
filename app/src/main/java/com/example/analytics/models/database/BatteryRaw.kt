@@ -1,0 +1,72 @@
+package com.example.analytics.models.database
+
+import android.os.BatteryManager
+import androidx.room.*
+import com.example.analytics.collectors.BatteryCollector
+import com.example.analytics.cooker.BatteryCooker
+
+/**
+ * A data class used by the [BatteryCollector] to record a battery event and
+ * save to the [RoomDB.batteryDao] and also used by the [BatteryCooker]
+ * @param timeStamp Time of the record.
+ * @param level Battery level.
+ * @param plugged one of [BatteryManager.BATTERY_PLUGGED_AC],
+ * [BatteryManager.BATTERY_PLUGGED_USB],
+ * [BatteryManager.BATTERY_PLUGGED_WIRELESS],0 : if Device is on battery.
+ * @param health one of
+ * [BatteryManager.BATTERY_HEALTH_COLD],
+ * [BatteryManager.BATTERY_HEALTH_DEAD],
+ * [BatteryManager.BATTERY_HEALTH_GOOD],
+ * [BatteryManager.BATTERY_HEALTH_OVERHEAT],
+ * [BatteryManager.BATTERY_HEALTH_OVER_VOLTAGE],
+ * [BatteryManager.BATTERY_HEALTH_UNSPECIFIED_FAILURE],
+ * [BatteryManager.BATTERY_HEALTH_UNKNOWN]
+ * @param estimatedCapacity Battery capacity in mAh
+ *
+ *  @see [RoomDB]
+ *  @see[BatteryDao]
+ **/
+@Entity
+data class BatteryRaw(
+    @PrimaryKey val timeStamp: Long,
+    @ColumnInfo(name = "level") val level: Int?,
+    @ColumnInfo(name = "plugged") val plugged: Int?,
+    @ColumnInfo(name = "health") val health: Int?,
+    @ColumnInfo(name = "estimatedCapacity") val estimatedCapacity: Int,
+)
+
+/**
+ * An interface that contains functions to handle database operations
+ */
+@Dao
+interface BatteryDao {
+
+    /**
+     * Retrieve all the records from [BatteryDao]
+     * @return List of [BatteryRaw]
+     */
+    @Query("SELECT * FROM BatteryRaw")
+    fun getAll(): List<BatteryRaw>
+
+    /**
+     * Returns all the [BatteryRaw] in the given time frame
+     * @param startTime Start time
+     * @param endTime End time
+     * @return List of [BatteryRaw]
+     */
+    @Query("SELECT * FROM BatteryRaw WHERE timeStamp BETWEEN (:startTime) AND (:endTime)")
+    fun getAllBetween(startTime: Long, endTime: Long): List<BatteryRaw>
+
+    @Query("DELETE FROM BatteryRaw")
+    fun deleteAll()
+
+    @Insert
+    fun insert(vararg batteryRaw: BatteryRaw)
+
+    @Insert
+    fun insertAll(batteryRawList: List<BatteryRaw>)
+
+    @Delete
+    fun delete(batteryRaw: BatteryRaw)
+}
+
